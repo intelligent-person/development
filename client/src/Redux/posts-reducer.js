@@ -1,0 +1,52 @@
+import {postsAPI} from "../api/api";
+
+
+const SET_POSTS = 'SET_POSTS'
+const SET_POST = 'SET_POST'
+const ADD_POST = 'ADD_POST'
+
+const initialState = {
+    posts: [],
+    postsCount: null,
+    post: {}
+}
+
+export const postReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case SET_POSTS:
+            return {...state, posts: action.posts, postsCount: action.postsCount}
+        case SET_POST:
+            return {...state, post: action.post}
+        case ADD_POST:
+            return {...state, posts: [...state.posts, action.post]}
+        default:
+            return state
+    }
+}
+const setPosts = (posts) => ({type: SET_POSTS, posts: posts[0], postsCount: posts[1]})
+const setPost = (post) => ({type: SET_POST, post})
+const addNewPost = (post) => ({type: ADD_POST, post})
+
+
+
+export const getPosts = (pageSize, page) => async (dispatch) => {
+    let res = await postsAPI.getPosts(pageSize, page)
+    console.log(res.data)
+    dispatch(setPosts(res.data))
+}
+export const getPost = (id) => async (dispatch) => {
+    let res = await postsAPI.getPost(id)
+    dispatch(setPost(res.data))
+}
+export const addPost = (title, body, codeLanguage, user, tags, views, answersCount) => async (dispatch) => {
+    let res = await postsAPI.addPost(title, body, codeLanguage, user, tags, views, answersCount)
+    dispatch(addNewPost(res.data))
+}
+export const setPostView = (id) => async () =>{
+    await postsAPI.setPostView(id)
+}
+
+export const delPost = (id) => async (dispatch) => {
+    let res = await postsAPI.delPost(id)
+    dispatch(setPosts(res.data))
+}
