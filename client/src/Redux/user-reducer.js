@@ -45,12 +45,13 @@ export const getUser = (sub) => async (dispatch) => {
     let res = await usersAPI.getUser(sub)
     dispatch(setUser(res.data))
 }
-export const addUser = (name, picture, reputation, email, sub, status) => async (dispatch) => {
-    let res = await usersAPI.addUser(name, picture, reputation, email, sub, status)
+export const addUser = (newUser) => async (dispatch) => {
+    console.log(newUser)
+    let res = await usersAPI.addUser(newUser)
     dispatch(addNewUser(res.data))
 }
-export const delUser = (id) => async (dispatch) => {
-    let res = await usersAPI.delUser(id)
+export const deleteUser = (id) => async (dispatch) => {
+    let res = await usersAPI.deleteUser(id)
     console.log(res)
     dispatch(setUsers(res.data))
 }

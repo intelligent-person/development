@@ -9,7 +9,6 @@ import Loader from "./Components/Loader/Loader";
 const domain = process.env.REACT_APP_AUTH0_DOMAIN
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
 
-
 const AppContainer = React.lazy(() => import('./AppContainer'))
 
 ReactDOM.render(

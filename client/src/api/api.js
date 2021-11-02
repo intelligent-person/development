@@ -1,9 +1,9 @@
 import * as axios from "axios";
-
+const baseUrl = process.env.BASE_URL
 const instance = axios.create({
-    baseURL: 'http://localhost:5000/api/'
+    baseURL: `http://localhost:5000/api/`
 })
-
+console.log(baseUrl)
 export const usersAPI = {
     getUsers() {
         return instance.get('/users')
@@ -11,16 +11,16 @@ export const usersAPI = {
     getUser(sub) {
         return instance.get('/users/' + sub)
     },
-    addUser(name, picture, reputation, email, sub, status) {
-        return instance.post('/users', {name, picture, reputation, email, sub, status})
+    addUser(newUser) {
+        return instance.post('/users', newUser)
     },
-    delUser(id) {
+    deleteUser(id) {
         return instance.delete(`/users/` + id)
     },
 }
 export const postsAPI = {
-    getPosts(pageSize, page) {
-        return instance.get(`/posts?pageSize=${pageSize}&page=${page}`)
+    getPosts(pageSize, page, sort, include) {
+        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}`, {include})
     },
     getPost(id) {
         return instance.get('/posts/' + id)
@@ -34,7 +34,7 @@ export const postsAPI = {
     setPostView(id) {
       return instance.put('/posts/setPostView/' + id)
     },
-    delPost(id) {
+    deletePost(id) {
         return instance.delete(`/posts/` + id)
     },
 }

@@ -29,8 +29,8 @@ const addNewPost = (post) => ({type: ADD_POST, post})
 
 
 
-export const getPosts = (pageSize, page) => async (dispatch) => {
-    let res = await postsAPI.getPosts(pageSize, page)
+export const getPosts = (pageSize, page, sort, include) => async (dispatch) => {
+    let res = await postsAPI.getPosts(pageSize, page, sort, include)
     console.log(res.data)
     dispatch(setPosts(res.data))
 }
@@ -46,7 +46,7 @@ export const setPostView = (id) => async () =>{
     await postsAPI.setPostView(id)
 }
 
-export const delPost = (id) => async (dispatch) => {
-    let res = await postsAPI.delPost(id)
+export const deletePost = (id) => async (dispatch) => {
+    let res = await postsAPI.deletePost(id)
     dispatch(setPosts(res.data))
 }

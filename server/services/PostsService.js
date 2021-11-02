@@ -6,17 +6,39 @@ class PostsService {
         return createdPost
     }
 
-    async getAll(pageSize, page) {
+    async getAll(pageSize, page, sort, include) {
         const postsCount = await Post.count()
-        const posts = await Post
-            .find({})
-            .select('title body user tags views answersCount date')
-            .sort({
-                date: 'desc'
-            })
-            .skip((page - 1) * pageSize)
-            .limit(pageSize)
-        return [posts, postsCount]
+        if(sort === 'lessViews') {
+            const posts = await Post
+                .find({})
+                .select('title body user tags views answersCount date')
+                .sort({
+                    views: 'asc'
+                })
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+            return [posts, postsCount]
+        } else if (sort === 'moreViews') {
+            const posts = await Post
+                .find({})
+                .select('title body user tags views answersCount date')
+                .sort({
+                    views: 'desc'
+                })
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+            return [posts, postsCount]
+        } else {
+            const posts = await Post
+                .find({})
+                .select('title body user tags views answersCount date')
+                .sort({
+                    date: 'desc'
+                })
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+            return [posts, postsCount]
+        }
     }
 
     async getOne(id) {

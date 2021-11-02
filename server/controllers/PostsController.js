@@ -16,7 +16,9 @@ class PostsController {
         try {
             const pageSize = +req.query.pageSize
             const page = +req.query.page
-            const posts = await PostsService.getAll(pageSize, page)
+            const sort = req.query.sortType
+            const include = req.body.include
+            const posts = await PostsService.getAll(pageSize, page, sort, include)
             console.log(posts)
             res.json(posts)
         } catch (err) {
