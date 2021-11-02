@@ -1,0 +1,22 @@
+import React, {useEffect} from 'react';
+import {useLocation, useParams} from "react-router-dom";
+import {connect, useDispatch, useSelector} from "react-redux";
+import {getPost, setPostView} from "../../../../Redux/posts-reducer";
+import PostInfo from "./PostInfo";
+import Loader from "../../../Loader/Loader";
+
+const PostInfoContainer = () => {
+    const dispatch = useDispatch()
+    const post = useSelector(state => state.posts.post)
+    const {postId} = useParams();
+    console.log(postId)
+    console.log(post)
+    useEffect(() => {
+        dispatch(getPost(postId))
+        dispatch(setPostView(postId))
+    }, [])
+    if (post._id === postId) return <PostInfo post={post}/>
+    else return <Loader/>
+};
+
+export default React.memo(PostInfoContainer)
