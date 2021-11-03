@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addPost, getPosts} from "../../../Redux/posts-reducer";
+import {getPosts} from "../../../Redux/posts-reducer";
 import Posts from "./Posts";
-import {Breadcrumb, Button, Pagination} from "antd";
+import {Pagination} from "antd";
 import {Content} from "antd/es/layout/layout";
-import {Link, NavLink, Route, Switch, useLocation} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import PostCreator from "./PostCreator/PostCreator";
-import {HomeOutlined} from "@ant-design/icons";
 import {getUser} from "../../../Redux/user-reducer";
-import {withSuspense} from "../../../hoc/WithSuspense";
 import Loader from "../../Loader/Loader";
 import PostsFilter from "./PostsFilter";
 import PostsBreadCrumb from "./PostsBreadCrumb";
@@ -24,11 +22,12 @@ const PostsContainer = () => {
     const [pageSize, setPageSize] = useState(10)
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState('newest')
-    const [include, setInclude] = useState([])
+    const [include, setInclude] = useState({unanswered: false})
+    console.log(include)
     const {user} = useAuth0()
 
-    useEffect(async () => {
-        await dispatch(getPosts(pageSize, page,  sort, include))
+    useEffect(() => {
+        dispatch(getPosts(pageSize, page, sort, include))
         window.scrollTo(0,0)
     }, [posts.length, page, pageSize, sort, include])
 
@@ -48,7 +47,7 @@ const PostsContainer = () => {
                 <Switch>
                     <Route path={'/questions'} exact={true} render={() =>
                         <>
-                            <PostsFilter user={mainUser} postsCount={postsCount} setSort={setSort} setInclude={setInclude}/>
+                            <PostsFilter user={mainUser} postsCount={postsCount} setSort={setSort} setInclude={setInclude} setPage={setPage}/>
                             <Posts posts={posts}/>
                             <div style={{textAlign: 'center', marginTop: 50}}>
                                 <Pagination defaultCurrent={1} total={postsCount} onChange={setSize} current={page}/>
@@ -61,7 +60,7 @@ const PostsContainer = () => {
                         </React.Suspense>}
                     />
                     <Route path={'/questions/ask'} exact={true} render={() =>
-                        <PostCreator addPost={dispatch(addPost)} user={mainUser}/>}
+                        <PostCreator user={mainUser}/>}
                     />
                 </Switch>
             </Content>

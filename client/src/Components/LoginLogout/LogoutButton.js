@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAuth0} from "@auth0/auth0-react";
-import {Dropdown, Image, Menu} from "antd";
+import {Dropdown, Menu} from "antd";
 import Avatar from "antd/es/avatar/avatar";
 import {NavLink} from "react-router-dom";
 
@@ -21,7 +21,7 @@ const LogoutButton = () => {
         </Menu>
     );
     return <Dropdown overlay={menu}>
-        <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <a className="ant-dropdown-link" onClick={e => e.preventDefault()} href={'#'}>
             <Avatar src={user.picture}/>
         </a>
     </Dropdown>

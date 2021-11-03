@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {connect, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 import {addUser} from "../../../Redux/user-reducer";
 import {useAuth0} from "@auth0/auth0-react";
 

@@ -2,47 +2,35 @@ const Post = require('../models/Post')
 
 class PostsService {
     async create(post) {
+        console.log(post)
         const createdPost = await Post.create(post)
         return createdPost
     }
 
-    async getAll(pageSize, page, sort, include) {
-        const postsCount = await Post.count()
-        if(sort === 'lessViews') {
-            const posts = await Post
-                .find({})
-                .select('title body user tags views answersCount date')
-                .sort({
-                    views: 'asc'
-                })
-                .skip((page - 1) * pageSize)
-                .limit(pageSize)
-            return [posts, postsCount]
-        } else if (sort === 'moreViews') {
-            const posts = await Post
-                .find({})
-                .select('title body user tags views answersCount date')
-                .sort({
-                    views: 'desc'
-                })
-                .skip((page - 1) * pageSize)
-                .limit(pageSize)
-            return [posts, postsCount]
-        } else {
-            const posts = await Post
-                .find({})
-                .select('title body user tags views answersCount date')
-                .sort({
-                    date: 'desc'
-                })
-                .skip((page - 1) * pageSize)
-                .limit(pageSize)
-            return [posts, postsCount]
-        }
+    async getAll(pageSize, page, sort, unanswered, tags) {
+        //FILTER
+        let find = {}
+        if(unanswered === 'true' && tags[0] !== 'undefined') find = {answersCount: 0, tags: { "$in" : tags}}
+        else if(tags[0] !== 'undefined') find = {tags: { "$in" : tags}}
+        else if (unanswered === 'true') find = {answersCount: 0}
+        //SORT
+        let sortable = {date: 'desc'}
+        if (sort === 'lessViews') sortable = {views: 'asc'}
+        else if (sort === 'moreViews') sortable = {views: 'desc'}
+        //POSTS COUNT
+        const postsCount = await Post.find(find).count()
+        //POSTS
+        const posts = await Post
+            .find(find)
+            .select('title body user tags codeLanguage views answersCount date')
+            .sort(sortable)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+        return [posts, postsCount]
     }
 
     async getOne(id) {
-        if(!id) {
+        if (!id) {
             throw new Error('Не указан ID')
         }
         const post = await Post.findById(id)

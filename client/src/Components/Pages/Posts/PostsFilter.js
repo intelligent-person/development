@@ -4,26 +4,43 @@ import Search from "antd/es/input/Search";
 import {NavLink} from "react-router-dom";
 import {MenuUnfoldOutlined} from "@ant-design/icons";
 
-const PostsFilter = ({postsCount, user, setInclude, setSort}) => {
+const PostsFilter = ({postsCount, user, setInclude, setSort, setPage}) => {
     const [radio, setRadio] = React.useState('newest');
     const onSearch = value => console.log(value);
     const [isFilter, setIsFilter] = useState(false)
+    const [isUnanswered, setIsUnanswered] = useState(false)
+    const [isTags, setIsTags] = useState(false)
+    const [tags, setTags] = useState('')
+    console.log(tags.split(' ').join(','))
     const onChange = e => {
         setRadio(e.target.value);
     };
-
-    function onCheckbox(e) {
+    const onNewest = () => {
+        setSort('newest')
+        setInclude({})
+        setPage(1)
+    }
+    const onViews = () => {
+        setSort('moreViews')
+        setInclude({})
+        setPage(1)
+    }
+    const onUnanswered = () => {
+        setInclude({unanswered: 'true'})
+        setPage(1)
     }
 
     const onFilter = () => {
         if (isFilter) setIsFilter(false)
         else setIsFilter(true)
     }
-
     const onSubmit = () => {
         setSort(radio)
-        setInclude()
         setIsFilter(false)
+        isTags
+            ? setInclude({unanswered: isUnanswered, tags: tags.split(' ').join(',')})
+            : setInclude({unanswered: isUnanswered})
+        setPage(1)
     }
 
     return (
@@ -52,10 +69,11 @@ const PostsFilter = ({postsCount, user, setInclude, setSort}) => {
                 </Col>
                 <Col>
                     <Button type={'default'} style={{borderRadius: 0}} autoFocus
-                            onClick={() => setSort('newest')}>Новейшие</Button>
+                            onClick={onNewest}>Новейшие</Button>
                     <Button type={'default'} style={{borderRadius: 0}}
-                            onClick={() => setSort('moreViews')}>Просмотры</Button>
-                    <Button type={'default'} style={{borderRadius: 0}}>Без ответов</Button>
+                            onClick={onViews}>Просмотры</Button>
+                    <Button type={'default'} style={{borderRadius: 0}}
+                            onClick={onUnanswered}>Без ответов</Button>
                     <Button type={'primary'} style={{borderRadius: 0}}
                             onClick={onFilter}><MenuUnfoldOutlined/> Фильтр</Button>
                 </Col>
@@ -76,9 +94,9 @@ const PostsFilter = ({postsCount, user, setInclude, setSort}) => {
                     </div>
                     <div>
                         <h3>Включить </h3>
-                        <Checkbox onChange={onCheckbox} style={{width: '100%', marginBottom: 10}}>Без ответов</Checkbox><br/>
-                        <Checkbox onChange={onCheckbox} style={{width: '100%', marginBottom: 10}}>Теги: </Checkbox><br/>
-                        <Input placeholder={'например, c++ javascript...'}/>
+                        <Checkbox onChange={e => setIsUnanswered(e.target.checked)} style={{width: '100%', marginBottom: 10}}>Без ответов</Checkbox><br/>
+                        <Checkbox onChange={e => setIsTags(e.target.checked)} style={{width: '100%', marginBottom: 10}}>Теги: </Checkbox><br/>
+                        {isTags && <Input onChange={e => setTags(e.target.value)} placeholder={'например, c++ javascript...'}/>}
                         <div style={{marginTop: 10, textAlign: 'right'}}>
                             <Button type={'primary'} onClick={onSubmit}>Submit</Button>
                         </div>

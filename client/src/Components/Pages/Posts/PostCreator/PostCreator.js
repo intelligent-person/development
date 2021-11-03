@@ -5,11 +5,14 @@ import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
 import {darcula} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
-import {Button, Input, Modal, Select} from "antd";
+import {Button, Input, Select} from "antd";
 import {NavLink} from "react-router-dom";
 import ModalWindow from "./ModalWindow";
+import {useDispatch} from "react-redux";
+import {addPost} from "../../../../Redux/posts-reducer";
 
-const PostCreator = ({addPost, user}) => {
+const PostCreator = ({user}) => {
+    const dispatch = useDispatch()
     const [language, setLanguage] = useState('cpp')
     const [title, setTitle] = useState(``)
     const [body, setBody] = useState(``)
@@ -33,7 +36,16 @@ const PostCreator = ({addPost, user}) => {
     }, [titleError, bodyError, tagsError])
     const createPost = () => {
         if(user){
-            addPost(title, body, language, user, tagsArray, 0, 0)
+            const newPost = {
+                title: title,
+                body: body,
+                codeLanguage: language,
+                user: user,
+                tags: tagsArray,
+                views: 0,
+                answersCount: 0
+            }
+            dispatch(addPost(newPost))
             setTitle('')
             setTags('')
             setBody('')
@@ -47,6 +59,7 @@ const PostCreator = ({addPost, user}) => {
             case 'tags':
                 setTagsDirty(true)
                 break
+            default: break
         }
     }
     const titleHandler = (e) => {

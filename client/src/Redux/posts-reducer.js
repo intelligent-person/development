@@ -38,8 +38,8 @@ export const getPost = (id) => async (dispatch) => {
     let res = await postsAPI.getPost(id)
     dispatch(setPost(res.data))
 }
-export const addPost = (title, body, codeLanguage, user, tags, views, answersCount) => async (dispatch) => {
-    let res = await postsAPI.addPost(title, body, codeLanguage, user, tags, views, answersCount)
+export const addPost = (newPost) => async (dispatch) => {
+    let res = await postsAPI.addPost(newPost)
     dispatch(addNewPost(res.data))
 }
 export const setPostView = (id) => async () =>{

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico"/>
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta
+            name="description"
+            content="Web site created using create-react-app"
+    />
+    <title>React App</title>
+</head>
+<body>
+<noscript>You need to enable JavaScript to run this app.</noscript>
+<div id="root"></div>
+<!--
+  This HTML file is a template.
+  If you open it directly in the browser, you will see an empty page.
+
+  You can add webfonts, meta tags, or analytics to this file.
+  The build step will place the bundled scripts into the <body> tag.
+
+  To begin the development, run `npm start` or `yarn start`.
+  To create a production bundle, use `npm run build` or `yarn build`.
+-->
+<script>
+    const data = new Date().toLocaleDateString()
+        .split('.')
+    console.log(data)
+    const dano = "2021-10-28T12:09:04.153+00:00"
+        .split('')
+        .slice(0, 10)
+        .join('')
+        .split('-')
+        .reverse()
+    const newMonth = Number(data[1]) + 11
+    const newDay = Number(data[0]) + 31
+    console.log(dano)         //8     //7
+    if (data[2] !== dano[2] && data[1] - dano[1] > 0) {
+        if (data[2] - dano[2] === 1) console.log('year ago')
+        else console.log(`${data[2] - dano[2]} years ago`)
+    } else if (data[2] !== dano[2]) {
+        if (newMonth - dano[1] === 1) console.log('month ago')
+        else console.log(`${newMonth - dano[1]} months ago`)
+    } else if (data[1] !== dano[1] && data[0] - dano[0] < 31) {
+        if (newDay - dano[0] === 1) console.log('vchera')
+        else console.log( `${newDay - dano[0]} days ago`)
+    } else if (data[1] !== dano[1]) {
+        if (data[1] - dano[1] === 1) console.log(' month ago')
+        else console.log(`${data[1] - dano[1]} months ago`)
+    } else if (data[0] !== dano[0]) {
+        if (data[0] - dano[0] === 1) console.log('vchera')
+        else console.log(`${data[0] - dano[0]} days ago`)
+    }
+</script>
+</body>
+</html>

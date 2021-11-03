@@ -34,7 +34,7 @@ const Posts = ({posts}) => {
                     <div className={'user'}>
                         <div className={'userWrapper'}>
                             <div>
-                                <img src={`${post.user.picture}`}/>
+                                <img src={`${post.user.picture}`} alt={'Avatar'}/>
                             </div>
                             <div style={{marginLeft: 10}}>
                                 <h4><NavLink

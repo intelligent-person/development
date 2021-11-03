@@ -4,7 +4,6 @@ const PostsService = require('../services/PostsService')
 class PostsController {
     async create(req, res) {
         try {
-            console.log(req.body)
             const savedPost = await PostsService.create(req.body)
             res.send(savedPost)
         } catch (err) {
@@ -17,9 +16,9 @@ class PostsController {
             const pageSize = +req.query.pageSize
             const page = +req.query.page
             const sort = req.query.sortType
-            const include = req.body.include
-            const posts = await PostsService.getAll(pageSize, page, sort, include)
-            console.log(posts)
+            const unanswered = req.query.unanswered
+            const tags = req.query.tags.split(',')
+            const posts = await PostsService.getAll(pageSize, page, sort, unanswered, tags)
             res.json(posts)
         } catch (err) {
             res.json(err)

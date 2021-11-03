@@ -2,7 +2,7 @@ import React from 'react';
 
 const DateComponent = ({postDate}) => {
     const data = new Date().toLocaleDateString().split('.')
-    const time = new Date().toLocaleTimeString()
+    // const time = new Date().toLocaleTimeString()
     const postData = postDate.slice(0, postDate.indexOf('T'))
         .split('-')
         .filter(item => item !== '-').reverse()

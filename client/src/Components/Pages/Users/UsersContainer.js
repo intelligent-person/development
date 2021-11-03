@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {deleteUser, getUsers} from "../../../Redux/user-reducer";
 import Users from "./Users";
 import {Breadcrumb} from "antd";

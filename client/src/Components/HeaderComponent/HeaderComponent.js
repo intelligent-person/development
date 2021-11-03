@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Col, Menu, Row} from "antd";
 import LogoutButton from "../LoginLogout/LogoutButton";
 import {Header} from "antd/es/layout/layout";
-import {NavLink, Route} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import LoginButton from "../LoginLogout/LoginButton";
 import {useAuth0} from "@auth0/auth0-react";
 

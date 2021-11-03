@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {useLocation, useParams} from "react-router-dom";
-import {connect, useDispatch, useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {getPost, setPostView} from "../../../../Redux/posts-reducer";
 import PostInfo from "./PostInfo";
 import Loader from "../../../Loader/Loader";

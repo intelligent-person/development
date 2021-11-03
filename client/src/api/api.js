@@ -20,13 +20,13 @@ export const usersAPI = {
 }
 export const postsAPI = {
     getPosts(pageSize, page, sort, include) {
-        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}`, {include})
+        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}`)
     },
     getPost(id) {
         return instance.get('/posts/' + id)
     },
-    addPost(title, body, codeLanguage, user, tags, views, answersCount) {
-        return instance.post('/posts', {title, body, codeLanguage, user, tags, views, answersCount})
+    addPost(newPost) {
+        return instance.post('/posts', newPost)
     },
     update(id) {
       return instance.put('/posts', id)
