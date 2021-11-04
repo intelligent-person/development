@@ -1,4 +1,5 @@
 import * as axios from "axios";
+import {setTagCount} from "../Redux/posts-reducer";
 const baseUrl = process.env.BASE_URL
 const instance = axios.create({
     baseURL: `http://localhost:5000/api/`
@@ -19,8 +20,8 @@ export const usersAPI = {
     },
 }
 export const postsAPI = {
-    getPosts(pageSize, page, sort, include) {
-        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}`)
+    getPosts(pageSize, page, sort, include, searchValue = 'Пример') {
+        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}`, {searchValue: searchValue})
     },
     getPost(id) {
         return instance.get('/posts/' + id)
@@ -33,6 +34,9 @@ export const postsAPI = {
     },
     setPostView(id) {
       return instance.put('/posts/setPostView/' + id)
+    },
+    getTagCount(tag) {
+      return instance.get('/posts/tagCount/' + tag)
     },
     deletePost(id) {
         return instance.delete(`/posts/` + id)

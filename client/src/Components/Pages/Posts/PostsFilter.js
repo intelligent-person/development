@@ -11,7 +11,6 @@ const PostsFilter = ({postsCount, user, setInclude, setSort, setPage}) => {
     const [isUnanswered, setIsUnanswered] = useState(false)
     const [isTags, setIsTags] = useState(false)
     const [tags, setTags] = useState('')
-    console.log(tags.split(' ').join(','))
     const onChange = e => {
         setRadio(e.target.value);
     };

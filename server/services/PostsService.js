@@ -7,12 +7,13 @@ class PostsService {
         return createdPost
     }
 
-    async getAll(pageSize, page, sort, unanswered, tags) {
+    async getAll(pageSize, page, sort, unanswered, tags, searsValue ) {
         //FILTER
         let find = {}
         if(unanswered === 'true' && tags[0] !== 'undefined') find = {answersCount: 0, tags: { "$in" : tags}}
-        else if(tags[0] !== 'undefined') find = {tags: { "$in" : tags}}
+        else if (tags[0] !== 'undefined') find = {tags: { "$in" : tags}}
         else if (unanswered === 'true') find = {answersCount: 0}
+        else if (searsValue !== undefined) find = {$text: {$search : searsValue}}
         //SORT
         let sortable = {date: 'desc'}
         if (sort === 'lessViews') sortable = {views: 'asc'}
@@ -22,7 +23,7 @@ class PostsService {
         //POSTS
         const posts = await Post
             .find(find)
-            .select('title body user tags codeLanguage views answersCount date')
+            .select('-answers')
             .sort(sortable)
             .skip((page - 1) * pageSize)
             .limit(pageSize)
@@ -35,6 +36,14 @@ class PostsService {
         }
         const post = await Post.findById(id)
         return post
+    }
+    async getTagCount(tag) {
+        if (!tag) {
+            throw new Error('Не указан Tag')
+        }
+        console.log(tag)
+        const tagCount = await Post.find({tags: { "$in" : tag}}).count()
+        return tagCount
     }
 
     async update(post) {

@@ -18,7 +18,10 @@ class PostsController {
             const sort = req.query.sortType
             const unanswered = req.query.unanswered
             const tags = req.query.tags.split(',')
-            const posts = await PostsService.getAll(pageSize, page, sort, unanswered, tags)
+            const searchValue = req.body.searchValue
+            console.log(searchValue)
+            console.log(sort)
+            const posts = await PostsService.getAll(pageSize, page, sort, unanswered, tags, searchValue)
             res.json(posts)
         } catch (err) {
             res.json(err)
@@ -29,6 +32,14 @@ class PostsController {
         try {
             const post = await PostsService.getOne(req.params.id)
             res.json(post)
+        } catch (err) {
+            res.json(err)
+        }
+    }
+    async getTagCount(req, res) {
+        try {
+            const tagCount = await PostsService.getTagCount(req.params.tag)
+            res.json(tagCount)
         } catch (err) {
             res.json(err)
         }

@@ -9,12 +9,10 @@ const PostInfoContainer = () => {
     const dispatch = useDispatch()
     const post = useSelector(state => state.posts.post)
     const {postId} = useParams();
-    console.log(postId)
-    console.log(post)
     useEffect(() => {
         dispatch(getPost(postId))
         dispatch(setPostView(postId))
-    }, [])
+    }, [dispatch, postId])
     if (post._id === postId) return <PostInfo post={post}/>
     else return <Loader/>
 };

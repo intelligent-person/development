@@ -1,7 +1,8 @@
+const mongoose = require("mongoose");
 const express = require("express")
-const bodyParser = require('body-parser')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+const bodyParser = require("body-parser");
 require('dotenv').config()
 
 const corsOptions = {
@@ -18,8 +19,9 @@ app.use(fileUpload({}))
 //Import Routes
 const usersRoute = require('./routes/users')
 const postsRoute = require('./routes/posts')
-const mongoose = require("mongoose");
-const {static} = require("express");
+
+
+// const {static} = require("express");
 
 app.use('/api/users', usersRoute)
 app.use('/api/posts', postsRoute)
