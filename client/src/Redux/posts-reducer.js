@@ -34,8 +34,8 @@ const setTagCount = (tagCount) => ({type: SET_TAG_COUNT, tagCount})
 
 
 
-export const getPosts = (pageSize, page, sort, include) => async (dispatch) => {
-    let res = await postsAPI.getPosts(pageSize, page, sort, include)
+export const getPosts = (pageSize, page, sort, include, searchValue) => async (dispatch) => {
+    let res = await postsAPI.getPosts(pageSize, page, sort, include, searchValue)
     console.log(res.data)
     dispatch(setPosts(res.data))
 }

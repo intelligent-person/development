@@ -20,8 +20,8 @@ export const usersAPI = {
     },
 }
 export const postsAPI = {
-    getPosts(pageSize, page, sort, include, searchValue = 'Пример') {
-        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}`, {searchValue: searchValue})
+    getPosts(pageSize, page, sort, include, searchValue) {
+        return instance.get(`/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}&searchValue=${searchValue}`)
     },
     getPost(id) {
         return instance.get('/posts/' + id)
@@ -29,8 +29,8 @@ export const postsAPI = {
     addPost(newPost) {
         return instance.post('/posts', newPost)
     },
-    update(id) {
-      return instance.put('/posts', id)
+    update(post) {
+      return instance.put('/posts', post)
     },
     setPostView(id) {
       return instance.put('/posts/setPostView/' + id)

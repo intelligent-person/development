@@ -3,11 +3,12 @@ import {Button, Popover} from "antd";
 import {NavLink} from "react-router-dom";
 import './posts.css'
 import DateComponent from "../../DateComponent/DateComponent";
+import ReactMarkdown from "react-markdown";
 import {getTagCount} from "../../../Redux/posts-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import Tag from "../../Tag/Tag";
 
-const Posts = ({posts}) => {
+const Posts = ({posts, searchValue}) => {
     const dispatch = useDispatch()
     const tagCount = useSelector(state => state.posts.tagsCount)
     const showTag = async (tag) => {
@@ -28,13 +29,20 @@ const Posts = ({posts}) => {
                             <div style={{width: '100%'}}><h2 style={{color: 'inherit'}}>{post.title}</h2></div>
                         </NavLink>
                         <div style={{marginBottom: 20}}>
-                            {post.body
+                            <ReactMarkdown children={post.body
                                 .split('')
-                                .filter(item => item !== '`' && item !== '#' && item !== '*')
-                                .slice(0, 270).join('') + '...'}</div>
+                                .filter(item => item !== '`' && item !== '#' && item !== '>' && item !== '\n' && item !== '*')
+                                .slice(0, 270).join('').split(' ').map(item => {
+                                    for(let i = 0; i < searchValue.split(' ').length; i++) {
+                                        if (item === searchValue.split(' ')[i] && item !== '') item = `**${item}**`
+                                        else item = `${item}`
+                                    }
+                                    return item
+                                }).join(' ') + '...'}/>
+                        </div>
                         <div>{post.tags.map(tag =>
                             <Popover /*content={'content'}*/ title={<Tag tag={tag} tagCount={tagCount}/>}
-                                     trigger="hover" mouseEnterDelay={0.5}>
+                                                             trigger="hover" mouseEnterDelay={0.5}>
                                 <Button size={'small'} className={'tag'}
                                         onMouseEnter={(e) => showTag(tag, e)}>{tag}</Button>
                             </Popover>)}</div>

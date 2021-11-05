@@ -22,12 +22,13 @@ const PostsContainer = () => {
     const [pageSize, setPageSize] = useState(10)
     const [page, setPage] = useState(1)
     const [sort, setSort] = useState('newest')
+    const [searchValue, setSearchValue] = useState('')
     const [include, setInclude] = useState({unanswered: false})
     const {user} = useAuth0()
 
     useEffect(() => {
-        dispatch(getPosts(pageSize, page, sort, include))
-    }, [page, pageSize, sort, include, dispatch])
+        dispatch(getPosts(pageSize, page, sort, include, searchValue))
+    }, [page, pageSize, sort, include, dispatch, searchValue])
     useEffect(() => {
         window.scrollTo(0,0)
     }, [posts])
@@ -47,8 +48,9 @@ const PostsContainer = () => {
                 <Switch>
                     <Route path={'/questions'} exact={true} render={() =>
                         <>
-                            <PostsFilter user={mainUser} postsCount={postsCount} setSort={setSort} setInclude={setInclude} setPage={setPage}/>
-                            <Posts posts={posts}/>
+                            <PostsFilter user={mainUser} postsCount={postsCount} setSort={setSort}
+                                         setInclude={setInclude} setPage={setPage} setSearchValue={setSearchValue}/>
+                            <Posts posts={posts} searchValue={searchValue}/>
                             <div style={{textAlign: 'center', marginTop: 50}}>
                                 <Pagination defaultCurrent={1} total={postsCount} onChange={setSize} current={page}/>
                             </div>

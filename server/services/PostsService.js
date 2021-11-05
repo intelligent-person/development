@@ -13,7 +13,7 @@ class PostsService {
         if(unanswered === 'true' && tags[0] !== 'undefined') find = {answersCount: 0, tags: { "$in" : tags}}
         else if (tags[0] !== 'undefined') find = {tags: { "$in" : tags}}
         else if (unanswered === 'true') find = {answersCount: 0}
-        else if (searsValue !== undefined) find = {$text: {$search : searsValue}}
+        else if (searsValue !== '') find = {$text: {$search : searsValue}}
         //SORT
         let sortable = {date: 'desc'}
         if (sort === 'lessViews') sortable = {views: 'asc'}

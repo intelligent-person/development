@@ -4,9 +4,9 @@ import Search from "antd/es/input/Search";
 import {NavLink} from "react-router-dom";
 import {MenuUnfoldOutlined} from "@ant-design/icons";
 
-const PostsFilter = ({postsCount, user, setInclude, setSort, setPage}) => {
+const PostsFilter = ({postsCount, user, setInclude, setSort, setPage, setSearchValue}) => {
     const [radio, setRadio] = React.useState('newest');
-    const onSearch = value => console.log(value);
+    const onSearch = value => setSearchValue(value);
     const [isFilter, setIsFilter] = useState(false)
     const [isUnanswered, setIsUnanswered] = useState(false)
     const [isTags, setIsTags] = useState(false)

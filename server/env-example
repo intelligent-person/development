@@ -1,0 +1,1 @@
+DATABASE=mongodb+srv://<user>:<password>@cluster.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
