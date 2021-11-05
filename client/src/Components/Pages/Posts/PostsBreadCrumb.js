@@ -2,13 +2,16 @@ import React from "react";
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { NavLink, useLocation } from "react-router-dom";
+import "../../../utils/i18n";
+import { useTranslation } from "react-i18next";
 
 const PostsBreadCrumb = () => {
+  const { t } = useTranslation();
   const { pathname } = useLocation();
   let bname = null;
   if (pathname.split("/")[2] === "ask") {
-    bname = "Задать вопрос";
-  } else bname = "Очень сложный вопрос";
+    bname = t("PostsBreadcrumb.Breadcrumb1");
+  } else bname = t("PostsBreadcrumb.Breadcrumb2");
   const routes = [
     {
       path: pathname.split("/")[1],

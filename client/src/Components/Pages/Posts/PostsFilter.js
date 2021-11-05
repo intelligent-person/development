@@ -3,6 +3,8 @@ import { Button, Checkbox, Col, Input, Radio, Row } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink } from "react-router-dom";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
+import "../../../utils/i18n";
 
 const PostsFilter = ({
   postsCount,
@@ -12,6 +14,7 @@ const PostsFilter = ({
   setPage,
   setSearchValue,
 }) => {
+  const { t } = useTranslation();
   const [radio, setRadio] = React.useState("newest");
   const onSearch = (value) => setSearchValue(value);
   const [isFilter, setIsFilter] = useState(false);
@@ -56,26 +59,36 @@ const PostsFilter = ({
     <div>
       <Row style={{ marginBottom: 10 }} justify={"space-between"}>
         <Col>
-          <h1>Все вопросы</h1>
+          <h1>{t("FilterComponent.AllQuestions")}</h1>
         </Col>
         <Col flex={"auto"} style={{ padding: "10px 20px 0" }}>
-          <Search placeholder="Искать..." onSearch={onSearch} enterButton />
+          <Search
+            placeholder={t("FilterComponent.Search")}
+            onSearch={onSearch}
+            enterButton
+          />
         </Col>
         <Col style={{ marginTop: 10 }}>
           {user ? (
             <NavLink to={"/questions/ask"}>
-              <Button type={"primary"}>Ask Question</Button>
+              <Button type={"primary"}>
+                {t("FilterComponent.AskQuestion")}
+              </Button>
             </NavLink>
           ) : (
             <NavLink to={"/login"}>
-              <Button type={"primary"}>Ask Question</Button>
+              <Button type={"primary"}>
+                {t("FilterComponent.AskQuestion")}
+              </Button>
             </NavLink>
           )}
         </Col>
       </Row>
       <Row style={{ marginBottom: 20 }} justify={"space-between"}>
         <Col>
-          <h2>{postsCount} вопросов</h2>
+          <h2>
+            {postsCount} {t("FilterComponent.QuestionsCount")}
+          </h2>
         </Col>
         <Col>
           <Button
@@ -84,28 +97,28 @@ const PostsFilter = ({
             autoFocus
             onClick={onNewest}
           >
-            Новейшие
+            {t("FilterComponent.Newest")}
           </Button>
           <Button
             type={"default"}
             style={{ borderRadius: 0 }}
             onClick={onViews}
           >
-            Просмотры
+            {t("FilterComponent.Views")}
           </Button>
           <Button
             type={"default"}
             style={{ borderRadius: 0 }}
             onClick={onUnanswered}
           >
-            Без ответов
+            {t("FilterComponent.Unanswered")}
           </Button>
           <Button
             type={"primary"}
             style={{ borderRadius: 0 }}
             onClick={onFilter}
           >
-            <MenuUnfoldOutlined /> Фильтр
+            <MenuUnfoldOutlined /> {t("FilterComponent.Filter")}
           </Button>
         </Col>
       </Row>
@@ -113,42 +126,42 @@ const PostsFilter = ({
       {isFilter && (
         <div className={"filter"}>
           <div>
-            <h3>Сортировка по</h3>
+            <h3>{t("FilterComponent.SortedBy")}</h3>
             <Radio.Group onChange={onChange} value={radio}>
               <Radio
                 value={"newest"}
                 style={{ width: "100%", marginBottom: 10 }}
               >
-                <h4>Новые</h4>
+                <h4>{t("FilterComponent.Newest")}</h4>
               </Radio>
               <Radio
                 value={"moreViews"}
                 style={{ width: "100%", marginBottom: 10 }}
               >
-                <h4>Больше просмотров</h4>
+                <h4>{t("FilterComponent.MoreViews")}</h4>
               </Radio>
               <Radio
                 value={"lessViews"}
                 style={{ width: "100%", marginBottom: 10 }}
               >
-                <h4>Меньше просмотров</h4>
+                <h4>{t("FilterComponent.LessViews")}</h4>
               </Radio>
             </Radio.Group>
           </div>
           <div>
-            <h3>Включить </h3>
+            <h3>{t("FilterComponent.FilterBy")}</h3>
             <Checkbox
               onChange={(e) => setIsUnanswered(e.target.checked)}
               style={{ width: "100%", marginBottom: 10 }}
             >
-              Без ответов
+              {t("FilterComponent.Unanswered")}
             </Checkbox>
             <br />
             <Checkbox
               onChange={(e) => setIsTags(e.target.checked)}
               style={{ width: "100%", marginBottom: 10 }}
             >
-              Теги:{" "}
+              {t("FilterComponent.Tags")}:{" "}
             </Checkbox>
             <br />
             {isTags && (
@@ -159,7 +172,7 @@ const PostsFilter = ({
             )}
             <div style={{ marginTop: 10, textAlign: "right" }}>
               <Button type={"primary"} onClick={onSubmit}>
-                Submit
+                {t("FilterComponent.Submit")}
               </Button>
             </div>
           </div>

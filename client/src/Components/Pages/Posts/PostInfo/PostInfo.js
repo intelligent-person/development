@@ -7,24 +7,28 @@ import "./postInfo.css";
 import { Button, Row } from "antd";
 import { NavLink } from "react-router-dom";
 import DateComponent from "../../../DateComponent/DateComponent";
+import "../../../../utils/i18n";
+import { useTranslation } from "react-i18next";
 
 const PostInfo = ({ post }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <div className={"postHeader"}>
         <Row justify={"space-between"}>
           <h2 style={{ maxWidth: "80%" }}>{post.title}</h2>
           <NavLink to={"/questions/ask"}>
-            <Button type={"primary"}>Ask Question</Button>
+            <Button type={"primary"}>{t("FilterComponent.AskQuestion")}</Button>
           </NavLink>
         </Row>
         <div style={{ display: "flex" }}>
-          <div>Вопрос задан</div>
+          <div>{t("PostComponent.Date")}</div>
           <div style={{ margin: "0 30px 0 7px", fontWeight: 600 }}>
             <DateComponent postDate={post.date} />
           </div>
           <div>
-            Просмотры <span style={{ fontWeight: 600 }}>{post.views}</span>
+            {t("PostComponent.Views")}{" "}
+            <span style={{ fontWeight: 600 }}>{post.views}</span>
           </div>
         </div>
       </div>

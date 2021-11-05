@@ -5,9 +5,12 @@ import Users from "./Users";
 import { Breadcrumb } from "antd";
 import { NavLink } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
+import "../../../utils/i18n";
+import { useTranslation } from "react-i18next";
 
 const UsersContainer = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const users = useSelector((state) => state.users.users);
   useEffect(() => {
     dispatch(getUsers());
@@ -15,7 +18,7 @@ const UsersContainer = () => {
   const routes = [
     {
       path: "/users",
-      breadcrumbName: "Пользователи",
+      breadcrumbName: t("UsersBreadcrumb.Breadcrumb1"),
     },
   ];
   function itemRender(route, params, routes, paths) {

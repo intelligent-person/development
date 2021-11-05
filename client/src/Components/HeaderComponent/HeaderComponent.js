@@ -5,10 +5,13 @@ import { Header } from "antd/es/layout/layout";
 import { NavLink } from "react-router-dom";
 import LoginButton from "../LoginLogout/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import "../../utils/i18n";
+import { useTranslation } from "react-i18next";
 
 const HeaderComponent = () => {
   const { isAuthenticated } = useAuth0();
   const [selectedKeys, setSelectedKeys] = useState(window.location.pathname);
+  const { t } = useTranslation();
   return (
     <Header
       className="header"
@@ -24,19 +27,21 @@ const HeaderComponent = () => {
             selectedKeys={[selectedKeys]}
           >
             <Menu.Item key="/" onClick={(item) => setSelectedKeys(item.key)}>
-              <NavLink to={"/"}>Главная</NavLink>
+              <NavLink to={"/"}>{t("HeaderComponent.Home")}</NavLink>
             </Menu.Item>
             <Menu.Item
               key="/questions"
               onClick={(item) => setSelectedKeys(item.key)}
             >
-              <NavLink to={"/questions"}>Вопросы</NavLink>
+              <NavLink to={"/questions"}>
+                {t("HeaderComponent.Questions")}
+              </NavLink>
             </Menu.Item>
             <Menu.Item
               key="/users"
               onClick={(item) => setSelectedKeys(item.key)}
             >
-              <NavLink to={"/users"}>Пользователи</NavLink>
+              <NavLink to={"/users"}>{t("HeaderComponent.Users")}</NavLink>
             </Menu.Item>
           </Menu>
         </Col>
