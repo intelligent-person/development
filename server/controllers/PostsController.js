@@ -12,6 +12,8 @@ class PostsController {
 
   async getAll(req, res) {
     try {
+      let date_ob = new Date();
+      console.log(date_ob);
       const pageSize = +req.query.pageSize;
       const page = +req.query.page;
       const sort = req.query.sortType;
