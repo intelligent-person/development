@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -21,5 +22,8 @@
     "mongosh": "^1.1.0",
     "nodemon": "^2.0.13",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "lint-staged": "^11.2.6"
   }
 }

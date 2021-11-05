@@ -42,7 +42,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -64,6 +65,7 @@
   },
   "devDependencies": {
     "eslint-config-react": "^1.1.7",
-    "eslint-config-react-app": "^6.0.0"
+    "eslint-config-react-app": "^6.0.0",
+    "lint-staged": "^11.2.6"
   }
 }

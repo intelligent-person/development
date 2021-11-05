@@ -1,6 +1,6 @@
-const express = require('express')
+const express = require("express");
 const PostsController = require("../controllers/PostsController");
-const router = express.Router()
+const router = express.Router();
 
 router.get("/", PostsController.getAll);
 router.get("/:id", PostsController.getOne);
@@ -12,4 +12,4 @@ router.put("/setPostView/:id", PostsController.setPostView);
 // удаление пользователя по id
 router.delete("/:id", PostsController.delete);
 
-module.exports = router
+module.exports = router;
