@@ -16,7 +16,10 @@ const PostsFilter = ({
 }) => {
   const { t } = useTranslation();
   const [radio, setRadio] = React.useState("newest");
-  const onSearch = (value) => setSearchValue(value);
+  const onSearch = (value) => {
+    setSearchValue(value);
+    setPage(1);
+  };
   const [isFilter, setIsFilter] = useState(false);
   const [isUnanswered, setIsUnanswered] = useState(false);
   const [isTags, setIsTags] = useState(false);

@@ -9,8 +9,8 @@ const DateComponent = ({ postDate }) => {
     .split("-")
     .filter((item) => item !== "-")
     .reverse();
-  const postTime = postDate.split("").slice(11, 19).join("").split(":");
-  console.log(postDate);
+  const Time = postDate.split("").slice(11, 19).join("").split(":");
+  const postTime = [Number(Time[0]) + 2, Time[1], Time[2]];
   let date = null;
   const newMonth = Number(data[1]) + 11;
   const newDay = Number(data[0]) + 30;
@@ -43,12 +43,29 @@ const DateComponent = ({ postDate }) => {
     date = DateTime.local()
       .minus({ day: newDay - postData[0] })
       .toRelative();
-  else if (data[0] !== postData[0])
+  else if (data[0] - postData[0] > 1)
     date = DateTime.local()
       .minus({ day: data[0] - postData[0] })
       .toRelative();
-  else if (data[0] === postData[0])
-    if (time[0] - postTime[0] >= 1 && time[1] - postTime[1] >= 0)
+  else if (data[0] - postData[0] === 1 && time[0] - postTime[0] > 0)
+    date = DateTime.local()
+      .minus({ day: data[0] - postData[0] })
+      .toRelative();
+  else if (data[0] - postData[0] === 1) {
+    if (Number(time[0]) + 24 - postTime[0] >= 1 && time[1] - postTime[1] >= 1)
+      date = DateTime.local()
+        .minus({ hours: Number(time[0]) + 24 - postTime[0] })
+        .toRelative();
+    else if (Number(time[0]) + 24 - postTime[0] > 1)
+      date = DateTime.local()
+        .minus({ hours: Number(time[0]) + 23 - postTime[0] })
+        .toRelative();
+    else if (Number(time[0]) + 24 - postTime[0] === 1)
+      date = DateTime.local()
+        .minus({ minutes: 60 + Number(time[1]) - Number(postTime[1]) })
+        .toRelative();
+  } else if (data[0] === postData[0])
+    if (time[0] - postTime[0] >= 1 && time[1] - postTime[1] >= 1)
       date = DateTime.local()
         .minus({ hours: time[0] - postTime[0] })
         .toRelative();
@@ -66,14 +83,16 @@ const DateComponent = ({ postDate }) => {
         .toRelative();
     else if (time[1] - postTime[1] > 1 && time[2] - postTime[2] < 0)
       date = DateTime.local()
-        .minus({ minutes: Number(postTime[1]) - 1 })
+        .minus({ minutes: Number(time[1]) - Number(postTime[1]) - 1 })
         .toRelative();
     else if (time[1] - postTime[1] === 1 && time[2] - postTime[2] < 0)
       date = DateTime.local()
         .minus({ seconds: 60 + Number(time[2]) - Number(postTime[2]) })
         .toRelative();
-    else date = DateTime.local().minus({ seconds: postTime[2] }).toRelative();
-  console.log(date);
+    else
+      date = DateTime.local()
+        .minus({ seconds: time[2] - postTime[2] })
+        .toRelative();
   return <div>{date}</div>;
 };
 

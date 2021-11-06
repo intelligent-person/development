@@ -7,7 +7,6 @@ import "./postInfo.css";
 import { Button, Row } from "antd";
 import { NavLink } from "react-router-dom";
 import DateComponent from "../../../DateComponent/DateComponent";
-import "../../../../utils/i18n";
 import { useTranslation } from "react-i18next";
 
 const PostInfo = ({ post }) => {

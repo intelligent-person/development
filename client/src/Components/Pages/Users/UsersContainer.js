@@ -5,7 +5,6 @@ import Users from "./Users";
 import { Breadcrumb } from "antd";
 import { NavLink } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
-import "../../../utils/i18n";
 import { useTranslation } from "react-i18next";
 
 const UsersContainer = () => {

@@ -3,7 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Dropdown, Menu } from "antd";
 import Avatar from "antd/es/avatar/avatar";
 import { NavLink } from "react-router-dom";
-import "../../utils/i18n";
 import { useTranslation } from "react-i18next";
 import { ZhihuOutlined } from "@ant-design/icons";
 

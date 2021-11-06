@@ -5,7 +5,6 @@ import { Header } from "antd/es/layout/layout";
 import { NavLink } from "react-router-dom";
 import LoginButton from "../LoginLogout/LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
-import "../../utils/i18n";
 import { useTranslation } from "react-i18next";
 
 const HeaderComponent = () => {

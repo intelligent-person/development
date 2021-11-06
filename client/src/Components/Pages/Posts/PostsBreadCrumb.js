@@ -2,7 +2,6 @@ import React from "react";
 import { Breadcrumb } from "antd";
 import { HomeOutlined } from "@ant-design/icons";
 import { NavLink, useLocation } from "react-router-dom";
-import "../../../utils/i18n";
 import { useTranslation } from "react-i18next";
 
 const PostsBreadCrumb = () => {

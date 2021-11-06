@@ -7,7 +7,6 @@ import ReactMarkdown from "react-markdown";
 import { getTagCount } from "../../../Redux/posts-reducer";
 import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../Tag/Tag";
-import "../../../utils/i18n";
 import { useTranslation } from "react-i18next";
 
 const Posts = ({ posts, searchValue }) => {
@@ -68,7 +67,7 @@ const Posts = ({ posts, searchValue }) => {
                     <Tag tag={tag} tagCount={tagCount} />
                   }
                   trigger="hover"
-                  mouseEnterDelay={0.5}
+                  mouseEnterDelay={0.8}
                 >
                   <Button
                     size={"small"}
