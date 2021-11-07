@@ -5,8 +5,7 @@ const { pin } = require("nodemon/lib/version");
 class UsersService {
   async create(user /*, picture*/) {
     // const fileName = FileService.saveFile(picture)
-    const createdUser = await User.create(user);
-    return createdUser;
+    await User.create(user);
   }
 
   async getAll() {

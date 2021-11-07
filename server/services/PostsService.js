@@ -8,17 +8,21 @@ class PostsService {
   }
 
   async getAll(pageSize, page, sort, unanswered, tags, searsValue) {
+    //SORT
+    let sortable = { date: "desc" };
+    if (sort === "lessViews") sortable = { views: "asc" };
+    else if (sort === "moreViews") sortable = { views: "desc" };
     //FILTER
     let find = {};
     if (unanswered === "true" && tags[0] !== "undefined")
       find = { answersCount: 0, tags: { $in: tags } };
     else if (tags[0] !== "undefined") find = { tags: { $in: tags } };
     else if (unanswered === "true") find = { answersCount: 0 };
-    else if (searsValue !== "") find = { $text: { $search: searsValue } };
-    //SORT
-    let sortable = { date: "desc" };
-    if (sort === "lessViews") sortable = { views: "asc" };
-    else if (sort === "moreViews") sortable = { views: "desc" };
+    if (searsValue !== "") {
+      find = { $text: { $search: searsValue } };
+      if (unanswered === "true")
+        find = { $text: { $search: searsValue }, answersCount: 0 };
+    }
     //POSTS COUNT
     const postsCount = await Post.find(find).count();
     //POSTS

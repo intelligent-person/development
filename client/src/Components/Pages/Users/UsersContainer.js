@@ -39,7 +39,7 @@ const UsersContainer = () => {
         className="site-layout-background"
         style={{ padding: 24, margin: 0, minHeight: 280 }}
       >
-        <Users users={users} deleteUser={dispatch(deleteUser)} />
+        <Users users={users} deleteUser={deleteUser} />
       </Content>
     </>
   );

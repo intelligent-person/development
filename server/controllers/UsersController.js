@@ -4,13 +4,9 @@ const User = require("../models/User");
 class UsersController {
   async create(req, res) {
     try {
-      console.log(req.body);
       const oldUser = await User.find({ sub: req.body.sub });
       // const admin = await User.find({status: "Админ"})
-      if (
-        typeof oldUser[0] === "undefined" ||
-        req.body.sub !== oldUser[0].sub
-      ) {
+      if (typeof oldUser[0] === "undefined") {
         const savedUser = await UsersService.create(
           req.body /*, req.files.picture*/
         );

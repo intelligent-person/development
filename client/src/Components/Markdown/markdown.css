@@ -100,3 +100,7 @@ blockquote p {
 code {
   margin-bottom: 10px;
 }
+
+.error {
+  color: red;
+}

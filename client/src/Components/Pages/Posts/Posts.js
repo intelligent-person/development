@@ -67,7 +67,7 @@ const Posts = ({ posts, searchValue }) => {
                     <Tag tag={tag} tagCount={tagCount} />
                   }
                   trigger="hover"
-                  mouseEnterDelay={0.8}
+                  mouseEnterDelay={0.7}
                 >
                   <Button
                     size={"small"}

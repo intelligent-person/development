@@ -61,7 +61,7 @@ const MyEditor = (props) => {
   let contentState = editorState.getCurrentContent();
   const rawObject = convertToRaw(contentState);
   const markdownString = draftToMarkdown(rawObject);
-  props.bodyHandler(markdownString);
+  props.setBody(markdownString);
   if (!contentState.hasText()) {
     if (contentState.getBlockMap().first().getType() !== "unstyled") {
       className += " RichEditor-hidePlaceholder";
@@ -87,7 +87,6 @@ const MyEditor = (props) => {
             editorState={editorState}
             handleKeyCommand={handleKeyCommand}
             keyBindingFn={mapKeyToEditorCommand}
-            onBlur={() => props.setBodyDirty(true)}
             onChange={onChange}
             placeholder="Tell a story..."
             ref={inputRef}

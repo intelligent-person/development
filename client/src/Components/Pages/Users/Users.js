@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const Users = ({ users, deleteUser }) => {
+  const dispatch = useDispatch();
   return (
     <div>
       {users.map((user) => (
@@ -13,7 +15,7 @@ const Users = ({ users, deleteUser }) => {
           <b>{user.name}</b> <br />
           Reputation: <b>{user.reputation}</b> <br />
           <b>{user.status}</b>
-          <button onClick={() => deleteUser(user._id)}>DELETE</button>
+          <button onClick={() => dispatch(deleteUser(user._id))}>DELETE</button>
         </div>
       ))}
     </div>
