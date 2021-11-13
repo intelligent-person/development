@@ -44,7 +44,6 @@ export const getPosts =
       include,
       searchValue
     );
-    console.log(res.data);
     dispatch(setPosts(res.data));
   };
 export const getPost = (id) => async (dispatch) => {

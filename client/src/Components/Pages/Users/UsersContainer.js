@@ -45,4 +45,4 @@ const UsersContainer = () => {
   );
 };
 
-export default React.memo(UsersContainer);
+export default UsersContainer;

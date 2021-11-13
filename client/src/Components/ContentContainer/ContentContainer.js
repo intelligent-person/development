@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { withSuspense } from "../../hoc/WithSuspense";
 import { Layout } from "antd";
+import Loader from "../Loader/Loader";
 
 const HomeContainer = React.lazy(() => import("../Pages/Home/HomeContainer"));
 const PostsContainer = React.lazy(() =>
@@ -10,24 +10,23 @@ const PostsContainer = React.lazy(() =>
 const UsersContainer = React.lazy(() =>
   import("../Pages/Users/UsersContainer")
 );
+const ProfileContainer = React.lazy(() =>
+  import("../Pages/Profile/ProfileContainer")
+);
 
 const ContentContainer = () => {
   return (
     <Layout style={{ padding: "0 24px 24px", marginTop: 0 }}>
-      <Switch>
-        <Route
-          path={"/"}
-          exact={true}
-          render={() => withSuspense(HomeContainer)}
-        />
-        <Route
-          path={"/questions"}
-          render={() => withSuspense(PostsContainer)}
-        />
-        <Route path={"/users"} render={() => withSuspense(UsersContainer)} />
-      </Switch>
+      <React.Suspense fallback={<Loader />}>
+        <Switch>
+          <Route path={"/"} exact={true} component={HomeContainer} />
+          <Route path={"/questions"} component={PostsContainer} />
+          <Route path={"/users"} exact component={UsersContainer} />
+          <Route path={"/user/:id"} component={ProfileContainer} />
+        </Switch>
+      </React.Suspense>
     </Layout>
   );
 };
 
-export default React.memo(ContentContainer);
+export default ContentContainer;

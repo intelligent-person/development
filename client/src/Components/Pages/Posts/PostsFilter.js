@@ -8,7 +8,7 @@ import "../../../utils/i18n";
 
 const PostsFilter = ({
   postsCount,
-  user,
+  mainUser,
   setInclude,
   setSort,
   setPage,
@@ -34,7 +34,6 @@ const PostsFilter = ({
   };
   const onViews = () => {
     setSort("moreViews");
-    setInclude({});
     setPage(1);
   };
   const onUnanswered = () => {
@@ -72,7 +71,7 @@ const PostsFilter = ({
           />
         </Col>
         <Col style={{ marginTop: 10 }}>
-          {user ? (
+          {mainUser ? (
             <NavLink to={"/questions/ask"}>
               <Button type={"primary"}>
                 {t("FilterComponent.AskQuestion")}

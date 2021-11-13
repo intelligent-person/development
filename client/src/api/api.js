@@ -1,5 +1,4 @@
 import * as axios from "axios";
-import { setTagCount } from "../Redux/posts-reducer";
 const baseUrl = process.env.BASE_URL;
 const instance = axios.create({
   baseURL: `http://localhost:5000/api/`,
@@ -9,14 +8,19 @@ export const usersAPI = {
   getUsers() {
     return instance.get("/users");
   },
-  getUser(sub) {
-    return instance.get("/users/" + sub);
+  getUser(id) {
+    return instance.get("/users/" + id);
   },
   addUser(newUser) {
     return instance.post("/users", newUser);
   },
   deleteUser(id) {
     return instance.delete(`/users/` + id);
+  },
+};
+export const authAPI = {
+  getAuth(sub) {
+    return instance.get("/auth/" + sub);
   },
 };
 export const postsAPI = {

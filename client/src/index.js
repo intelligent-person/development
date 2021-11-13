@@ -10,7 +10,7 @@ import "./utils/i18n";
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
-const AppContainer = React.lazy(() => import("./AppContainer"));
+const App = React.lazy(() => import("./Components/App"));
 
 ReactDOM.render(
   <Auth0Provider
@@ -21,7 +21,7 @@ ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
         <React.Suspense fallback={<Loader />}>
-          <AppContainer />
+          <App />
         </React.Suspense>
       </Provider>
     </React.StrictMode>

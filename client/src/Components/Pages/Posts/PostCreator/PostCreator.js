@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MyEditor from "../../../Markdown/MyEditor";
 import "../../../Markdown/markdown.css";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -10,48 +10,73 @@ import ModalWindow from "./ModalWindow";
 import { useDispatch } from "react-redux";
 import { addPost } from "../../../../Redux/posts-reducer";
 import { useForm, Controller } from "react-hook-form";
+import ModalRedirect from "./ModalRedirect";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-const PostCreator = ({ user }) => {
+const CreatorSchema = yup.object().shape({
+  title: yup
+    .string()
+    .required("Заполните текущее поле!")
+    .min(20, "Слишком короткий заголовок!"),
+  tags: yup
+    .string()
+    .required("Заполните текущее поле!")
+    .max(40, "Слишком много тегов!"),
+});
+
+const PostCreator = ({ mainUser }) => {
   const dispatch = useDispatch();
-  const [language, setLanguage] = useState("cpp");
   const [body, setBody] = useState(``);
+  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm();
-  const createPost = (date) => {
-    if (user) {
+  } = useForm({
+    resolver: yupResolver(CreatorSchema),
+  });
+  const createPost = (data) => {
+    if (mainUser) {
       const newPost = {
-        title: date.title,
+        title: data.title,
         body: body,
-        codeLanguage: language,
-        user: user,
-        tags: date.tags.split(" "),
+        codeLanguage: data.select,
+        user: mainUser,
+        tags: data.tags.split(" "),
         views: 0,
         answersCount: 0,
       };
+      console.log(newPost);
       dispatch(addPost(newPost));
+      setIsSubmitSuccess(true);
     }
   };
   return (
     <form onSubmit={handleSubmit(createPost)}>
       <div className={"contentBlock sendBlock"}>
-        <Select
+        <Controller
+          name="select"
+          control={control}
           defaultValue="cpp"
-          style={{ width: 120 }}
-          onChange={(e) => setLanguage(e)}
-        >
-          <Select.Option value="javascript">JavaScript</Select.Option>
-          <Select.Option value="cpp">C/C++</Select.Option>
-          <Select.Option value="python">Python</Select.Option>
-          <Select.Option value="java">Java</Select.Option>
-          <Select.Option value="jsx">JSX(React.js)</Select.Option>
-          <Select.Option value="html">HTML</Select.Option>
-          <Select.Option value="css">CSS</Select.Option>
-          <Select.Option value="django">Django</Select.Option>
-          <Select.Option value="php">Php</Select.Option>
-        </Select>
+          render={({ field }) => (
+            <Select
+              {...field}
+              style={{ width: 120 }}
+              options={[
+                { value: "javascript", label: "javascript" },
+                { value: "cpp", label: "cpp" },
+                { value: "python", label: "python" },
+                { value: "java", label: "java" },
+                { value: "jsx", label: "jsx" },
+                { value: "html", label: "html" },
+                { value: "css", label: "css" },
+                { value: "django", label: "django" },
+                { value: "php", label: "php" },
+              ]}
+            />
+          )}
+        />
         <Button type="primary" htmlType="submit">
           Задать вопрос
         </Button>
@@ -59,20 +84,11 @@ const PostCreator = ({ user }) => {
       <div className={"contentBlock"}>
         <h2 style={{ marginBottom: 0 }}>Заголовок</h2>
         <h5>
-          q Будьте конкретны и представьте, что задаете вопрос другому человеку.
+          Будьте конкретны и представьте, что задаете вопрос другому человеку.
         </h5>
-        {errors?.title?.type === "required" && (
-          <p className={"error"}>Заполните текущее поле!</p>
-        )}
-        {errors?.title?.type === "minLength" && (
-          <p className={"error"}>Заголовок слишком короткий!</p>
-        )}
+        {errors.title && <p className={"error"}>{errors.title.message}</p>}
         <Controller
           control={control}
-          rules={{
-            required: true,
-            minLength: 20,
-          }}
           name={"title"}
           render={({ field }) => (
             <Input
@@ -86,7 +102,7 @@ const PostCreator = ({ user }) => {
       </div>
       <div className={"contentBlock"}>
         <h3 style={{ marginBottom: 0 }}>Содержимое:</h3>
-        <MyEditor setBody={setBody} control={control} />
+        <MyEditor setBody={setBody} />
       </div>
       <div style={{ padding: 14 }}>
         <ReactMarkdown
@@ -104,7 +120,7 @@ const PostCreator = ({ user }) => {
                   }}
                   children={String(children).replace(/\n$/, "")}
                   style={darcula}
-                  language={language}
+                  // language={language}
                   PreTag="div"
                   {...props}
                 />
@@ -123,18 +139,9 @@ const PostCreator = ({ user }) => {
         <h5>
           Добавьте до 5 тегов через пробел, чтобы описать, о чем ваш вопрос.
         </h5>
-        {errors?.tags?.type === "required" && (
-          <p className={"error"}>Заполните текущее поле!</p>
-        )}
-        {errors?.tags?.type === "maxLength" && (
-          <p className={"error"}>Слишком много тегов!</p>
-        )}
+        {errors.tags && <p className={"error"}>{errors.tags.message}</p>}
         <Controller
           control={control}
-          rules={{
-            required: true,
-            maxLength: 40,
-          }}
           name={"tags"}
           render={({ field }) => (
             <Input
@@ -146,6 +153,7 @@ const PostCreator = ({ user }) => {
           )}
         />
       </div>
+      {isSubmitSuccess && <ModalRedirect />}
       <ModalWindow />
     </form>
   );

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../Tag/Tag";
 import { useTranslation } from "react-i18next";
 
-const Posts = ({ posts, searchValue }) => {
+const Posts = ({ posts, searchValue, setInclude }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const tagCount = useSelector((state) => state.posts.tagsCount);
@@ -70,6 +70,9 @@ const Posts = ({ posts, searchValue }) => {
                   mouseEnterDelay={0.7}
                 >
                   <Button
+                    onClick={() =>
+                      setInclude({ unanswered: false, tags: `${tag}` })
+                    }
                     size={"small"}
                     className={"tag"}
                     onMouseEnter={(e) => showTag(tag, e)}
@@ -84,11 +87,13 @@ const Posts = ({ posts, searchValue }) => {
           <div className={"user"}>
             <div className={"userWrapper"}>
               <div>
-                <img src={`${post.user.picture}`} alt={"Avatar"} />
+                <NavLink to={`user/${post.user._id}`}>
+                  <img src={`${post.user.picture}`} alt={"Avatar"} />
+                </NavLink>
               </div>
               <div style={{ marginLeft: 10 }}>
                 <h4>
-                  <NavLink to={`users/${post.user._id}`}>
+                  <NavLink to={`user/${post.user._id}`}>
                     {post.user.name}
                   </NavLink>
                 </h4>

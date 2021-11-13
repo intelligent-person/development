@@ -50,4 +50,4 @@ const HeaderComponent = () => {
   );
 };
 
-export default React.memo(HeaderComponent);
+export default HeaderComponent;

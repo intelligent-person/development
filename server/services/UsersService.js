@@ -5,7 +5,29 @@ const { pin } = require("nodemon/lib/version");
 class UsersService {
   async create(user /*, picture*/) {
     // const fileName = FileService.saveFile(picture)
-    await User.create(user);
+    let newUser = {
+      ...user,
+      about: "",
+      reputation: 5,
+      answers: 1,
+      questions: 0,
+      tags: ["react", "valid", "js"],
+      status: "Новичёк",
+      topAnswers: [
+        {
+          _id: "617911adf60d4f3aee4d67f5",
+          votes: 5,
+          title: "Ребят, есть проблемка",
+          date: "2021-10-27T08:45:33.153+00:00",
+        },
+      ],
+      links: [
+        {
+          telegram: "https://t.me/intelligent_person",
+        },
+      ],
+    };
+    await User.create(newUser);
   }
 
   async getAll() {
@@ -25,7 +47,7 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-    const user = await User.findOne({ sub: id });
+    const user = await User.findOne({ _id: id });
     return user;
   }
 

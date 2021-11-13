@@ -37,4 +37,4 @@ const ModalWindow = () => {
   );
 };
 
-export default React.memo(ModalWindow);
+export default ModalWindow;

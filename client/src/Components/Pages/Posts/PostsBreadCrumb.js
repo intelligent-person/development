@@ -43,4 +43,4 @@ const PostsBreadCrumb = () => {
   );
 };
 
-export default React.memo(PostsBreadCrumb);
+export default PostsBreadCrumb;
