@@ -9,10 +9,12 @@ import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
 import { useDispatch } from "react-redux";
 import { addPost } from "../../../../Redux/posts-reducer";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import ModalRedirect from "./ModalRedirect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { convertToRaw, EditorState } from "draft-js";
+import { draftToMarkdown } from "markdown-draft-js";
 
 const CreatorSchema = yup.object().shape({
   title: yup
@@ -23,11 +25,13 @@ const CreatorSchema = yup.object().shape({
     .string()
     .required("Заполните текущее поле!")
     .max(40, "Слишком много тегов!"),
+  Draft: yup.object().required("Заполните текущее поле!"),
 });
+
+const defaultValues = { Draft: EditorState.createEmpty() };
 
 const PostCreator = ({ mainUser }) => {
   const dispatch = useDispatch();
-  const [body, setBody] = useState(``);
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
   const {
     handleSubmit,
@@ -35,12 +39,20 @@ const PostCreator = ({ mainUser }) => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(CreatorSchema),
+    defaultValues,
   });
+  const draftBody = useWatch({
+    control,
+    name: "Draft", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
+  });
+  let contentState = draftBody.getCurrentContent();
+  const rawObject = convertToRaw(contentState);
+  const markdownBody = draftToMarkdown(rawObject);
   const createPost = (data) => {
     if (mainUser) {
       const newPost = {
         title: data.title,
-        body: body,
+        body: markdownBody,
         codeLanguage: data.select,
         user: mainUser,
         tags: data.tags.split(" "),
@@ -102,11 +114,21 @@ const PostCreator = ({ mainUser }) => {
       </div>
       <div className={"contentBlock"}>
         <h3 style={{ marginBottom: 0 }}>Содержимое:</h3>
-        <MyEditor setBody={setBody} />
+        {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
+        <Controller
+          name={"Draft"}
+          control={control}
+          render={({ field }) => {
+            return (
+              <MyEditor editorState={field.value} onChange={field.onChange} />
+            );
+          }}
+        />
+        {/*<MyEditor setBody={setBody} control={control} />*/}
       </div>
       <div style={{ padding: 14 }}>
         <ReactMarkdown
-          children={body}
+          children={markdownBody}
           components={{
             code({ node, inline, className, children, ...props }) {
               return !inline ? (

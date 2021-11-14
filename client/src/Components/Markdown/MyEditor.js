@@ -1,24 +1,14 @@
-import React, { useRef, useState } from "react";
-import {
-  EditorState,
-  RichUtils,
-  getDefaultKeyBinding,
-  convertToRaw,
-} from "draft-js";
+import React, { useRef } from "react";
+import { RichUtils, getDefaultKeyBinding } from "draft-js";
 import createImagePlugin from "@draft-js-plugins/image";
 import Editor from "@draft-js-plugins/editor";
 import "./markdown.css";
 import "draft-js/dist/Draft.css";
 import "@draft-js-plugins/image/lib/plugin.css";
-import { draftToMarkdown } from "markdown-draft-js";
 
-const MyEditor = (props) => {
-  const [state, setState] = useState({
-    editorState: EditorState.createEmpty(),
-  });
+const MyEditor = ({ editorState, onChange }) => {
   const inputRef = useRef();
   const focus = () => inputRef.current.focus();
-  const onChange = (editorState) => setState({ editorState });
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -31,12 +21,8 @@ const MyEditor = (props) => {
 
   const mapKeyToEditorCommand = (e) => {
     if (e.keyCode === 9 /* TAB */) {
-      const newEditorState = RichUtils.onTab(
-        e,
-        state.editorState,
-        4 /* maxDepth */
-      );
-      if (newEditorState !== state.editorState) {
+      const newEditorState = RichUtils.onTab(e, editorState, 4 /* maxDepth */);
+      if (newEditorState !== editorState) {
         onChange(newEditorState);
       }
       return;
@@ -45,23 +31,19 @@ const MyEditor = (props) => {
   };
 
   const toggleBlockType = (blockType) => {
-    onChange(RichUtils.toggleBlockType(state.editorState, blockType));
+    onChange(RichUtils.toggleBlockType(editorState, blockType));
   };
 
   const toggleInlineStyle = (inlineStyle) => {
-    onChange(RichUtils.toggleInlineStyle(state.editorState, inlineStyle));
+    onChange(RichUtils.toggleInlineStyle(editorState, inlineStyle));
   };
 
   const imagePlugin = createImagePlugin();
-  const { editorState } = state;
 
   // If the user changes block type before entering any text, we can
   // either style the placeholder or hide it. Let's just hide it now.
   let className = "RichEditor-editor";
   let contentState = editorState.getCurrentContent();
-  const rawObject = convertToRaw(contentState);
-  const markdownString = draftToMarkdown(rawObject);
-  props.setBody(markdownString);
   if (!contentState.hasText()) {
     if (contentState.getBlockMap().first().getType() !== "unstyled") {
       className += " RichEditor-hidePlaceholder";
