@@ -1,0 +1,5 @@
+# Auth0 credentials
+REACT_APP_AUTH0_DOMAIN=DOMAIN
+REACT_APP_AUTH0_CLIENT_ID=CLIENT_ID
+# Base URL to connect to server
+BASE_URL="http://localhost:5000/api/"
