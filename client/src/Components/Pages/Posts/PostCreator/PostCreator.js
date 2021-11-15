@@ -15,30 +15,35 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { convertToRaw, EditorState } from "draft-js";
 import { draftToMarkdown } from "markdown-draft-js";
+import { useTranslation } from "react-i18next";
 
-const CreatorSchema = yup.object().shape({
-  title: yup
-    .string()
-    .required("Заполните текущее поле!")
-    .min(20, "Слишком короткий заголовок!"),
-  tags: yup
-    .string()
-    .required("Заполните текущее поле!")
-    .max(40, "Слишком много тегов!"),
-  Draft: yup.object().required("Заполните текущее поле!"),
-});
+const CreatorSchema = (t) =>
+  yup.object().shape({
+    title: yup
+      .string()
+      .required(t("errors.isRequired"))
+      .min(20, t("errors.tooShort")),
+    tags: yup
+      .string()
+      .required(t("errors.isRequired"))
+      .max(40, t("errors.tooManyTags")),
+    Draft: yup.mixed().test("Draft", t("errors.isRequired"), (value) => {
+      return value?.getCurrentContent().hasText() === true;
+    }),
+  });
 
 const defaultValues = { Draft: EditorState.createEmpty() };
 
 const PostCreator = ({ mainUser }) => {
   const dispatch = useDispatch();
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const { t } = useTranslation();
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(CreatorSchema),
+    resolver: yupResolver(CreatorSchema(t)),
     defaultValues,
   });
   const draftBody = useWatch({
@@ -90,14 +95,12 @@ const PostCreator = ({ mainUser }) => {
           )}
         />
         <Button type="primary" htmlType="submit">
-          Задать вопрос
+          {t("postCreator.addQuestion")}
         </Button>
       </div>
       <div className={"contentBlock"}>
-        <h2 style={{ marginBottom: 0 }}>Заголовок</h2>
-        <h5>
-          Будьте конкретны и представьте, что задаете вопрос другому человеку.
-        </h5>
+        <h2 style={{ marginBottom: 0 }}>{t("postCreator.title")}</h2>
+        <h5>{t("postCreator.subTitle")}</h5>
         {errors.title && <p className={"error"}>{errors.title.message}</p>}
         <Controller
           control={control}
@@ -113,7 +116,7 @@ const PostCreator = ({ mainUser }) => {
         />
       </div>
       <div className={"contentBlock"}>
-        <h3 style={{ marginBottom: 0 }}>Содержимое:</h3>
+        <h3 style={{ marginBottom: 0 }}>{t("postCreator.body")}</h3>
         {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
         <Controller
           name={"Draft"}
@@ -157,10 +160,8 @@ const PostCreator = ({ mainUser }) => {
         />
       </div>
       <div className={"contentBlock"}>
-        <h2>Тags:</h2>
-        <h5>
-          Добавьте до 5 тегов через пробел, чтобы описать, о чем ваш вопрос.
-        </h5>
+        <h2>{t("postCreator.tags")}</h2>
+        <h5>{t("postCreator.subTags")}</h5>
         {errors.tags && <p className={"error"}>{errors.tags.message}</p>}
         <Controller
           control={control}
