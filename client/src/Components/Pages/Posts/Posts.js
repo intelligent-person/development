@@ -4,18 +4,12 @@ import { NavLink } from "react-router-dom";
 import "./posts.css";
 import DateComponent from "../../DateComponent/DateComponent";
 import ReactMarkdown from "react-markdown";
-import { getTagCount } from "../../../Redux/posts-reducer";
-import { useDispatch, useSelector } from "react-redux";
 import Tag from "../../Tag/Tag";
 import { useTranslation } from "react-i18next";
 
 const Posts = ({ posts, searchValue, setInclude }) => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const tagCount = useSelector((state) => state.posts.tagsCount);
-  const showTag = async (tag) => {
-    dispatch(getTagCount(tag));
-  };
+
   return (
     <div>
       {posts.map((post) => (
@@ -63,9 +57,7 @@ const Posts = ({ posts, searchValue, setInclude }) => {
             <div>
               {post.tags.map((tag) => (
                 <Popover
-                  /*content={'content'}*/ title={
-                    <Tag tag={tag} tagCount={tagCount} />
-                  }
+                  /*content={'content'}*/ title={<Tag tag={tag} />}
                   trigger="hover"
                   mouseEnterDelay={0.7}
                 >
@@ -75,7 +67,6 @@ const Posts = ({ posts, searchValue, setInclude }) => {
                     }
                     size={"small"}
                     className={"tag"}
-                    onMouseEnter={(e) => showTag(tag, e)}
                   >
                     {tag}
                   </Button>

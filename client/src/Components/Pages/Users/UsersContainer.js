@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteUser, getUsers } from "../../../Redux/user-reducer";
+import React from "react";
 import Users from "./Users";
 import { Breadcrumb } from "antd";
 import { NavLink } from "react-router-dom";
@@ -8,12 +6,7 @@ import { Content } from "antd/es/layout/layout";
 import { useTranslation } from "react-i18next";
 
 const UsersContainer = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const users = useSelector((state) => state.users.users);
-  useEffect(() => {
-    dispatch(getUsers());
-  }, []);
   const routes = [
     {
       path: "/users",
@@ -39,7 +32,7 @@ const UsersContainer = () => {
         className="site-layout-background"
         style={{ padding: 24, margin: 0, minHeight: 280 }}
       >
-        <Users users={users} deleteUser={deleteUser} />
+        <Users />
       </Content>
     </>
   );

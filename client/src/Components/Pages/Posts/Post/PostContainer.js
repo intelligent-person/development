@@ -1,20 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getPost, setPostView } from "../../../../Redux/posts-reducer";
-import PostInfo from "./Post";
+import Post from "./Post";
 import Loader from "../../../Loader/Loader";
+import * as hooks from "../../../../hooks/posts";
 
 const PostContainer = () => {
-  const dispatch = useDispatch();
-  const post = useSelector((state) => state.posts.post);
   const { postId } = useParams();
-  useEffect(() => {
-    dispatch(getPost(postId));
-    dispatch(setPostView(postId));
-  }, [dispatch, postId]);
-  if (post._id === postId) return <PostInfo post={post} />;
-  else return <Loader />;
+  const { status, error, data } = hooks.useFetchPostById(postId);
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    error.message
+  ) : (
+    <Post post={data} />
+  );
 };
 
 export default PostContainer;

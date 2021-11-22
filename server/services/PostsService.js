@@ -45,7 +45,6 @@ class PostsService {
     if (!tag) {
       throw new Error("Не указан Tag");
     }
-    console.log(tag);
     const tagCount = await Post.find({ tags: { $in: tag } }).count();
     return tagCount;
   }

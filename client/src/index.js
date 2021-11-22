@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import { Provider } from "react-redux";
-import store from "./Redux/redux-store";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Loader from "./Components/Loader/Loader";
 import "./utils/i18n";
+import { QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { queryClient } from "./hooks/queryClient";
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -18,13 +19,14 @@ ReactDOM.render(
     clientId={clientId}
     redirectUri={window.location.origin}
   >
-    <React.StrictMode>
-      <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+      <React.StrictMode>
         <React.Suspense fallback={<Loader />}>
           <App />
+          <ReactQueryDevtools initialIsOpen={false} />
         </React.Suspense>
-      </Provider>
-    </React.StrictMode>
+      </React.StrictMode>
+    </QueryClientProvider>
   </Auth0Provider>,
   document.getElementById("root")
 );

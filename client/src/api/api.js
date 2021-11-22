@@ -3,7 +3,6 @@ const baseUrl = process.env.BASE_URL;
 const instance = axios.create({
   baseURL: `http://localhost:5000/api/`,
 });
-console.log(baseUrl);
 export const usersAPI = {
   getUsers() {
     return instance.get("/users");

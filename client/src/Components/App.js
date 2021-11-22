@@ -6,27 +6,35 @@ import HeaderComponent from "./HeaderComponent/HeaderComponent";
 import ContentContainer from "./ContentContainer/ContentContainer";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useDispatch } from "react-redux";
-import { addUser, getAuth } from "../Redux/user-reducer";
 import { BrowserRouter } from "react-router-dom";
+import * as hooks from "../hooks/users";
+import Loader from "./Loader/Loader";
 
 const App = () => {
   const { user, isAuthenticated } = useAuth0();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (isAuthenticated) {
-      const date = new Date();
-      const newUser = {
-        name: user.name,
-        picture: user.picture,
-        email: user.email,
-        sub: user.sub,
-        isOnline: date,
-      };
-      dispatch(addUser(newUser));
-      dispatch(getAuth(user.sub));
+  const { status, error, data, refetch } = hooks.useAuthUser(user?.sub);
+  const addUser = hooks.useAddUser();
+  useEffect(async () => {
+    await refetch();
+    if (data) {
+      if (isAuthenticated && user.sub !== data.sub) {
+        const date = new Date();
+        const newUser = {
+          name: user.name,
+          picture: user.picture,
+          email: user.email,
+          sub: user.sub,
+          isOnline: date,
+        };
+        await addUser.mutateAsync(newUser);
+      }
     }
-  }, [user, dispatch, isAuthenticated]);
-  return (
+  }, [isAuthenticated]);
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    error.message
+  ) : (
     <BrowserRouter>
       <Layout>
         <HeaderComponent />

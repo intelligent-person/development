@@ -5,15 +5,16 @@ import { NavLink } from "react-router-dom";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "../../../utils/i18n";
+import { queryClient } from "../../../hooks/queryClient";
 
 const PostsFilter = ({
   postsCount,
-  mainUser,
   setInclude,
   setSort,
   setPage,
   setSearchValue,
 }) => {
+  const mainUser = queryClient.getQueryData(["Auth User"]);
   const { t } = useTranslation();
   const [radio, setRadio] = React.useState("newest");
   const onSearch = (value) => {

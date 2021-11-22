@@ -7,8 +7,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
-import { useDispatch } from "react-redux";
-import { addPost } from "../../../../Redux/posts-reducer";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import ModalRedirect from "./ModalRedirect";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,6 +14,9 @@ import * as yup from "yup";
 import { convertToRaw, EditorState } from "draft-js";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useTranslation } from "react-i18next";
+import { queryClient } from "../../../../hooks/queryClient";
+import * as hooks from "../../../../hooks/posts";
+import Loader from "../../../Loader/Loader";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -31,12 +32,11 @@ const CreatorSchema = (t) =>
       return value?.getCurrentContent().hasText() === true;
     }),
   });
+const defaultValues = { Draft: EditorState.createEmpty(), select: "cpp" };
 
-const defaultValues = { Draft: EditorState.createEmpty() };
-
-const PostCreator = ({ mainUser }) => {
-  const dispatch = useDispatch();
-  const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+const PostCreator = () => {
+  const mainUser = queryClient.getQueryData(["Auth User"]);
+  const addPost = hooks.useAddPost();
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -50,10 +50,14 @@ const PostCreator = ({ mainUser }) => {
     control,
     name: "Draft", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
   });
+  const languageControl = useWatch({
+    control,
+    name: "select", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
+  });
   let contentState = draftBody.getCurrentContent();
   const rawObject = convertToRaw(contentState);
   const markdownBody = draftToMarkdown(rawObject);
-  const createPost = (data) => {
+  const createPost = async (data) => {
     if (mainUser) {
       const newPost = {
         title: data.title,
@@ -64,9 +68,7 @@ const PostCreator = ({ mainUser }) => {
         views: 0,
         answersCount: 0,
       };
-      console.log(newPost);
-      dispatch(addPost(newPost));
-      setIsSubmitSuccess(true);
+      await addPost.mutateAsync(newPost);
     }
   };
   return (
@@ -145,7 +147,7 @@ const PostCreator = ({ mainUser }) => {
                   }}
                   children={String(children).replace(/\n$/, "")}
                   style={darcula}
-                  // language={language}
+                  language={languageControl}
                   PreTag="div"
                   {...props}
                 />
@@ -176,7 +178,8 @@ const PostCreator = ({ mainUser }) => {
           )}
         />
       </div>
-      {isSubmitSuccess && <ModalRedirect />}
+      {addPost.isSuccess && <ModalRedirect />}
+      {addPost.isLoading && <Loader />}
       <ModalWindow />
     </form>
   );
