@@ -11,7 +11,7 @@ const Users = () => {
   ) : status === "error" ? (
     message.error(error.message)
   ) : (
-    <div>
+    <>
       {data.map((user) => (
         <div key={user._id}>
           <img
@@ -33,7 +33,7 @@ const Users = () => {
           </button>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

@@ -47,3 +47,14 @@ export const postsAPI = {
     return instance.delete(`/posts/` + id);
   },
 };
+export const answersAPI = {
+  addAnswer(answer) {
+    return instance.post("/answers", answer);
+  },
+  getAnswers(postId) {
+    return instance.get("/answers/" + postId);
+  },
+  updateAnswer(answer) {
+    return instance.put("/answers", answer);
+  },
+};

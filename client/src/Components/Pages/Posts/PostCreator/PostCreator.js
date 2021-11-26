@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { queryClient } from "../../../../hooks/queryClient";
 import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
+import Draft from "./Draft";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -120,46 +121,7 @@ const PostCreator = () => {
       <div className={"contentBlock"}>
         <h3 style={{ marginBottom: 0 }}>{t("postCreator.body")}</h3>
         {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
-        <Controller
-          name={"Draft"}
-          control={control}
-          render={({ field }) => {
-            return (
-              <MyEditor editorState={field.value} onChange={field.onChange} />
-            );
-          }}
-        />
-        {/*<MyEditor setBody={setBody} control={control} />*/}
-      </div>
-      <div style={{ padding: 14 }}>
-        <ReactMarkdown
-          children={markdownBody}
-          components={{
-            code({ node, inline, className, children, ...props }) {
-              return !inline ? (
-                <SyntaxHighlighter
-                  // wrapLines={true}
-                  customStyle={{
-                    padding: 0,
-                    paddingLeft: 10,
-                    margin: 0,
-                    /*overflow-y: hidden;*/
-                  }}
-                  children={String(children).replace(/\n$/, "")}
-                  style={darcula}
-                  language={languageControl}
-                  PreTag="div"
-                  {...props}
-                />
-              ) : (
-                <code className={"monospace"} {...props}>
-                  {children}
-                </code>
-              );
-            },
-          }}
-          remarkPlugins={[remarkGfm]}
-        />
+        <Draft control={control} codeLanguage={languageControl} />
       </div>
       <div className={"contentBlock"}>
         <h2>{t("postCreator.tags")}</h2>

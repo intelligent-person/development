@@ -4,8 +4,8 @@ import Search from "antd/es/input/Search";
 import { NavLink } from "react-router-dom";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import "../../../utils/i18n";
-import { queryClient } from "../../../hooks/queryClient";
+import "../../../../utils/i18n";
+import { queryClient } from "../../../../hooks/queryClient";
 
 const PostsFilter = ({
   postsCount,

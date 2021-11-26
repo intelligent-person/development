@@ -15,21 +15,19 @@ const App = () => {
   const { status, error, data, refetch } = hooks.useAuthUser(user?.sub);
   const addUser = hooks.useAddUser();
   useEffect(async () => {
-    await refetch();
-    if (data) {
-      if (isAuthenticated && user.sub !== data.sub) {
-        const date = new Date();
-        const newUser = {
-          name: user.name,
-          picture: user.picture,
-          email: user.email,
-          sub: user.sub,
-          isOnline: date,
-        };
-        await addUser.mutateAsync(newUser);
-      }
+    refetch();
+    if (isAuthenticated && data === undefined) {
+      const date = new Date();
+      const newUser = {
+        name: user.name,
+        picture: user.picture,
+        email: user.email,
+        sub: user.sub,
+        isOnline: date,
+      };
+      await addUser.mutateAsync(newUser);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, data]);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (

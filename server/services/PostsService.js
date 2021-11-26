@@ -2,7 +2,6 @@ const Post = require("../models/Post");
 
 class PostsService {
   async create(post) {
-    console.log(post);
     const createdPost = await Post.create(post);
     return createdPost;
   }
@@ -31,6 +30,7 @@ class PostsService {
       .sort(sortable)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
+
     return [posts, postsCount];
   }
 
@@ -64,7 +64,12 @@ class PostsService {
       throw new Error("Не указан ID");
     }
     const post = await Post.findById(id);
-    await Post.findByIdAndUpdate(id, { views: post.views + 1 }, { new: true });
+    const postCount = await Post.findByIdAndUpdate(
+      id,
+      { views: post.views + 1 },
+      { new: true }
+    );
+    return postCount;
   }
 
   async delete(id) {

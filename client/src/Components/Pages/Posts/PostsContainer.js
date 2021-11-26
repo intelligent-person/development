@@ -4,13 +4,13 @@ import { Content } from "antd/es/layout/layout";
 import { Route, Switch } from "react-router-dom";
 import PostCreator from "./PostCreator/PostCreator";
 import Loader from "../../Loader/Loader";
-import PostsFilter from "./PostsFilter";
+import PostsFilter from "./PostsFilter/PostsFilter";
 import PostsBreadCrumb from "./PostsBreadCrumb";
 import Posts from "./Posts";
 import { queryClient } from "../../../hooks/queryClient";
 import * as hooks from "../../../hooks/posts";
 
-const PostInfoContainer = React.lazy(() => import("./Post/PostContainer"));
+const PostInfoContainer = React.lazy(() => import("./Post/Post"));
 
 const PostsContainer = () => {
   const mainUser = queryClient.getQueryData(["Auth User"]);
@@ -19,7 +19,7 @@ const PostsContainer = () => {
   const [sort, setSort] = useState("newest");
   const [searchValue, setSearchValue] = useState("");
   const [include, setInclude] = useState({ unanswered: false });
-  const { status, error, data, refetch, isFetching } = hooks.useFetchPosts(
+  const { status, error, data, refetch } = hooks.useFetchPosts(
     pageSize,
     page,
     sort,
@@ -94,7 +94,6 @@ const PostsContainer = () => {
           />
         </Switch>
       </Content>
-      {isFetching && <Loader />}
     </>
   );
 };

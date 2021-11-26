@@ -6,9 +6,12 @@ import "./markdown.css";
 import "draft-js/dist/Draft.css";
 import "@draft-js-plugins/image/lib/plugin.css";
 
-const MyEditor = ({ editorState, onChange }) => {
+const MyEditor = ({ editorState, onChange, setOnFocus }) => {
   const inputRef = useRef();
-  const focus = () => inputRef.current.focus();
+  const focus = () => {
+    inputRef.current.focus();
+    setOnFocus(true);
+  };
 
   const handleKeyCommand = (command, editorState) => {
     const newState = RichUtils.handleKeyCommand(editorState, command);
@@ -138,7 +141,6 @@ const BlockStyleControls = (props) => {
     .getCurrentContent()
     .getBlockForKey(selection.getStartKey())
     .getType();
-
   return (
     <div className="RichEditor-controls">
       {BLOCK_TYPES.map((type) => (

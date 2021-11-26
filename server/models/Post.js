@@ -1,66 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-const commentSchema = new Schema({
-  user: {
-    _id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    reputation: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-    },
-  },
-  body: {
-    type: String,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-});
-const answerSchema = new Schema({
-  user: {
-    _id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    reputation: {
-      type: Number,
-      required: true,
-    },
-    picture: {
-      type: String,
-    },
-    status: {
-      type: String,
-    },
-  },
-  body: {
-    type: String,
-  },
-  codeLanguage: String,
-  votes: {
-    type: Number,
-  },
-  comments: [commentSchema],
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-});
+const { shortUserSchema } = require("./ShortUser");
 
 const postSchema = new Schema({
   title: {
@@ -73,33 +13,19 @@ const postSchema = new Schema({
   },
   codeLanguage: String,
   user: {
-    _id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    reputation: {
-      type: Number,
-      required: true,
-    },
-    picture: {
-      type: String,
-    },
-    status: {
-      type: String,
-    },
+    type: shortUserSchema,
+    required: true,
   },
   tags: [String],
   views: {
     type: Number,
+    default: 0,
   },
-  answers: [answerSchema],
   answersCount: {
     type: Number,
+    default: 0,
   },
+
   date: {
     type: Date,
     default: Date.now,
