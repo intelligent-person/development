@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const { answerSchema } = require("./Answer");
+// const { answerSchema } = require("./Answer");
 const Schema = mongoose.Schema;
 
-const linkSchema = new Schema({
-  telegram: String,
-  github: String,
-});
+// const linkSchema = new Schema({
+//   telegram: String,
+//   github: String,
+// });
 
 const userSchema = new Schema({
   name: {
@@ -14,48 +14,30 @@ const userSchema = new Schema({
   },
   reputation: {
     type: Number,
-    required: true,
+    default: 0,
   },
   answers: {
     type: Number,
-    required: true,
+    default: 0,
   },
   questions: {
     type: Number,
-    required: true,
-  },
-  about: {
-    type: String,
+    default: 0,
   },
   isOnline: {
     type: String,
-    required: true,
-  },
-  topAnswers: {
-    type: [answerSchema],
-  },
-  links: {
-    type: [linkSchema],
-  },
-  tags: {
-    type: [],
-    required: true,
   },
   picture: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
   },
   sub: {
     type: String,
-    required: true,
   },
   status: {
     type: String,
-    required: true,
   },
   date: {
     type: Date,
@@ -63,4 +45,5 @@ const userSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports.User = mongoose.model("User", userSchema);
+module.exports.userSchema = userSchema;

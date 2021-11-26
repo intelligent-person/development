@@ -17,7 +17,7 @@ import { queryClient } from "../../../../../hooks/queryClient";
 const Answer = ({ answer }) => {
   const { postId } = useParams();
   const updateAnswer = hooks.useUpdateAnswer();
-  const mainUser = queryClient.getQueryData(["Auth User"]);
+  const mainUser = queryClient.getQueryData(["Main User"]);
   const { refetch } = hooks.useFetchAnswers(postId);
   const userAction = answer.votes.users.find(
     (item) => item && item.userId === mainUser?._id
@@ -90,8 +90,11 @@ const Answer = ({ answer }) => {
   };
 
   const actions = [
-    <Tooltip key="comment-basic-like" title="Like">
-      <span onClick={like}>
+    <Tooltip
+      key="comment-basic-like"
+      title={!mainUser && "Вы не вошли в свой аккаунт"}
+    >
+      <span onClick={mainUser && like}>
         {createElement(
           userAction?.action === "liked" ? LikeFilled : LikeOutlined
         )}
@@ -103,8 +106,11 @@ const Answer = ({ answer }) => {
         </span>
       </span>
     </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
+    <Tooltip
+      key="comment-basic-dislike"
+      title={!mainUser && "Вы не вошли в свой аккаунт"}
+    >
+      <span onClick={mainUser && dislike}>
         {React.createElement(
           userAction?.action === "disliked" ? DislikeFilled : DislikeOutlined
         )}
@@ -120,7 +126,11 @@ const Answer = ({ answer }) => {
         author={
           <>
             <div>
-              <NavLink to={`/user/${answer.user._id}`}>
+              <NavLink
+                to={`/user/${answer.user.name.split(" ").join("-")}/${
+                  answer.user.sub
+                }`}
+              >
                 {answer.user.name}
               </NavLink>
             </div>
@@ -130,7 +140,11 @@ const Answer = ({ answer }) => {
           </>
         }
         avatar={
-          <NavLink to={`/user/${answer.user._id}`}>
+          <NavLink
+            to={`/user/${answer.user.name.split(" ").join("-")}/${
+              answer.user.sub
+            }`}
+          >
             <Avatar src={answer.user.picture} alt={answer.user.name} />
           </NavLink>
         }

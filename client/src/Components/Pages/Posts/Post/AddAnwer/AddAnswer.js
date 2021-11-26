@@ -10,6 +10,7 @@ import { queryClient } from "../../../../../hooks/queryClient";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useTranslation } from "react-i18next";
 import * as hooks from "../../../../../hooks/answers";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -30,15 +31,16 @@ const AddAnswer = ({ post }) => {
   } = useForm({ resolver: yupResolver(CreatorSchema(t)), defaultValues });
   const [onFocus, setOnFocus] = useState(false);
   const currentUrl = window.location.href;
-  const mainUser = queryClient.getQueryData(["Auth User"]);
+  const { isAuthenticated } = useAuth0();
   const addAnswer = hooks.useAddAnswer();
   const { refetch } = hooks.useFetchAnswers(postId);
+  const mainUser = queryClient.getQueryData(["Main User"]);
 
   const createAnswer = async (data) => {
     let contentState = data.Draft.getCurrentContent();
     const rawObject = convertToRaw(contentState);
     const markdownBody = draftToMarkdown(rawObject);
-    if (mainUser) {
+    if (isAuthenticated) {
       const newAnswer = {
         body: markdownBody,
         codeLanguage: post.codeLanguage,

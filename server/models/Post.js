@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { shortUserSchema } = require("./ShortUser");
+const { userSchema } = require("./User");
 
 const postSchema = new Schema({
   title: {
@@ -13,7 +13,7 @@ const postSchema = new Schema({
   },
   codeLanguage: String,
   user: {
-    type: shortUserSchema,
+    type: userSchema,
     required: true,
   },
   tags: [String],

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "../../../../utils/i18n";
-import { queryClient } from "../../../../hooks/queryClient";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const PostsFilter = ({
   postsCount,
@@ -14,7 +14,7 @@ const PostsFilter = ({
   setPage,
   setSearchValue,
 }) => {
-  const mainUser = queryClient.getQueryData(["Auth User"]);
+  const { isAuthenticated } = useAuth0();
   const { t } = useTranslation();
   const [radio, setRadio] = React.useState("newest");
   const onSearch = (value) => {
@@ -72,7 +72,7 @@ const PostsFilter = ({
           />
         </Col>
         <Col style={{ marginTop: 10 }}>
-          {mainUser ? (
+          {isAuthenticated ? (
             <NavLink to={"/questions/ask"}>
               <Button type={"primary"}>
                 {t("FilterComponent.AskQuestion")}

@@ -4,15 +4,15 @@ import Loader from "../../Loader/Loader";
 import * as hooks from "../../../hooks/users";
 
 const ProfileContainer = () => {
-  const { id } = useParams();
-  const { status, data, error } = hooks.useUserById(id);
+  const { sub } = useParams();
+  const { status, data, error } = hooks.useUserById(sub);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
     error.message
   ) : (
     <>
-      {data._id === id ? (
+      {data.sub === sub ? (
         <div>
           <img src={data.picture} alt={data.name} />
           <h1>{data.name}</h1>

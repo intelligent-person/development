@@ -58,13 +58,23 @@ const PostShortContent = ({ post, setInclude, searchValue }) => {
       <div className={"user"}>
         <div className={"userWrapper"}>
           <div>
-            <NavLink to={`user/${post.user._id}`}>
+            <NavLink
+              to={`user/${post.user.name.split(" ").join("-")}/${
+                post.user.sub
+              }`}
+            >
               <img src={`${post.user.picture}`} alt={"Avatar"} />
             </NavLink>
           </div>
           <div style={{ marginLeft: 10 }}>
             <h4>
-              <NavLink to={`user/${post.user._id}`}>{post.user.name}</NavLink>
+              <NavLink
+                to={`user/${post.user.name.split(" ").join("-")}/${
+                  post.user.sub
+                }`}
+              >
+                {post.user.name}
+              </NavLink>
             </h4>
             <div style={{ display: "inline-flex" }}>
               <div style={{ marginRight: 5 }}>{post.user.status}</div>

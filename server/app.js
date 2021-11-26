@@ -19,14 +19,12 @@ app.use(fileUpload({}));
 //Import Routes
 const usersRoute = require("./routes/users");
 const postsRoute = require("./routes/posts");
-const authRoute = require("./routes/auth");
 const answersRoute = require("./routes/answers");
 
 // const {static} = require("express");
 
 app.use("/api/users", usersRoute);
 app.use("/api/posts", postsRoute);
-app.use("/api/auth", authRoute);
 app.use("/api/answers", answersRoute);
 
 mongoose.connect(process.env.DATABASE, function (err) {

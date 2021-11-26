@@ -1,6 +1,5 @@
-const User = require("../models/User");
+const { User } = require("../models/User");
 const FileService = require("./FileService");
-const { pin } = require("nodemon/lib/version");
 
 class UsersService {
   async create(user /*, picture*/) {
@@ -47,7 +46,7 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-    const user = await User.findOne({ _id: id });
+    const user = await User.findOne({ sub: id });
     return user;
   }
 

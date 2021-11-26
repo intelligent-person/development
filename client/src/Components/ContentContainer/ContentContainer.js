@@ -22,7 +22,7 @@ const ContentContainer = () => {
           <Route path={"/"} exact={true} component={HomeContainer} />
           <Route path={"/questions"} component={PostsContainer} />
           <Route path={"/users"} exact component={UsersContainer} />
-          <Route path={"/user/:id"} component={ProfileContainer} />
+          <Route path={"/user/:name/:sub"} component={ProfileContainer} />
         </Switch>
       </React.Suspense>
     </Layout>

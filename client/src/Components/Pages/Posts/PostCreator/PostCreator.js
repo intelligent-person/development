@@ -1,17 +1,12 @@
 import React, { useState } from "react";
-import MyEditor from "../../../Markdown/MyEditor";
 import "../../../Markdown/markdown.css";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import ModalRedirect from "./ModalRedirect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { convertToRaw, EditorState } from "draft-js";
+import { ContentState, convertToRaw, EditorState } from "draft-js";
 import { draftToMarkdown } from "markdown-draft-js";
 import { useTranslation } from "react-i18next";
 import { queryClient } from "../../../../hooks/queryClient";
@@ -36,30 +31,29 @@ const CreatorSchema = (t) =>
 const defaultValues = { Draft: EditorState.createEmpty(), select: "cpp" };
 
 const PostCreator = () => {
-  const mainUser = queryClient.getQueryData(["Auth User"]);
+  const mainUser = queryClient.getQueryData(["Main User"]);
+  const [onFocus, setOnFocus] = useState(false);
   const addPost = hooks.useAddPost();
   const { t } = useTranslation();
   const {
     handleSubmit,
     control,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(CreatorSchema(t)),
     defaultValues,
-  });
-  const draftBody = useWatch({
-    control,
-    name: "Draft", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
   });
   const languageControl = useWatch({
     control,
     name: "select", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
   });
-  let contentState = draftBody.getCurrentContent();
-  const rawObject = convertToRaw(contentState);
-  const markdownBody = draftToMarkdown(rawObject);
+
   const createPost = async (data) => {
     if (mainUser) {
+      let contentState = data.Draft.getCurrentContent();
+      const rawObject = convertToRaw(contentState);
+      const markdownBody = draftToMarkdown(rawObject);
       const newPost = {
         title: data.title,
         body: markdownBody,
@@ -70,6 +64,15 @@ const PostCreator = () => {
         answersCount: 0,
       };
       await addPost.mutateAsync(newPost);
+      reset({
+        Draft: EditorState.push(
+          data.Draft,
+          ContentState.createFromText(""),
+          "remove-range"
+        ),
+        title: "",
+        tags: "",
+      });
     }
   };
   return (
@@ -121,7 +124,12 @@ const PostCreator = () => {
       <div className={"contentBlock"}>
         <h3 style={{ marginBottom: 0 }}>{t("postCreator.body")}</h3>
         {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
-        <Draft control={control} codeLanguage={languageControl} />
+        <Draft
+          control={control}
+          codeLanguage={languageControl}
+          setOnFocus={setOnFocus}
+          onFocus={onFocus}
+        />
       </div>
       <div className={"contentBlock"}>
         <h2>{t("postCreator.tags")}</h2>

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { commentSchema } = require("./Comment");
-const { shortUserSchema } = require("./ShortUser");
+// const { commentSchema } = require("./Comment");
+const { userSchema } = require("./User");
 const Schema = mongoose.Schema;
 
 const answerSchema = new Schema({
-  user: shortUserSchema,
+  user: userSchema,
   postId: {
     type: String,
     required: true,

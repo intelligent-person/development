@@ -13,7 +13,6 @@ import * as hooks from "../../../hooks/posts";
 const PostInfoContainer = React.lazy(() => import("./Post/Post"));
 
 const PostsContainer = () => {
-  const mainUser = queryClient.getQueryData(["Auth User"]);
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("newest");
@@ -56,7 +55,6 @@ const PostsContainer = () => {
             render={() => (
               <>
                 <PostsFilter
-                  mainUser={mainUser}
                   postsCount={data.postsCount}
                   setSort={setSort}
                   setInclude={setInclude}
@@ -90,7 +88,7 @@ const PostsContainer = () => {
           <Route
             path={"/questions/ask"}
             exact={true}
-            render={() => <PostCreator mainUser={mainUser} />}
+            render={() => <PostCreator />}
           />
         </Switch>
       </Content>

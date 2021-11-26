@@ -6,7 +6,7 @@ class UsersController {
     try {
       const oldUser = await User.find({ sub: req.body.sub });
       // const admin = await User.find({status: "Админ"})
-      if (typeof oldUser[0] === "undefined") {
+      if (oldUser[0] === undefined) {
         const savedUser = await UsersService.create(
           req.body /*, req.files.picture*/
         );
