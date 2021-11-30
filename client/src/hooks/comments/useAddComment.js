@@ -1,9 +1,9 @@
 import { useMutation } from "react-query";
-import { answersAPI } from "../../api/api";
+import { commentsAPI } from "../../api/api";
 import { queryClient } from "../queryClient";
 
-export const useAddAnswer = () => {
-  return useMutation(async (answer) => await answersAPI.addAnswer(answer), {
+export const useAddComments = () => {
+  return useMutation(async (comment) => await commentsAPI.addComment(comment), {
     onMutate(...params) {
       console.log("1. onMutate");
       console.log("🎬 delete todo mutation fired");
@@ -19,11 +19,11 @@ export const useAddAnswer = () => {
     onSettled(...params) {
       const prevAnswers = queryClient.getQueryData([
         "posts",
-        `PostId: ${params[2].postId}`,
-        "answers",
+        `Answer Id: ${params[2].answerId}`,
+        "comments",
       ]);
       queryClient.setQueryData(
-        ["posts", params[2].postId, "answers"],
+        ["posts", `Answer Id: ${params[2].answerId}`, "comments"],
         [...prevAnswers, params[0].data]
       );
     },

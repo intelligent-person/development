@@ -16,7 +16,12 @@ const ProfileContainer = React.lazy(() =>
 
 const ContentContainer = () => {
   return (
-    <Layout style={{ padding: "0 24px 24px", marginTop: 0 }}>
+    <Layout
+      style={{
+        padding: "0 24px 24px",
+        marginTop: 0,
+      }}
+    >
       <React.Suspense fallback={<Loader />}>
         <Switch>
           <Route path={"/"} exact={true} component={HomeContainer} />

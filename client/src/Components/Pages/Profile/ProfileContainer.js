@@ -6,6 +6,7 @@ import * as hooks from "../../../hooks/users";
 const ProfileContainer = () => {
   const { sub } = useParams();
   const { status, data, error } = hooks.useUserById(sub);
+  console.log(data);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
@@ -25,9 +26,9 @@ const ProfileContainer = () => {
           <h2>{data.isOnline}</h2>
           <a href={data.links[0].telegram}>Telegram</a>
           {data.topAnswers.map((item) => (
-            <div key={item._id}>
+            <div key={item.answerId}>
               <div>{item.votes}</div>
-              <NavLink to={`/questions/id/${item._id}`}>
+              <NavLink to={`/questions/id/${item.answerId}`}>
                 <div>{item.title}</div>
               </NavLink>
               <div>{item.date}</div>

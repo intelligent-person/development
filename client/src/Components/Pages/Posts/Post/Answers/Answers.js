@@ -13,7 +13,7 @@ const Answers = () => {
     error.message
   ) : data[0] ? (
     <>
-      <h1 style={{ marginTop: 50 }}>Answers</h1>
+      <h1 style={{ marginTop: 50 }}>{data.length} Answers</h1>
       {data.map((answer) => {
         return <Answer answer={answer} />;
       })}

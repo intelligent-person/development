@@ -1,9 +1,9 @@
 import { useMutation } from "react-query";
 import { usersAPI } from "../../api/api";
+import { queryClient } from "../queryClient";
 
 export const useDeleteUsers = () => {
-  return useMutation({
-    mutationFn: async (id) => await usersAPI.deleteUser(id),
+  return useMutation(async (id) => await usersAPI.deleteUser(id), {
     onMutate(...params) {
       console.log("1. onMutate", params);
       console.log("🎬 delete todo mutation fired");
@@ -17,8 +17,12 @@ export const useDeleteUsers = () => {
       console.log("⤬ todo was not deleted");
     },
     onSettled(...params) {
-      console.log("3. onSettled", params);
-      console.log("🏁 delete todo operation completed");
+      console.log(params);
+      const currentData = queryClient.getQueryData(["users"]);
+      const newData = currentData.filter(
+        (user) => user.sub !== params[0].data.sub
+      );
+      queryClient.setQueryData(["users"], newData);
     },
     retry: 2,
   });

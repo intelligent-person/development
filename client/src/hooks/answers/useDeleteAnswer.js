@@ -2,8 +2,8 @@ import { useMutation } from "react-query";
 import { answersAPI } from "../../api/api";
 import { queryClient } from "../queryClient";
 
-export const useAddAnswer = () => {
-  return useMutation(async (answer) => await answersAPI.addAnswer(answer), {
+export const useDeleteAnswer = () => {
+  return useMutation(async (params) => await answersAPI.deleteAnswer(params), {
     onMutate(...params) {
       console.log("1. onMutate");
       console.log("🎬 delete todo mutation fired");
@@ -17,14 +17,17 @@ export const useAddAnswer = () => {
       console.log("⤬ todo was not deleted");
     },
     onSettled(...params) {
-      const prevAnswers = queryClient.getQueryData([
+      const currentData = queryClient.getQueryData([
         "posts",
         `PostId: ${params[2].postId}`,
         "answers",
       ]);
+      const newData = currentData.filter(
+        (answer) => answer._id !== params[2].id
+      );
       queryClient.setQueryData(
-        ["posts", params[2].postId, "answers"],
-        [...prevAnswers, params[0].data]
+        ["posts", `PostId: ${params[2].postId}`, "answers"],
+        newData
       );
     },
     retry: 2,

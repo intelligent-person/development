@@ -17,11 +17,6 @@ export const usersAPI = {
     return instance.delete(`/users/` + id);
   },
 };
-export const authAPI = {
-  getAuth(sub) {
-    return instance.get("/auth/" + sub);
-  },
-};
 export const postsAPI = {
   getPosts(pageSize, page, sort, include, searchValue) {
     return instance.get(
@@ -56,5 +51,19 @@ export const answersAPI = {
   },
   updateAnswer(answer) {
     return instance.put("/answers", answer);
+  },
+  deleteAnswer(params) {
+    return instance.delete(`/answers/${params.id}/${params.postId}`);
+  },
+};
+export const commentsAPI = {
+  addComment(comment) {
+    return instance.post("/comments", comment);
+  },
+  getComments(answerId) {
+    return instance.get("/comments/" + answerId);
+  },
+  deleteComment(commentId) {
+    return instance.delete(`/comments/${commentId}`);
   },
 };

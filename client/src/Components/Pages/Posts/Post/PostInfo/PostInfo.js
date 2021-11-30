@@ -43,7 +43,9 @@ const PostInfo = ({ post }) => {
                   margin: 0,
                   /*overflow-y: hidden;*/
                 }}
-                children={String(children).replace(/\n$/, "")}
+                children={String(children)
+                  .replace(/\n$/, "")
+                  .replaceAll("\\s\\s\n", "\n")}
                 style={darcula}
                 language={post.codeLanguage}
                 PreTag="div"

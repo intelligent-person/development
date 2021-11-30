@@ -7,12 +7,12 @@ import Loader from "../../Loader/Loader";
 import PostsFilter from "./PostsFilter/PostsFilter";
 import PostsBreadCrumb from "./PostsBreadCrumb";
 import Posts from "./Posts";
-import { queryClient } from "../../../hooks/queryClient";
 import * as hooks from "../../../hooks/posts";
 
 const PostInfoContainer = React.lazy(() => import("./Post/Post"));
 
 const PostsContainer = () => {
+  const location = window.location;
   const [pageSize, setPageSize] = useState(10);
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("newest");
@@ -26,10 +26,10 @@ const PostsContainer = () => {
     searchValue
   );
   useEffect(() => {
-    refetch();
+    if (location.pathname === "/questions") refetch();
   }, [page, pageSize, sort, include, searchValue]);
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (location.pathname === "/questions") window.scrollTo(0, 0);
   }, [data]);
 
   const setSize = (page, pageSize) => {

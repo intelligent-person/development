@@ -22,6 +22,16 @@ class AnswersServices {
     });
     return updateAnswer;
   }
+  async delete(answerId, postId) {
+    if (!answerId) {
+      throw new Error("Не указан ID");
+    }
+    const deletedAnswer = await Answer.findByIdAndDelete(answerId);
+    await Post.findByIdAndUpdate(postId, {
+      $inc: { answersCount: -1 },
+    });
+    return { postId: postId, deletedAnswer };
+  }
 }
 
 module.exports = new AnswersServices();

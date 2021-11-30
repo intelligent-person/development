@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import Draft from "../../PostCreator/Draft";
+import React from "react";
+import Draft from "../../../../Markdown/Draft";
 import { Button } from "antd";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import * as yup from "yup";
-import { convertToRaw, EditorState, ContentState } from "draft-js";
+import { convertToRaw } from "draft-js";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { queryClient } from "../../../../../hooks/queryClient";
-import { draftToMarkdown } from "markdown-draft-js";
+import draftToMarkdown from "../../../../Markdown/draft-to-markdown";
 import { useTranslation } from "react-i18next";
 import * as hooks from "../../../../../hooks/answers";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -18,10 +18,9 @@ const CreatorSchema = (t) =>
       return value?.getCurrentContent().hasText() === true;
     }),
   });
-const defaultValues = { Draft: EditorState.createEmpty() };
+const defaultValues = { Draft: undefined };
 
 const AddAnswer = ({ post }) => {
-  const { postId } = useParams();
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -29,11 +28,9 @@ const AddAnswer = ({ post }) => {
     formState: { errors },
     reset,
   } = useForm({ resolver: yupResolver(CreatorSchema(t)), defaultValues });
-  const [onFocus, setOnFocus] = useState(false);
   const currentUrl = window.location.href;
   const { isAuthenticated } = useAuth0();
   const addAnswer = hooks.useAddAnswer();
-  const { refetch } = hooks.useFetchAnswers(postId);
   const mainUser = queryClient.getQueryData(["Main User"]);
 
   const createAnswer = async (data) => {
@@ -48,14 +45,8 @@ const AddAnswer = ({ post }) => {
         postId: post._id,
       };
       await addAnswer.mutateAsync(newAnswer);
-      refetch();
-      setOnFocus(false);
       reset({
-        Draft: EditorState.push(
-          data.Draft,
-          ContentState.createFromText(""),
-          "remove-range"
-        ),
+        Draft: undefined,
       });
     }
   };
@@ -74,14 +65,8 @@ const AddAnswer = ({ post }) => {
         .
       </h3>
       <h2>{t("post.yourAnswer")}</h2>
-
       {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
-      <Draft
-        onFocus={onFocus}
-        setOnFocus={setOnFocus}
-        control={control}
-        codeLanguage={post.codeLanguage}
-      />
+      <Draft control={control} codeLanguage={post.codeLanguage} />
       {mainUser ? (
         <Button type="primary" htmlType="submit">
           {t("post.postAnswer")}

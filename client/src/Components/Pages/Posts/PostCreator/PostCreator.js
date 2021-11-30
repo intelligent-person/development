@@ -6,13 +6,13 @@ import { useForm, Controller, useWatch } from "react-hook-form";
 import ModalRedirect from "./ModalRedirect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { ContentState, convertToRaw, EditorState } from "draft-js";
-import { draftToMarkdown } from "markdown-draft-js";
+import { convertToRaw } from "draft-js";
+import draftToMarkdown from "../../../Markdown/draft-to-markdown";
 import { useTranslation } from "react-i18next";
 import { queryClient } from "../../../../hooks/queryClient";
 import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
-import Draft from "./Draft";
+import Draft from "../../../Markdown/Draft";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -28,11 +28,10 @@ const CreatorSchema = (t) =>
       return value?.getCurrentContent().hasText() === true;
     }),
   });
-const defaultValues = { Draft: EditorState.createEmpty(), select: "cpp" };
+const defaultValues = { Draft: undefined, select: "cpp" };
 
 const PostCreator = () => {
   const mainUser = queryClient.getQueryData(["Main User"]);
-  const [onFocus, setOnFocus] = useState(false);
   const addPost = hooks.useAddPost();
   const { t } = useTranslation();
   const {
@@ -65,11 +64,7 @@ const PostCreator = () => {
       };
       await addPost.mutateAsync(newPost);
       reset({
-        Draft: EditorState.push(
-          data.Draft,
-          ContentState.createFromText(""),
-          "remove-range"
-        ),
+        Draft: undefined,
         title: "",
         tags: "",
       });
@@ -124,12 +119,7 @@ const PostCreator = () => {
       <div className={"contentBlock"}>
         <h3 style={{ marginBottom: 0 }}>{t("postCreator.body")}</h3>
         {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
-        <Draft
-          control={control}
-          codeLanguage={languageControl}
-          setOnFocus={setOnFocus}
-          onFocus={onFocus}
-        />
+        <Draft control={control} codeLanguage={languageControl} />
       </div>
       <div className={"contentBlock"}>
         <h2>{t("postCreator.tags")}</h2>

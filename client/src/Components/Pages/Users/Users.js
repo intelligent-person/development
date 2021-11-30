@@ -4,7 +4,7 @@ import Loader from "../../Loader/Loader";
 import { message } from "antd";
 
 const Users = () => {
-  const { status, data, error, refetch } = hooks.useFetchUsers();
+  const { status, data, error } = hooks.useFetchUsers();
   const deleteUser = hooks.useDeleteUsers();
   return status === "loading" ? (
     <Loader />
@@ -26,7 +26,6 @@ const Users = () => {
           <button
             onClick={async () => {
               await deleteUser.mutateAsync(user._id);
-              refetch();
             }}
           >
             DELETE

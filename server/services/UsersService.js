@@ -1,5 +1,4 @@
 const { User } = require("../models/User");
-const FileService = require("./FileService");
 
 class UsersService {
   async create(user /*, picture*/) {
@@ -14,7 +13,7 @@ class UsersService {
       status: "Новичёк",
       topAnswers: [
         {
-          _id: "617911adf60d4f3aee4d67f5",
+          answerId: "617911adf60d4f3aee4d67f5",
           votes: 5,
           title: "Ребят, есть проблемка",
           date: "2021-10-27T08:45:33.153+00:00",
@@ -26,7 +25,8 @@ class UsersService {
         },
       ],
     };
-    await User.create(newUser);
+    const createdUser = await User.create(newUser);
+    return createdUser;
   }
 
   async getAll() {
@@ -65,9 +65,8 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-    await User.findByIdAndDelete(id);
-    const users = await User.find();
-    return users;
+    const deletedUser = await User.findByIdAndDelete(id);
+    return deletedUser;
   }
 }
 

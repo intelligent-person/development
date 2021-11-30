@@ -2,10 +2,16 @@ const mongoose = require("mongoose");
 // const { answerSchema } = require("./Answer");
 const Schema = mongoose.Schema;
 
-// const linkSchema = new Schema({
-//   telegram: String,
-//   github: String,
-// });
+const linkSchema = new Schema({
+  telegram: String,
+  github: String,
+});
+const topAnswerSchema = new Schema({
+  answerId: String,
+  votes: Number,
+  title: String,
+  date: String,
+});
 
 const userSchema = new Schema({
   name: {
@@ -27,6 +33,8 @@ const userSchema = new Schema({
   isOnline: {
     type: String,
   },
+  links: [linkSchema],
+  topAnswers: [topAnswerSchema],
   picture: {
     type: String,
   },

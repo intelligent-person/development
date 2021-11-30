@@ -1,5 +1,5 @@
 const UsersService = require("../services/UsersService");
-const User = require("../models/User");
+const { User } = require("../models/User");
 
 class UsersController {
   async create(req, res) {
@@ -10,7 +10,7 @@ class UsersController {
         const savedUser = await UsersService.create(
           req.body /*, req.files.picture*/
         );
-        res.send(savedUser);
+        res.json(savedUser);
       }
     } catch (err) {
       res.json({ message: err }, res.sendStatus(400));
