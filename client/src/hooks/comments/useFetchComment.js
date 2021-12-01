@@ -10,7 +10,6 @@ export const useFetchComments = (answerId, page) => {
       "comments",
     ]);
     const { data } = await commentsAPI.getComments(answerId, page);
-    console.log(page);
     return page !== 1
       ? {
           commentsCount: data.commentsCount,

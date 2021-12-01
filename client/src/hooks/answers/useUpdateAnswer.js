@@ -22,14 +22,17 @@ export const useUpdateAnswer = () => {
     onSettled(...params) {
       const currentData = queryClient.getQueryData([
         "posts",
-        params[2].postId,
+        `PostId: ${params[2].postId}`,
         "answers",
       ]);
       const newData = currentData.map((answer) => {
         if (answer._id === params[2]._id) return params[2];
         else return answer;
       });
-      queryClient.setQueryData(["posts", params[2].postId, "answers"], newData);
+      queryClient.setQueryData(
+        ["posts", `PostId: ${params[2].postId}`, "answers"],
+        newData
+      );
     },
     retry: 2,
   });

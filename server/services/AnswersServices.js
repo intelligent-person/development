@@ -12,8 +12,10 @@ class AnswersServices {
     );
     return newAnswer;
   }
-  async getAll(postId) {
-    const postAnswers = await Answer.find({ postId });
+  async getAll(postId, page) {
+    const postAnswers = await Answer.find({ postId })
+      .skip((page - 1) * 10)
+      .limit(10);
     return postAnswers;
   }
   async update(answer) {

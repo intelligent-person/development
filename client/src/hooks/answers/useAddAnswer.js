@@ -23,7 +23,7 @@ export const useAddAnswer = () => {
         "answers",
       ]);
       queryClient.setQueryData(
-        ["posts", params[2].postId, "answers"],
+        ["posts", `PostId: ${params[2].postId}`, "answers"],
         [...prevAnswers, params[0].data]
       );
     },

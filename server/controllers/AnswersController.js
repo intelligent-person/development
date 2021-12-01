@@ -11,7 +11,10 @@ class AnswersController {
   }
   async getAll(req, res) {
     try {
-      const answer = await AnswersServices.getAll(req.params.postId);
+      const answer = await AnswersServices.getAll(
+        req.params.postId,
+        req.query.page
+      );
       res.json(answer);
     } catch (err) {
       res.json(err);

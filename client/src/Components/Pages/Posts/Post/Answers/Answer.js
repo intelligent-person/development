@@ -1,5 +1,5 @@
 import React, { createElement, useState } from "react";
-import { Avatar, Button, Comment, Tooltip } from "antd";
+import { Avatar, Comment, Tooltip } from "antd";
 import {
   DislikeOutlined,
   LikeOutlined,

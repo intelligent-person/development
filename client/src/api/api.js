@@ -46,8 +46,8 @@ export const answersAPI = {
   addAnswer(answer) {
     return instance.post("/answers", answer);
   },
-  getAnswers(postId) {
-    return instance.get("/answers/" + postId);
+  getAnswers(postId, page) {
+    return instance.get(`/answers/${postId}?page=${page}`);
   },
   updateAnswer(answer) {
     return instance.put("/answers", answer);

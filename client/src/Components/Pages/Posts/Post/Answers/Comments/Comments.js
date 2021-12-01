@@ -6,7 +6,6 @@ import { Button } from "antd";
 import { queryClient } from "../../../../../../hooks/queryClient";
 
 const CurrentComments = ({ setPage, page, data }) => {
-  console.log(data.answerComments);
   return (
     <>
       <h3 style={{ margin: "0" }}>Comments</h3>
