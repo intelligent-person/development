@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import TextArea from "antd/es/input/TextArea";
 import { Button } from "antd";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useTranslation } from "react-i18next";
-import remarkGfm from "remark-gfm";
-import ReactMarkdown from "react-markdown";
 import { useAuth0 } from "@auth0/auth0-react";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
@@ -18,7 +16,7 @@ const CreatorSchema = (t) =>
       .required(t("errors.isRequired"))
       .min(20, t("errors.tooShort")),
   });
-const AddComment = ({ answerId, setIsAddComment }) => {
+const AddComment = ({ answerId, setIsAddComment, page }) => {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth0();
   const {

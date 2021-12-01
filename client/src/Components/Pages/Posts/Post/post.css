@@ -1,5 +1,9 @@
 .postHeader {
-  border-bottom: 1px solid #999999;
+  border-bottom: 1px solid #dddddd;
   padding-bottom: 5px;
   margin-bottom: 20px;
+}
+
+.comment .ant-comment-inner {
+  padding: 6px 0;
 }

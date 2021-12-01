@@ -4,7 +4,7 @@ import "./../../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css
 
 const MyEditor = ({ onChange, editorState }) => {
   return (
-    <div style={{ border: "1px solid grey", padding: "0 20px" }}>
+    <div style={{ borderBottom: "1px solid #dddddd" }}>
       <Editor
         editorState={editorState}
         wrapperClassName="demo-wrapper"

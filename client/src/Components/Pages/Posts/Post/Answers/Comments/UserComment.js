@@ -5,18 +5,28 @@ import ReactMarkdown from "react-markdown";
 import { NavLink } from "react-router-dom";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
+import "../../post.css";
 
 const UserComment = ({ comment }) => {
   const deleteComment = hooks.useDeleteComment();
   const mainUser = queryClient.getQueryData(["Main User"]);
   const deleteCurrentComment = async () => {
     if (mainUser) {
-      const params = { commentId: comment._id, answerId: comment.answerId };
+      const params = {
+        commentId: comment._id,
+        answerId: comment.answerId,
+      };
       await deleteComment.mutateAsync(params);
     }
   };
   return (
     <Comment
+      datetime={comment.date
+        .slice(0, comment.date.indexOf("T"))
+        .split("-")
+        .reverse()
+        .join(".")}
+      className={"comment"}
       author={
         <>
           <NavLink to={`/user/${comment.user.name}/${comment.user.sub}`}>

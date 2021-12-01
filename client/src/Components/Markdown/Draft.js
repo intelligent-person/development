@@ -14,7 +14,6 @@ const Draft = ({ control, codeLanguage }) => {
     control,
     name: "Draft",
   });
-
   return (
     <>
       <Controller

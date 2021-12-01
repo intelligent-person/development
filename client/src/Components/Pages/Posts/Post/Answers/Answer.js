@@ -139,7 +139,7 @@ const Answer = ({ answer }) => {
     </span>,
   ];
   return (
-    <>
+    <div style={{ borderBottom: "1px solid #dddddd" }}>
       <Comment
         actions={actions}
         author={
@@ -208,7 +208,7 @@ const Answer = ({ answer }) => {
         )}
         <Comments answerId={answer._id} />
       </Comment>
-    </>
+    </div>
   );
 };
 export default React.memo(Answer);

@@ -60,8 +60,8 @@ export const commentsAPI = {
   addComment(comment) {
     return instance.post("/comments", comment);
   },
-  getComments(answerId) {
-    return instance.get("/comments/" + answerId);
+  getComments(answerId, page) {
+    return instance.get(`/comments/${answerId}?page=${page}`);
   },
   deleteComment(commentId) {
     return instance.delete(`/comments/${commentId}`);

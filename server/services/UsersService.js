@@ -6,7 +6,7 @@ class UsersService {
     let newUser = {
       ...user,
       about: "",
-      reputation: 5,
+      reputation: 1,
       answers: 1,
       questions: 0,
       tags: ["react", "valid", "js"],

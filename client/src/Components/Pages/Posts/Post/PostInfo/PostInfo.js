@@ -7,11 +7,12 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
+import "../post.css";
 
 const PostInfo = ({ post }) => {
   const { t } = useTranslation();
   return (
-    <>
+    <div className={"postHeader"}>
       <div className={"postHeader"}>
         <Row justify={"space-between"}>
           <h1 style={{ maxWidth: "80%" }}>{post.title}</h1>
@@ -40,7 +41,7 @@ const PostInfo = ({ post }) => {
                 customStyle={{
                   padding: 0,
                   paddingLeft: 10,
-                  margin: 0,
+                  margin: 20,
                   /*overflow-y: hidden;*/
                 }}
                 children={String(children)
@@ -60,7 +61,7 @@ const PostInfo = ({ post }) => {
         }}
         remarkPlugins={[remarkGfm]}
       />
-    </>
+    </div>
   );
 };
 

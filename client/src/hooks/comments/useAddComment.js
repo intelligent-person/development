@@ -9,7 +9,7 @@ export const useAddComments = () => {
       console.log("🎬 delete todo mutation fired");
     },
     onSuccess(...params) {
-      console.log("2. onSuccess");
+      console.log("2. onSuccess", params);
       console.log("✅ todo was deleted");
     },
     onError(...params) {
@@ -17,6 +17,7 @@ export const useAddComments = () => {
       console.log("⤬ todo was not deleted");
     },
     onSettled(...params) {
+      console.log(params);
       const prevAnswers = queryClient.getQueryData([
         "posts",
         `Answer Id: ${params[2].answerId}`,
@@ -24,7 +25,10 @@ export const useAddComments = () => {
       ]);
       queryClient.setQueryData(
         ["posts", `Answer Id: ${params[2].answerId}`, "comments"],
-        [...prevAnswers, params[0].data]
+        {
+          commentsCount: prevAnswers.commentsCount + 1,
+          answerComments: [params[0].data, ...prevAnswers.answerComments],
+        }
       );
     },
     retry: 2,

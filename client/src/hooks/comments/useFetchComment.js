@@ -1,9 +1,21 @@
 import { useQuery } from "react-query";
 import { commentsAPI } from "../../api/api";
+import { queryClient } from "../queryClient";
 
-export const useFetchComments = (answerId) => {
+export const useFetchComments = (answerId, page) => {
   return useQuery(["posts", `Answer Id: ${answerId}`, "comments"], async () => {
-    const { data } = await commentsAPI.getComments(answerId);
-    return data;
+    const prevData = queryClient.getQueryData([
+      "posts",
+      `Answer Id: ${answerId}`,
+      "comments",
+    ]);
+    const { data } = await commentsAPI.getComments(answerId, page);
+    console.log(page);
+    return page !== 1
+      ? {
+          commentsCount: data.commentsCount,
+          answerComments: [...prevData.answerComments, ...data.answerComments],
+        }
+      : data;
   });
 };

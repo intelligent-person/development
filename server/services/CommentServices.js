@@ -6,9 +6,14 @@ class CommentServices {
     const newComment = await Comment.create(comment);
     return newComment;
   }
-  async getAll(answerId) {
-    const answerComments = await Comment.find({ answerId });
-    return answerComments;
+  async getAll(answerId, page) {
+    console.log(page);
+    const commentsCount = await Comment.find({ answerId }).count();
+    const answerComments = await Comment.find({ answerId })
+      .sort({ date: "desc" })
+      .skip((page - 1) * 5)
+      .limit(5);
+    return { commentsCount, answerComments };
   }
   async delete(commentId) {
     if (!commentId) {

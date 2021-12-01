@@ -24,9 +24,18 @@ const CreatorSchema = (t) =>
       .string()
       .required(t("errors.isRequired"))
       .max(40, t("errors.tooManyTags")),
-    Draft: yup.mixed().test("Draft", t("errors.isRequired"), (value) => {
-      return value?.getCurrentContent().hasText() === true;
-    }),
+    Draft: yup
+      .mixed()
+      .test("Draft", t("errors.isRequired"), (value) => {
+        return value?.getCurrentContent().hasText() === true;
+      })
+      .test("Draft", t("errors.tooShort"), (value) => {
+        if (value) {
+          return (
+            convertToRaw(value?.getCurrentContent()).blocks[0].text.length > 30
+          );
+        }
+      }),
   });
 const defaultValues = { Draft: undefined, select: "cpp" };
 

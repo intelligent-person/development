@@ -24,12 +24,15 @@ export const useDeleteComment = () => {
           `Answer Id: ${params[2].answerId}`,
           "comments",
         ]);
-        const newData = currentData.filter(
+        const newData = currentData.answerComments.filter(
           (comment) => comment._id !== params[2].commentId
         );
         queryClient.setQueryData(
           ["posts", `Answer Id: ${params[2].answerId}`, "comments"],
-          newData
+          {
+            commentsCount: currentData.commentsCount - 1,
+            answerComments: newData,
+          }
         );
       },
       retry: 2,
