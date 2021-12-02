@@ -4,12 +4,7 @@ const Post = require("../models/Post");
 class AnswersServices {
   async create(answer) {
     const newAnswer = await Answer.create(answer);
-    const currentPost = await Post.findById(answer.postId);
-    await Post.findByIdAndUpdate(
-      answer.postId,
-      { answersCount: currentPost.answersCount + 1 },
-      { new: true }
-    );
+    await Post.findByIdAndUpdate(answer.postId, { $inc: { answersCount: +1 } });
     return newAnswer;
   }
   async getAll(postId, page) {

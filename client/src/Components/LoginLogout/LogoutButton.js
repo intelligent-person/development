@@ -18,7 +18,7 @@ const LogoutButton = () => {
       </Menu.Item>
       <SubMenu
         key="2"
-        icon={<ZhihuOutlined />}
+        icon={<>{i18n.language.toUpperCase()} </>}
         title={t("Logout.ChangeLanguage")}
       >
         <Menu.Item key="4" onClick={() => i18n.changeLanguage("ua")}>

@@ -16,6 +16,7 @@ h4 {
 
 .user img {
   width: 50px;
+  border-radius: 50%;
 }
 .postInfo {
   text-align: center;

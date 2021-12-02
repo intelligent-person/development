@@ -5,10 +5,12 @@ import * as hooks from "../../../../../hooks/answers";
 import Loader from "../../../../Loader/Loader";
 import { Pagination } from "antd";
 import { queryClient } from "../../../../../hooks/queryClient";
+import { useTranslation } from "react-i18next";
 
 const Answers = () => {
   const [page, setPage] = useState(1);
   const { postId } = useParams();
+  const { t } = useTranslation();
   const currentData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const { status, error, data, refetch } = hooks.useFetchAnswers(postId, page);
   useEffect(() => {
@@ -16,14 +18,16 @@ const Answers = () => {
   }, [page]);
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [page && data]);
+  }, [page]);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
     error.message
   ) : data[0] ? (
     <>
-      <h2 style={{ marginTop: 50 }}>{currentData.answersCount} Answers</h2>
+      <h2 style={{ marginTop: 50 }}>
+        {currentData.answersCount} {t("answer.answers")}
+      </h2>
       {data.map((answer) => {
         return <Answer answer={answer} />;
       })}

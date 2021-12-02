@@ -6,21 +6,21 @@ import {
   DislikeFilled,
   LikeFilled,
 } from "@ant-design/icons";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import {
-  darcula,
-  materialLight,
-  base16AteliersulphurpoolLight,
-} from "react-syntax-highlighter/dist/cjs/styles/prism";
-import remarkGfm from "remark-gfm";
-import ReactMarkdown from "react-markdown";
+
 import * as hooks from "../../../../../hooks/answers";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { queryClient } from "../../../../../hooks/queryClient";
 import Comments from "./Comments/Comments";
 import AddComment from "./Comments/AddComment";
+import { useTranslation } from "react-i18next";
+import Draft from "../../../../Markdown/Draft";
+import MarkdownToPost from "../../../../Markdown/MarkdownToPost";
+import EditAnswer from "./EditAnswer/EditAnswer";
 
 const Answer = ({ answer }) => {
+  const { postId } = useParams();
+  const { t } = useTranslation();
+  const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const updateAnswer = hooks.useUpdateAnswer();
   const deleteAnswer = hooks.useDeleteAnswer();
   const mainUser = queryClient.getQueryData(["Main User"]);
@@ -28,6 +28,7 @@ const Answer = ({ answer }) => {
     (item) => item && item.userId === mainUser?.sub
   );
   const [isAddComment, setIsAddComment] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const like = async () => {
     if (answer.votes.votesCount >= 0) {
@@ -132,11 +133,24 @@ const Answer = ({ answer }) => {
         isAddComment ? setIsAddComment(false) : setIsAddComment(true)
       }
     >
-      Reply to
+      {t("answer.reply")}
     </span>,
-    <span key="comment-basic-reply-to" onClick={deleteCurrentAnswer}>
-      Delete
-    </span>,
+    (mainUser?.sub === answer.user.sub ||
+      mainUser?.sub === postData?.user?.sub) && (
+      <>
+        <span
+          key="comment-basic-reply-to"
+          onClick={() =>
+            isEditMode ? setIsEditMode(false) : setIsEditMode(true)
+          }
+        >
+          edit
+        </span>
+        <span key="comment-basic-reply-to" onClick={deleteCurrentAnswer}>
+          {t("comment.delete")}
+        </span>
+      </>
+    ),
   ];
   return (
     <div style={{ borderBottom: "1px solid #dddddd" }}>
@@ -169,40 +183,17 @@ const Answer = ({ answer }) => {
         }
         content={
           <div style={{ paddingTop: 15 }}>
-            <ReactMarkdown
-              children={answer.body}
-              components={{
-                code({ node, inline, className, children, ...props }) {
-                  return !inline ? (
-                    <SyntaxHighlighter
-                      wrapLines={true}
-                      customStyle={{
-                        minWidth: 400,
-                        padding: "0 10px",
-                        margin: 0,
-                        /*overflow-y: hidden;*/
-                      }}
-                      children={String(children)
-                        .replace(/\n$/, "")
-                        .replaceAll("\\s\\s\n", "\n")}
-                      style={darcula}
-                      language={answer.codeLanguage}
-                      PreTag="div"
-                      {...props}
-                    />
-                  ) : (
-                    <code className={"monospace"} {...props}>
-                      {children}
-                    </code>
-                  );
-                },
-              }}
-              remarkPlugins={[remarkGfm]}
+            <MarkdownToPost
+              codeLanguage={answer.codeLanguage}
+              body={answer.body}
             />
           </div>
         }
         datetime={<span>{new Date().toLocaleDateString()}</span>}
       >
+        {isEditMode && (
+          <EditAnswer answer={answer} setIsEditMode={setIsEditMode} />
+        )}
         {isAddComment && (
           <AddComment answerId={answer._id} setIsAddComment={setIsAddComment} />
         )}

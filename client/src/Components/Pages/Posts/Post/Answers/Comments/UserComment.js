@@ -2,13 +2,17 @@ import React from "react";
 import { Avatar, Button, Comment } from "antd";
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
 import "../../post.css";
+import { useTranslation } from "react-i18next";
 
 const UserComment = ({ comment }) => {
+  const { t } = useTranslation();
+  const { postId } = useParams();
   const deleteComment = hooks.useDeleteComment();
+  const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const mainUser = queryClient.getQueryData(["Main User"]);
   const deleteCurrentComment = async () => {
     if (mainUser) {
@@ -62,13 +66,16 @@ const UserComment = ({ comment }) => {
             }}
             remarkPlugins={[remarkGfm]}
           />
-          <Button
-            type={"text"}
-            style={{ color: "grey", marginTop: -4 }}
-            onClick={deleteCurrentComment}
-          >
-            Delete
-          </Button>
+          {(mainUser?.sub === comment.user.sub ||
+            mainUser?.sub === postData?.user?.sub) && (
+            <Button
+              type={"text"}
+              style={{ color: "grey", marginTop: -4 }}
+              onClick={deleteCurrentComment}
+            >
+              {t("comment.delete")}
+            </Button>
+          )}
         </div>
       }
     />

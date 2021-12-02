@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import remarkGfm from "remark-gfm";
 import { useTranslation } from "react-i18next";
+import styles from "./postInfo.module.css";
 import "../post.css";
 
 const PostInfo = ({ post }) => {
@@ -28,6 +29,25 @@ const PostInfo = ({ post }) => {
           <div>
             {t("PostComponent.Views")}{" "}
             <span style={{ fontWeight: 600 }}>{post.views}</span>
+          </div>
+        </div>
+      </div>
+      <div className={styles.user}>
+        <div>
+          <img src={post.user.picture} alt={post.user.name} />
+        </div>
+        <div>
+          <div>
+            <NavLink
+              to={`/user/${post.user.name.split(" ").join("-")}/${
+                post.user.sub
+              }`}
+            >
+              {post.user.name}
+            </NavLink>
+          </div>
+          <div>
+            {post.user.status} <strong>{post.user.reputation}</strong>
           </div>
         </div>
       </div>

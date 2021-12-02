@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Loader from "../../../Loader/Loader";
 import * as hooks from "../../../../hooks/posts";
 import PostInfo from "./PostInfo/PostInfo";
-import AddAnswer from "./AddAnwer/AddAnswer";
+import AddAnswer from "./Answers/AddAnwer/AddAnswer";
 import Answers from "./Answers/Answers";
 
 const Post = () => {

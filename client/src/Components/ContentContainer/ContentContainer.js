@@ -18,7 +18,7 @@ const ContentContainer = () => {
   return (
     <Layout
       style={{
-        padding: "0 24px 24px",
+        padding: "0 50px 24px",
         marginTop: 0,
       }}
     >

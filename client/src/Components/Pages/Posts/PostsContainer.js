@@ -46,7 +46,7 @@ const PostsContainer = () => {
       <PostsBreadCrumb />
       <Content
         className="site-layout-background"
-        style={{ padding: 24, margin: 0, minHeight: 280 }}
+        style={{ padding: "30px 100px", margin: 0, minHeight: 280 }}
       >
         <Switch>
           <Route

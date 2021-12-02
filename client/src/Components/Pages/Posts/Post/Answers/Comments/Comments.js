@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import * as hooks from "../../../../../../hooks/comments";
-import Loader from "../../../../../Loader/Loader";
 import UserComment from "./UserComment";
 import { Button } from "antd";
 import { queryClient } from "../../../../../../hooks/queryClient";
+import { useTranslation } from "react-i18next";
 
 const CurrentComments = ({ setPage, page, data }) => {
+  const { t } = useTranslation();
   return (
     <>
-      <h3 style={{ margin: "0" }}>Comments</h3>
+      <h3 style={{ margin: "0" }}>{t("comment.comments")}</h3>
       <div style={{ marginLeft: 20 }}>
         {data.answerComments.map((comment) => {
           return <UserComment comment={comment} page={page} />;
@@ -22,7 +23,7 @@ const CurrentComments = ({ setPage, page, data }) => {
             setPage(page + 1);
           }}
         >
-          Показать больше
+          {t("comment.showMore")}
         </Button>
       )}
       {data.answerComments.length > 6 && (
@@ -33,7 +34,7 @@ const CurrentComments = ({ setPage, page, data }) => {
             setPage(1);
           }}
         >
-          Скрыть
+          {t("comment.showLess")}
         </Button>
       )}
     </>
@@ -60,7 +61,7 @@ const Comments = ({ answerId }) => {
     prevData ? (
       <CurrentComments data={prevData} page={page} setPage={setPage} />
     ) : (
-      <Loader />
+      <></>
     )
   ) : status === "error" ? (
     error.message

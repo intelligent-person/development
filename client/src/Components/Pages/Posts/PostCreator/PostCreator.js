@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../../../Markdown/markdown.css";
+import "../../../Markdown/markdown.module.css";
 import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
 import { useForm, Controller, useWatch } from "react-hook-form";
