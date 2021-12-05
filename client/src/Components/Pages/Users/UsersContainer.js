@@ -25,7 +25,7 @@ const UsersContainer = () => {
     <>
       <Breadcrumb
         itemRender={itemRender}
-        style={{ margin: "16px 0" }}
+        style={{ margin: "8px 0" }}
         routes={routes}
       />
       <Content

@@ -5,10 +5,14 @@ import * as hooks from "../../../../hooks/posts";
 import PostInfo from "./PostInfo/PostInfo";
 import AddAnswer from "./Answers/AddAnwer/AddAnswer";
 import Answers from "./Answers/Answers";
+import { queryClient } from "../../../../hooks/queryClient";
+import { useTranslation } from "react-i18next";
 
 const Post = () => {
   const { postId } = useParams();
-  const { status, error, data, refetch } = hooks.useFetchPostById(postId);
+  const { t } = useTranslation();
+  const mainUser = queryClient.getQueryData(["Main User"]);
+  const { status, error, data } = hooks.useFetchPostById(postId);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
@@ -17,7 +21,7 @@ const Post = () => {
     <>
       <PostInfo post={data} />
       <Answers />
-      <AddAnswer post={data} refetch={refetch} />
+      {data.userId !== mainUser?.sub && <AddAnswer post={data} />}
     </>
   );
 };

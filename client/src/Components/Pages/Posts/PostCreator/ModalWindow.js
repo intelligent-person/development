@@ -1,25 +1,32 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Modal } from "antd";
+import * as userHooks from "../../../../hooks/users";
+import { queryClient } from "../../../../hooks/queryClient";
 
 const ModalWindow = () => {
   const [isModalVisible, setIsModalVisible] = useState(true);
-
+  const mainUser = queryClient.getQueryData(["Main User"]);
+  const updateUser = userHooks.useUpdateUser();
   const handleOk = () => {
     setIsModalVisible(false);
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     setIsModalVisible(false);
+    await updateUser.mutateAsync({
+      ...mainUser,
+      helpInPostCreate: 0,
+    });
   };
   return (
     <Modal
       title={<h2>Как задать хороший вопрос</h2>}
       visible={isModalVisible}
-      okText={"Задать вопрос"}
-      onOk={handleOk}
-      cancelText={"Не показывать мне это снова"}
-      onCancel={handleCancel}
+      okText={"Не показывать мне это снова"}
+      onOk={handleCancel}
+      cancelText={"Задать вопрос"}
+      onCancel={handleOk}
     >
       <p>
         Вы готовы задать свой первый вопрос, связанный с программированием, и

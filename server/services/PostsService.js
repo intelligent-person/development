@@ -6,18 +6,24 @@ class PostsService {
     return createdPost;
   }
 
-  async getAll(pageSize, page, sort, unanswered, tags, searsValue) {
+  async getAll(page, pageSize, sort, unanswered, tags, searsValue) {
+    console.log(page);
+    console.log(pageSize);
+    console.log(sort);
+    console.log(unanswered);
+    console.log(tags);
+    console.log(searsValue);
     //SORT
     let sortable = { date: "desc" };
     if (sort === "lessViews") sortable = { views: "asc" };
     else if (sort === "moreViews") sortable = { views: "desc" };
     //FILTER
     let find = {};
-    if (unanswered === "true" && tags[0] !== "undefined")
-      find = { answersCount: 0, tags: { $in: tags } };
-    else if (tags[0] !== "undefined") find = { tags: { $in: tags } };
+    if (unanswered === "true" && tags !== "null")
+      find = { answersCount: 0, tags: { $in: tags.split(",") } };
+    else if (tags !== "null") find = { tags: { $in: tags.split(",") } };
     else if (unanswered === "true") find = { answersCount: 0 };
-    if (searsValue !== "") {
+    if (searsValue !== "null") {
       find = { $text: { $search: searsValue } };
       if (unanswered === "true")
         find = { $text: { $search: searsValue }, answersCount: 0 };
@@ -25,12 +31,12 @@ class PostsService {
     //POSTS COUNT
     const postsCount = await Post.find(find).count();
     //POSTS
+    console.log(find, sortable);
     const posts = await Post.find(find)
       .select("-answers")
       .sort(sortable)
       .skip((page - 1) * pageSize)
       .limit(pageSize);
-
     return [posts, postsCount];
   }
 

@@ -10,37 +10,48 @@ import draftToMarkdown from "../../../../../Markdown/draft-to-markdown";
 import { useTranslation } from "react-i18next";
 import * as hooks from "../../../../../../hooks/answers";
 import { useAuth0 } from "@auth0/auth0-react";
-import { AnswerCreatorSchema } from "../AnswerCreatorSchema";
+import { EditCreatorSchema } from "../EditCreatorSchema";
 import styles from "../../../../../Markdown/markdown.module.css";
+import * as userHooks from "../../../../../../hooks/users";
 
 const AddAnswer = ({ post }) => {
   const { t } = useTranslation();
   const defaultValues = { Draft: undefined };
+  const { data } = userHooks.useUserById(post.userId);
   const {
     handleSubmit,
     control,
     formState: { errors },
     reset,
-  } = useForm({ resolver: yupResolver(AnswerCreatorSchema(t)), defaultValues });
+  } = useForm({ resolver: yupResolver(EditCreatorSchema(t)), defaultValues });
   const currentUrl = window.location.href;
   const { isAuthenticated } = useAuth0();
   const addAnswer = hooks.useAddAnswer();
+  const updateUser = userHooks.useUpdateUser();
   const mainUser = queryClient.getQueryData(["Main User"]);
 
-  const createAnswer = async (data) => {
-    let contentState = data.Draft.getCurrentContent();
+  const createAnswer = async (formData) => {
+    let contentState = formData.Draft.getCurrentContent();
     const rawObject = convertToRaw(contentState);
     const markdownBody = draftToMarkdown(rawObject);
     if (isAuthenticated) {
       const newAnswer = {
         body: markdownBody,
         codeLanguage: post.codeLanguage,
-        user: mainUser,
+        userId: mainUser.sub,
         postId: post._id,
       };
       await addAnswer.mutateAsync(newAnswer);
       reset({
         Draft: EditorState.createEmpty(),
+      });
+      await updateUser.mutateAsync({
+        sub: mainUser.sub,
+        reputation: mainUser.reputation + 5,
+      });
+      await updateUser.mutateAsync({
+        sub: data.sub,
+        reputation: data.reputation + 5,
       });
     }
   };
@@ -58,7 +69,10 @@ const AddAnswer = ({ post }) => {
         </a>
         .
       </h3>
-      <h2>{t("post.yourAnswer")}</h2>
+      <h2>
+        {t("post.yourAnswer")}
+        {!mainUser && <> (You're not register)</>}
+      </h2>
       {errors.Draft && <p className={styles.error}>{errors.Draft.message}</p>}
       <Draft control={control} codeLanguage={post.codeLanguage} />
       {mainUser ? (

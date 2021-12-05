@@ -14,7 +14,7 @@ class UsersService {
       topAnswers: [
         {
           answerId: "617911adf60d4f3aee4d67f5",
-          votes: 5,
+          voteCount: 5,
           title: "Ребят, есть проблемка",
           date: "2021-10-27T08:45:33.153+00:00",
         },
@@ -46,16 +46,16 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
+
     const user = await User.findOne({ sub: id });
     return user;
   }
 
   async update(user) {
-    if (!user._id) {
+    if (!user.sub) {
       throw new Error("Не указан ID");
     }
-    console.log(user);
-    const updatedUser = await User.findByIdAndUpdate(user._id, user, {
+    const updatedUser = await User.findOneAndUpdate({ sub: user.sub }, user, {
       new: true,
     });
     return updatedUser;

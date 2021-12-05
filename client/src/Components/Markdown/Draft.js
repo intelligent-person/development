@@ -11,7 +11,6 @@ const Draft = ({ control, codeLanguage }) => {
     control,
     name: "Draft",
   });
-  console.log(draftBody);
   return (
     <>
       <Controller

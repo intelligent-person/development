@@ -15,13 +15,14 @@ h4 {
 }
 
 .user img {
-  width: 50px;
+  width: 60px;
   border-radius: 50%;
 }
 .postInfo {
   text-align: center;
 }
 .postBody {
+  display: grid;
   margin-left: 20px;
 }
 
@@ -29,8 +30,18 @@ h4 {
   font-size: 20px;
 }
 
+.answers {
+  padding: 5px;
+  background-color: #1890ff;
+  color: white;
+}
+
+.views {
+  padding: 5px;
+}
+
 .user {
-  padding: 20px;
+  padding: 20px 0 0 30px;
   color: #666666;
   font-weight: 400;
 }

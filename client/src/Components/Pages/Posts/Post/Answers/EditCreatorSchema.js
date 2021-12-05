@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { convertToRaw } from "draft-js";
 
-export const AnswerCreatorSchema = (t) =>
+export const EditCreatorSchema = (t) =>
   yup.object().shape({
     Draft: yup
       .mixed()

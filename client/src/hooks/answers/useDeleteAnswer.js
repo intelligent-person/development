@@ -21,12 +21,18 @@ export const useDeleteAnswer = () => {
         "posts",
         `PostId: ${params[2].postId}`,
         "answers",
+        `Page: ${params[2].page}`,
       ]);
       const newData = currentData.filter(
         (answer) => answer._id !== params[2].id
       );
       queryClient.setQueryData(
-        ["posts", `PostId: ${params[2].postId}`, "answers"],
+        [
+          "posts",
+          `PostId: ${params[2].postId}`,
+          "answers",
+          `Page: ${params[2].page}`,
+        ],
         newData
       );
     },

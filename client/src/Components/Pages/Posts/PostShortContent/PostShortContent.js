@@ -4,9 +4,12 @@ import ReactMarkdown from "react-markdown";
 import DateComponent from "../../../DateComponent/DateComponent";
 import PostTag from "./PostTag";
 import { useTranslation } from "react-i18next";
+import * as userHooks from "../../../../hooks/users";
+import Loader from "../../../Loader/Loader";
 
-const PostShortContent = ({ post, setInclude, searchValue }) => {
+const PostShortContent = ({ post }) => {
   const { t } = useTranslation();
+  const { data, status, error } = userHooks.useUserById(post.userId);
   const markdownChildren =
     post.body
       .split("")
@@ -21,23 +24,23 @@ const PostShortContent = ({ post, setInclude, searchValue }) => {
       .slice(0, 270)
       .join("")
       .split(" ")
-      .map((item) => {
-        for (let i = 0; i < searchValue.split(" ").length; i++) {
-          if (item === searchValue.split(" ")[i] && item !== "")
-            item = `**${item}**`;
-          else item = `${item}`;
-        }
-        return item;
-      })
       .join(" ") + "...";
 
-  return (
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    error.message
+  ) : (
     <div key={post._id} className={"post"}>
       <div className={"postInfo"}>
-        <div className={"count"}>{post.views}</div>
-        <div>{t("PostInfoComponent.Views")}</div>
-        <div className={"count"}>{post.answersCount}</div>
-        <div>{t("PostInfoComponent.Answers")}</div>
+        <div className={"views"}>
+          <div className={"count"}>{post.views}</div>
+          <div>{t("PostInfoComponent.Views")}</div>
+        </div>
+        <div className={"answers"}>
+          <div className={"count"}>{post.answersCount}</div>
+          <div>{t("PostInfoComponent.Answers")}</div>
+        </div>
       </div>
       <div className={"postBody"}>
         <NavLink to={`/questions/id/${post._id}`}>
@@ -50,7 +53,7 @@ const PostShortContent = ({ post, setInclude, searchValue }) => {
         </div>
         <div>
           {post.tags.map((tag) => (
-            <PostTag tag={tag} setInclude={setInclude} />
+            <PostTag tag={tag} />
           ))}
         </div>
       </div>
@@ -58,32 +61,26 @@ const PostShortContent = ({ post, setInclude, searchValue }) => {
       <div className={"user"}>
         <div className={"userWrapper"}>
           <div>
-            <NavLink
-              to={`user/${post.user.name.split(" ").join("-")}/${
-                post.user.sub
-              }`}
-            >
-              <img src={`${post.user.picture}`} alt={"Avatar"} />
+            <NavLink to={`user/${data.name.split(" ").join("-")}/${data.sub}`}>
+              <img src={`${data.picture}`} alt={"Avatar"} />
             </NavLink>
           </div>
           <div style={{ marginLeft: 10 }}>
             <h4>
               <NavLink
-                to={`user/${post.user.name.split(" ").join("-")}/${
-                  post.user.sub
-                }`}
+                to={`user/${data.name.split(" ").join("-")}/${data.sub}`}
               >
-                {post.user.name}
+                {data.name}
               </NavLink>
             </h4>
             <div style={{ display: "inline-flex" }}>
-              <div style={{ marginRight: 5 }}>{post.user.status}</div>
-              <div>{post.user.reputation}</div>
+              <div style={{ marginRight: 5 }}>{data.status}</div>
+              <div>{data.reputation}</div>
+            </div>
+            <div style={{ fontSize: 12 }}>
+              <DateComponent postDate={post.date} />
             </div>
           </div>
-        </div>
-        <div>
-          <DateComponent postDate={post.date} />
         </div>
       </div>
     </div>

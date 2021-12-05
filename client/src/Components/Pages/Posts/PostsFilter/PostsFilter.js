@@ -1,45 +1,64 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Col, Input, Radio, Row } from "antd";
 import Search from "antd/es/input/Search";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { MenuUnfoldOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "../../../../utils/i18n";
 import { useAuth0 } from "@auth0/auth0-react";
+import qs from "query-string";
 
-const PostsFilter = ({
-  postsCount,
-  setInclude,
-  setSort,
-  setPage,
-  setSearchValue,
-}) => {
+const PostsFilter = ({ postsCount }) => {
   const { isAuthenticated } = useAuth0();
   const { t } = useTranslation();
+  const history = useHistory();
+  const queryParams = qs.parse(window.location.search);
+
   const [radio, setRadio] = React.useState("newest");
-  const onSearch = (value) => {
-    setSearchValue(value);
-    setPage(1);
-  };
   const [isFilter, setIsFilter] = useState(false);
   const [isUnanswered, setIsUnanswered] = useState(false);
   const [isTags, setIsTags] = useState(false);
   const [tags, setTags] = useState("");
+  const onSearch = (value) => {
+    const newQueries = {
+      ...queryParams,
+      search: value,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
+  };
   const onChange = (e) => {
     setRadio(e.target.value);
   };
   const onNewest = () => {
-    setSort("newest");
-    setInclude({});
-    setPage(1);
+    const newQueries = {
+      ...queryParams,
+      sort: "newest",
+      unanswered: false,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
   };
   const onViews = () => {
-    setSort("moreViews");
-    setPage(1);
+    const newQueries = {
+      ...queryParams,
+      sort: "moreViews",
+      unanswered: false,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
   };
   const onUnanswered = () => {
-    setInclude({ unanswered: "true" });
-    setPage(1);
+    const newQueries = {
+      ...queryParams,
+      unanswered: true,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
   };
 
   const onFilter = () => {
@@ -47,15 +66,15 @@ const PostsFilter = ({
     else setIsFilter(true);
   };
   const onSubmit = () => {
-    setSort(radio);
-    setIsFilter(false);
-    isTags
-      ? setInclude({
-          unanswered: isUnanswered,
-          tags: tags.split(" ").join(","),
-        })
-      : setInclude({ unanswered: isUnanswered });
-    setPage(1);
+    const newQueries = {
+      ...queryParams,
+      unanswered: isUnanswered,
+      tags: isTags ? tags.split(" ").join(",") : undefined,
+      sort: radio,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
   };
 
   return (

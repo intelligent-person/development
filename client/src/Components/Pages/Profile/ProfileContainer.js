@@ -6,7 +6,6 @@ import * as hooks from "../../../hooks/users";
 const ProfileContainer = () => {
   const { sub } = useParams();
   const { status, data, error } = hooks.useUserById(sub);
-  console.log(data);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (

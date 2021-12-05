@@ -13,14 +13,21 @@ export const usersAPI = {
   addUser(newUser) {
     return instance.post("/users", newUser);
   },
+  updateUser(user) {
+    return instance.put(`/users`, user);
+  },
   deleteUser(id) {
     return instance.delete(`/users/` + id);
   },
 };
 export const postsAPI = {
-  getPosts(pageSize, page, sort, include, searchValue) {
+  getPosts(pageSize, page, sort, search, unanswered) {
+    const params = new URL(window.location.href).searchParams;
+
     return instance.get(
-      `/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${include.unanswered}&tags=${include.tags}&searchValue=${searchValue}`
+      `/posts?pageSize=${pageSize}&page=${page}&sortType=${sort}&unanswered=${unanswered}&tags=${params.get(
+        "tags"
+      )}&searchValue=${search}`
     );
   },
   getPost(id) {

@@ -12,24 +12,23 @@ const Answers = () => {
   const { postId } = useParams();
   const { t } = useTranslation();
   const currentData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
-  const { status, error, data, refetch } = hooks.useFetchAnswers(postId, page);
+  const { status, error, data } = hooks.useFetchAnswers(postId, page);
   useEffect(() => {
-    refetch();
-  }, [page]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [page]);
+    status !== "loading" && window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [status, page]);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
     error.message
-  ) : data[0] ? (
+  ) : data.length === 0 ? (
+    <h1 style={{ textAlign: "center" }}>{t("PostComponent.futureAnswers")}</h1>
+  ) : (
     <>
       <h2 style={{ marginTop: 50 }}>
         {currentData.answersCount} {t("answer.answers")}
       </h2>
       {data.map((answer) => {
-        return <Answer answer={answer} />;
+        return <Answer answer={answer} page={page} />;
       })}
       {currentData.answersCount > 10 && (
         <Pagination
@@ -41,8 +40,6 @@ const Answers = () => {
         />
       )}
     </>
-  ) : (
-    <></>
   );
 };
 

@@ -4,9 +4,8 @@ import { queryClient } from "../queryClient";
 
 export const useUpdateAnswer = () => {
   return useMutation(
-    async (answer) => {
-      console.log(answer);
-      await answersAPI.updateAnswer(answer);
+    async (params) => {
+      await answersAPI.updateAnswer(params.answer);
     },
     {
       onMutate(...params) {
@@ -24,15 +23,21 @@ export const useUpdateAnswer = () => {
       onSettled(...params) {
         const currentData = queryClient.getQueryData([
           "posts",
-          `PostId: ${params[2].postId}`,
+          `PostId: ${params[2].answer.postId}`,
           "answers",
+          `Page: ${params[2].page}`,
         ]);
         const newData = currentData.map((answer) => {
-          if (answer._id === params[2]._id) return params[2];
+          if (answer._id === params[2].answer._id) return params[2].answer;
           else return answer;
         });
         queryClient.setQueryData(
-          ["posts", `PostId: ${params[2].postId}`, "answers"],
+          [
+            "posts",
+            `PostId: ${params[2].answer.postId}`,
+            "answers",
+            `Page: ${params[2].page}`,
+          ],
           newData
         );
       },

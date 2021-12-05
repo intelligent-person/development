@@ -1,40 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import PostCreator from "./PostCreator/PostCreator";
 import Loader from "../../Loader/Loader";
 import PostsFilter from "./PostsFilter/PostsFilter";
 import PostsBreadCrumb from "./PostsBreadCrumb";
 import Posts from "./Posts";
 import * as hooks from "../../../hooks/posts";
+import qs from "query-string";
 
 const PostInfoContainer = React.lazy(() => import("./Post/Post"));
 
 const PostsContainer = () => {
   const location = window.location;
-  const [pageSize, setPageSize] = useState(10);
-  const [page, setPage] = useState(1);
-  const [sort, setSort] = useState("newest");
-  const [searchValue, setSearchValue] = useState("");
-  const [include, setInclude] = useState({ unanswered: false });
+  const params = new URL(window.location.href).searchParams;
+  const history = useHistory();
+  const queryParams = qs.parse(window.location.search);
   const { status, error, data, refetch } = hooks.useFetchPosts(
-    pageSize,
-    page,
-    sort,
-    include,
-    searchValue
+    params.get("page"),
+    params.get("pageSize"),
+    params.get("sort"),
+    params.get("search"),
+    params.get("unanswered"),
+    params.get("tags")
   );
   useEffect(() => {
-    if (location.pathname === "/questions") refetch();
-  }, [page, pageSize, sort, include, searchValue]);
-  useEffect(() => {
-    if (location.pathname === "/questions") window.scrollTo(0, 0);
-  }, [data]);
+    if (location.pathname === "/questions") {
+      refetch();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [
+    params.get("search"),
+    params.get("page"),
+    params.get("pageSize"),
+    params.get("sort"),
+    params.get("unanswered"),
+    params.get("tags"),
+  ]);
 
   const setSize = (page, pageSize) => {
-    setPage(page);
-    setPageSize(pageSize);
+    const newQueries = {
+      ...queryParams,
+      page,
+      pageSize,
+    };
+    history.push({
+      search: qs.stringify(newQueries),
+    });
   };
 
   return status === "loading" ? (
@@ -46,7 +59,7 @@ const PostsContainer = () => {
       <PostsBreadCrumb />
       <Content
         className="site-layout-background"
-        style={{ padding: "30px 100px", margin: 0, minHeight: 280 }}
+        style={{ padding: "30px 100px 50px", margin: 0, minHeight: 280 }}
       >
         <Switch>
           <Route
@@ -54,24 +67,13 @@ const PostsContainer = () => {
             exact={true}
             render={() => (
               <>
-                <PostsFilter
-                  postsCount={data.postsCount}
-                  setSort={setSort}
-                  setInclude={setInclude}
-                  setPage={setPage}
-                  setSearchValue={setSearchValue}
-                />
-                <Posts
-                  posts={data.posts}
-                  searchValue={searchValue}
-                  setInclude={setInclude}
-                />
+                <PostsFilter postsCount={data.postsCount} />
+                <Posts posts={data.posts} />
                 <div style={{ textAlign: "center", marginTop: 50 }}>
                   <Pagination
                     defaultCurrent={1}
                     total={data.postsCount}
                     onChange={setSize}
-                    current={page}
                   />
                 </div>
               </>
@@ -88,7 +90,11 @@ const PostsContainer = () => {
           <Route
             path={"/questions/ask"}
             exact={true}
-            render={() => <PostCreator />}
+            render={() => (
+              <React.Suspense fallback={<Loader />}>
+                <PostCreator />
+              </React.Suspense>
+            )}
           />
         </Switch>
       </Content>

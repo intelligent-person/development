@@ -32,13 +32,7 @@ const AddComment = ({ answerId, setIsAddComment, page }) => {
   const createcomment = async (data) => {
     if (isAuthenticated) {
       const newAnswer = {
-        user: {
-          sub: mainUser.sub,
-          name: mainUser.name,
-          picture: mainUser.picture,
-          reputation: mainUser.reputation,
-          status: mainUser.status,
-        },
+        userId: mainUser.sub,
         answerId,
         body: data.comment,
       };
@@ -60,12 +54,12 @@ const AddComment = ({ answerId, setIsAddComment, page }) => {
             value={field.value}
             onChange={field.onChange}
             rows={2}
-            placeholder={"вы можете сделать текст в виде кода применив ``"}
+            placeholder={t("comment.recommendation")}
           />
         )}
       />
-      <Button htmlType="submit" type="primary" style={{ marginTop: 15 }}>
-        Add Comment
+      <Button htmlType="submit" type="primary" style={{ margin: "15px 0" }}>
+        {t("comment.addComment")}
       </Button>
     </form>
   );

@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import "../../../Markdown/markdown.module.css";
+import React from "react";
+import styles from "../../../Markdown/markdown.module.css";
 import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import ModalRedirect from "./ModalRedirect";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { convertToRaw } from "draft-js";
+import { convertToRaw, EditorState } from "draft-js";
 import draftToMarkdown from "../../../Markdown/draft-to-markdown";
 import { useTranslation } from "react-i18next";
 import { queryClient } from "../../../../hooks/queryClient";
 import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
 import Draft from "../../../Markdown/Draft";
+import { Redirect } from "react-router-dom";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -20,6 +21,7 @@ const CreatorSchema = (t) =>
       .string()
       .required(t("errors.isRequired"))
       .min(20, t("errors.tooShort")),
+    select: yup.string().required(t("errors.isRequired")),
     tags: yup
       .string()
       .required(t("errors.isRequired"))
@@ -37,7 +39,7 @@ const CreatorSchema = (t) =>
         }
       }),
   });
-const defaultValues = { Draft: undefined, select: "cpp" };
+const defaultValues = { Draft: undefined };
 
 const PostCreator = () => {
   const mainUser = queryClient.getQueryData(["Main User"]);
@@ -66,30 +68,35 @@ const PostCreator = () => {
         title: data.title,
         body: markdownBody,
         codeLanguage: data.select,
-        user: mainUser,
+        userId: mainUser.sub,
         tags: data.tags.split(" "),
         views: 0,
         answersCount: 0,
       };
       await addPost.mutateAsync(newPost);
       reset({
-        Draft: undefined,
+        Draft: EditorState.createEmpty(),
         title: "",
         tags: "",
       });
     }
   };
-  return (
+  return !mainUser ? (
+    <Redirect to={"/login"} />
+  ) : (
     <form onSubmit={handleSubmit(createPost)}>
-      <div className={"contentBlock sendBlock"}>
+      <div className={styles.sendBlock}>
+        {errors.select && (
+          <p className={styles.error}>{errors.select.message}</p>
+        )}
         <Controller
           name="select"
           control={control}
-          defaultValue="cpp"
           render={({ field }) => (
             <Select
               {...field}
               style={{ width: 120 }}
+              placeholder={"language"}
               options={[
                 { value: "javascript", label: "javascript" },
                 { value: "cpp", label: "cpp" },
@@ -108,10 +115,10 @@ const PostCreator = () => {
           {t("postCreator.addQuestion")}
         </Button>
       </div>
-      <div className={"contentBlock"}>
+      <div className={styles.contentBlock}>
         <h2 style={{ marginBottom: 0 }}>{t("postCreator.title")}</h2>
         <h5>{t("postCreator.subTitle")}</h5>
-        {errors.title && <p className={"error"}>{errors.title.message}</p>}
+        {errors.title && <p className={styles.error}>{errors.title.message}</p>}
         <Controller
           control={control}
           name={"title"}
@@ -125,15 +132,15 @@ const PostCreator = () => {
           )}
         />
       </div>
-      <div className={"contentBlock"}>
+      <div className={styles.contentBlock}>
         <h3 style={{ marginBottom: 0 }}>{t("postCreator.body")}</h3>
-        {errors.Draft && <p className={"error"}>{errors.Draft.message}</p>}
+        {errors.Draft && <p className={styles.error}>{errors.Draft.message}</p>}
         <Draft control={control} codeLanguage={languageControl} />
       </div>
       <div className={"contentBlock"}>
         <h2>{t("postCreator.tags")}</h2>
         <h5>{t("postCreator.subTags")}</h5>
-        {errors.tags && <p className={"error"}>{errors.tags.message}</p>}
+        {errors.tags && <p className={styles.error}>{errors.tags.message}</p>}
         <Controller
           control={control}
           name={"tags"}
@@ -149,7 +156,7 @@ const PostCreator = () => {
       </div>
       {addPost.isSuccess && <ModalRedirect />}
       {addPost.isLoading && <Loader />}
-      <ModalWindow />
+      {mainUser?.helpInPostCreate === 1 && <ModalWindow />}
     </form>
   );
 };

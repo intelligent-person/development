@@ -5,98 +5,117 @@ import {
   LikeOutlined,
   DislikeFilled,
   LikeFilled,
+  EditOutlined,
 } from "@ant-design/icons";
 
 import * as hooks from "../../../../../hooks/answers";
+import * as userHooks from "../../../../../hooks/users";
 import { NavLink, useParams } from "react-router-dom";
 import { queryClient } from "../../../../../hooks/queryClient";
 import Comments from "./Comments/Comments";
 import AddComment from "./Comments/AddComment";
 import { useTranslation } from "react-i18next";
-import Draft from "../../../../Markdown/Draft";
 import MarkdownToPost from "../../../../Markdown/MarkdownToPost";
 import EditAnswer from "./EditAnswer/EditAnswer";
+import Loader from "../../../../Loader/Loader";
 
-const Answer = ({ answer }) => {
-  const { postId } = useParams();
+const Answer = ({ answer, page }) => {
   const { t } = useTranslation();
-  const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
+  const updateUser = userHooks.useUpdateUser();
+  const { data, status, error } = userHooks.useUserById(answer.userId);
   const updateAnswer = hooks.useUpdateAnswer();
   const deleteAnswer = hooks.useDeleteAnswer();
   const mainUser = queryClient.getQueryData(["Main User"]);
-  const userAction = answer.votes.users.find(
+  const userAction = answer.votes.find(
     (item) => item && item.userId === mainUser?.sub
   );
   const [isAddComment, setIsAddComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
   const like = async () => {
-    if (answer.votes.votesCount >= 0) {
-      let newVotesCount = null;
-      let newAction = null;
+    if (answer.votesCount >= 0) {
+      let newVotesCount;
+      let newAction;
+      let newReputation;
       if (!userAction || userAction?.action === null) {
-        newVotesCount = answer.votes.votesCount + 1;
+        newVotesCount = answer.votesCount + 1;
         newAction = "liked";
+        newReputation = data.reputation + 1;
       } else if (userAction.action === "disliked") {
-        newVotesCount = answer.votes.votesCount + 1;
+        newVotesCount = answer.votesCount + 1;
         newAction = null;
+        newReputation = data.reputation + 1;
       } else {
-        newVotesCount = answer.votes.votesCount - 1;
+        newVotesCount = answer.votesCount - 1;
         newAction = null;
+        newReputation = data.reputation - 1;
       }
       await updateAnswer.mutateAsync({
-        ...answer,
-        votes: {
+        answer: {
+          ...answer,
           votesCount: newVotesCount,
-          users: [
-            answer.votes.users,
+          votes: [
+            ...answer.votes.filter((vote) => vote.userId !== mainUser.sub),
             { userId: mainUser.sub, action: newAction },
           ],
         },
+        page,
+      });
+      await updateUser.mutateAsync({
+        sub: data.sub,
+        reputation: newReputation,
       });
     }
   };
   const dislike = async () => {
-    if (answer.votes.votesCount >= 0) {
+    if (answer.votesCount >= 0) {
       let newVotesCount = null;
       let newAction = null;
+      let newReputation = null;
       let stop = false;
       if (
         (!userAction || userAction?.action === null) &&
-        answer.votes.votesCount > 0
+        answer.votesCount > 0
       ) {
-        newVotesCount = answer.votes.votesCount - 1;
+        newVotesCount = answer.votesCount - 1;
         newAction = "disliked";
-      } else if (
-        userAction?.action === "liked" &&
-        answer.votes.votesCount > 0
-      ) {
-        newVotesCount = answer.votes.votesCount - 1;
+        newReputation = data.reputation - 1;
+      } else if (userAction?.action === "liked" && answer.votesCount > 0) {
+        newVotesCount = answer.votesCount - 1;
         newAction = null;
-      } else if (
-        answer.votes.votesCount !== 0 ||
-        userAction?.action === "disliked"
-      ) {
-        newVotesCount = answer.votes.votesCount + 1;
+        newReputation = data.reputation - 1;
+      } else if (answer.votesCount !== 0 || userAction?.action === "disliked") {
+        newVotesCount = answer.votesCount + 1;
         newAction = null;
+        newReputation = data.reputation - 1;
       } else stop = true;
-      !stop &&
-        (await updateAnswer.mutateAsync({
-          ...answer,
-          votes: {
+      if (!stop) {
+        await updateAnswer.mutateAsync({
+          answer: {
+            ...answer,
             votesCount: newVotesCount,
-            users: [
-              answer.votes.users,
+            votes: [
+              ...answer.votes.filter((vote) => vote.userId !== mainUser.sub),
               { userId: mainUser.sub, action: newAction },
             ],
           },
-        }));
+          page,
+        });
+        await updateUser.mutateAsync({
+          sub: data.sub,
+          reputation: newReputation,
+        });
+      }
     }
   };
   const deleteCurrentAnswer = async () => {
     if (mainUser) {
-      const params = { id: answer._id, postId: answer.postId };
+      const params = { id: answer._id, postId: answer.postId, page };
       await deleteAnswer.mutateAsync(params);
+      await updateUser.mutateAsync({
+        sub: data.sub,
+        reputation: data.reputation - answer.votesCount - 5,
+      });
     }
   };
 
@@ -113,7 +132,7 @@ const Answer = ({ answer }) => {
           className="comment-action"
           style={{ marginLeft: 10, fontSize: 20 }}
         >
-          {answer.votes.votesCount}
+          {answer.votesCount}
         </span>
       </span>
     </Tooltip>,
@@ -135,8 +154,7 @@ const Answer = ({ answer }) => {
     >
       {t("answer.reply")}
     </span>,
-    (mainUser?.sub === answer.user.sub ||
-      mainUser?.sub === postData?.user?.sub) && (
+    status !== "loading" && mainUser?.sub === data?.sub && (
       <>
         <span
           key="comment-basic-reply-to"
@@ -144,15 +162,22 @@ const Answer = ({ answer }) => {
             isEditMode ? setIsEditMode(false) : setIsEditMode(true)
           }
         >
-          edit
+          {t("answer.edit")}
         </span>
+        {answer.isEdited === true && (
+          <EditOutlined title={t("answer.edited")} />
+        )}
         <span key="comment-basic-reply-to" onClick={deleteCurrentAnswer}>
           {t("comment.delete")}
         </span>
       </>
     ),
   ];
-  return (
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    error.message
+  ) : (
     <div style={{ borderBottom: "1px solid #dddddd" }}>
       <Comment
         actions={actions}
@@ -160,25 +185,19 @@ const Answer = ({ answer }) => {
           <>
             <div>
               <NavLink
-                to={`/user/${answer.user.name.split(" ").join("-")}/${
-                  answer.user.sub
-                }`}
+                to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}
               >
-                {answer.user.name}
+                {data.name}
               </NavLink>
             </div>
             <div>
-              {answer.user.status} <strong>{answer.user.reputation}</strong>
+              {data.status} <strong>{data.reputation}</strong>
             </div>
           </>
         }
         avatar={
-          <NavLink
-            to={`/user/${answer.user.name.split(" ").join("-")}/${
-              answer.user.sub
-            }`}
-          >
-            <Avatar src={answer.user.picture} alt={answer.user.name} />
+          <NavLink to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}>
+            <Avatar src={data.picture} alt={data.name} />
           </NavLink>
         }
         content={
@@ -192,7 +211,11 @@ const Answer = ({ answer }) => {
         datetime={<span>{new Date().toLocaleDateString()}</span>}
       >
         {isEditMode && (
-          <EditAnswer answer={answer} setIsEditMode={setIsEditMode} />
+          <EditAnswer
+            answer={answer}
+            setIsEditMode={setIsEditMode}
+            page={page}
+          />
         )}
         {isAddComment && (
           <AddComment answerId={answer._id} setIsAddComment={setIsAddComment} />

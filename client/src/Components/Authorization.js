@@ -8,18 +8,20 @@ const Authorization = () => {
   const { data, status, error } = hooks.useFetchMainUser(user.sub);
   const addUser = hooks.useAddUser();
   useEffect(async () => {
-    console.log(data);
-    if (data === null) {
-      const date = new Date();
-      const newUser = {
-        name: user.name,
-        picture: user.picture,
-        email: user.email,
-        sub: user.sub,
-        isOnline: date,
-        status: "Новичек",
-      };
-      await addUser.mutateAsync(newUser);
+    if (status !== "loading") {
+      console.log(data);
+      if (data === null) {
+        const date = new Date();
+        const newUser = {
+          name: user.name,
+          picture: user.picture,
+          email: user.email,
+          sub: user.sub,
+          isOnline: date,
+          status: "Новичек",
+        };
+        await addUser.mutateAsync(newUser);
+      }
     }
   }, [data]);
   return status === "loading" ? (

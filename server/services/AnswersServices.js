@@ -9,6 +9,8 @@ class AnswersServices {
   }
   async getAll(postId, page) {
     const postAnswers = await Answer.find({ postId })
+      .sort({ votesCount: "desc" })
+      .sort({ date: "desc" })
       .skip((page - 1) * 10)
       .limit(10);
     return postAnswers;

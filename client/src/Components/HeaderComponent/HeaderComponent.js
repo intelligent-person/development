@@ -32,7 +32,7 @@ const HeaderComponent = () => {
               key="/questions"
               onClick={(item) => setSelectedKeys(item.key)}
             >
-              <NavLink to={"/questions"}>
+              <NavLink to={"/questions?page=1&pageSize=10"}>
                 {t("HeaderComponent.Questions")}
               </NavLink>
             </Menu.Item>

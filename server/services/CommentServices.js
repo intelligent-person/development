@@ -7,7 +7,6 @@ class CommentServices {
     return newComment;
   }
   async getAll(answerId, page) {
-    console.log(page);
     const commentsCount = await Comment.find({ answerId }).count();
     const answerComments = await Comment.find({ answerId })
       .sort({ date: "desc" })

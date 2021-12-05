@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-// const { answerSchema } = require("./Answer");
 const Schema = mongoose.Schema;
 
 const linkSchema = new Schema({
@@ -50,6 +49,10 @@ const userSchema = new Schema({
   date: {
     type: Date,
     default: Date.now,
+  },
+  helpInPostCreate: {
+    type: Number,
+    default: 1,
   },
 });
 

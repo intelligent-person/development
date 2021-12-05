@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { userSchema } = require("./User");
 
 const postSchema = new Schema({
   title: {
     type: String,
     required: true,
   },
+  isEdited: Boolean,
   body: {
     type: String,
     required: true,
   },
   codeLanguage: String,
-  user: {
-    type: userSchema,
+  userId: {
+    type: String,
     required: true,
   },
   tags: [String],

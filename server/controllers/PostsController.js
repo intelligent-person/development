@@ -16,7 +16,7 @@ class PostsController {
       const page = +req.query.page;
       const sort = req.query.sortType;
       const unanswered = req.query.unanswered;
-      const tags = req.query.tags.split(",");
+      const tags = req.query.tags;
       const searchValue = req.query.searchValue;
       const posts = await PostsService.getAll(
         pageSize,

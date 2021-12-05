@@ -1,17 +1,20 @@
 import React from "react";
 import { Avatar, Button, Comment } from "antd";
-import remarkGfm from "remark-gfm";
-import ReactMarkdown from "react-markdown";
 import { NavLink, useParams } from "react-router-dom";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
 import "../../post.css";
 import { useTranslation } from "react-i18next";
+import MarkdownToPost from "../../../../../Markdown/MarkdownToPost";
+import * as userHooks from "../../../../../../hooks/users";
+import Loader from "../../../../../Loader/Loader";
+import { EditOutlined } from "@ant-design/icons";
 
 const UserComment = ({ comment }) => {
   const { t } = useTranslation();
   const { postId } = useParams();
   const deleteComment = hooks.useDeleteComment();
+  const { data, status, error } = userHooks.useUserById(comment.userId);
   const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const mainUser = queryClient.getQueryData(["Main User"]);
   const deleteCurrentComment = async () => {
@@ -23,7 +26,11 @@ const UserComment = ({ comment }) => {
       await deleteComment.mutateAsync(params);
     }
   };
-  return (
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    error.message
+  ) : (
     <Comment
       datetime={comment.date
         .slice(0, comment.date.indexOf("T"))
@@ -33,48 +40,37 @@ const UserComment = ({ comment }) => {
       className={"comment"}
       author={
         <>
-          <NavLink to={`/user/${comment.user.name}/${comment.user.sub}`}>
-            {comment.user.name}
-          </NavLink>{" "}
+          <NavLink to={`/user/${data.name}/${data.sub}`}>{data.name}</NavLink>{" "}
           <strong>
-            {comment.user.status} {comment.user.reputation}
+            {data.status} {data.reputation}
           </strong>
         </>
       }
       avatar={
-        <NavLink to={`/user/${comment.user.name}/${comment.user.sub}`}>
-          <Avatar src={comment.user.picture} alt={comment.user.name} />
+        <NavLink to={`/user/${data.name}/${data.sub}`}>
+          <Avatar src={data.picture} alt={data.name} />
         </NavLink>
       }
       content={
         <div style={{ display: "flex" }}>
-          <ReactMarkdown
-            children={comment.body
+          <MarkdownToPost
+            body={comment.body
               .split("")
               .filter((item) => item !== "#")
               .join("")}
-            components={{
-              code({ node, inline, className, children, ...props }) {
-                return (
-                  inline && (
-                    <code className={"monospace"} {...props}>
-                      {children}
-                    </code>
-                  )
-                );
-              },
-            }}
-            remarkPlugins={[remarkGfm]}
+            codeLanguage={"none"}
           />
-          {(mainUser?.sub === comment.user.sub ||
-            mainUser?.sub === postData?.user?.sub) && (
-            <Button
-              type={"text"}
-              style={{ color: "grey", marginTop: -4 }}
-              onClick={deleteCurrentComment}
-            >
-              {t("comment.delete")}
-            </Button>
+          {(mainUser?.sub === data.sub ||
+            mainUser?.sub === postData?.userId) && (
+            <>
+              <Button
+                type={"text"}
+                style={{ color: "grey", marginTop: -4 }}
+                onClick={deleteCurrentComment}
+              >
+                {t("comment.delete")}
+              </Button>
+            </>
           )}
         </div>
       }

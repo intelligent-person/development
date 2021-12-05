@@ -5,19 +5,19 @@ p {
 .monospace {
   background-color: #2b2b2b;
   color: #eeeeee;
-  padding: 2px 10px;
-  border-radius: 5px;
+  padding: 2px 5px;
+  border-radius: 3px;
 }
 
 .contentBlock {
-  padding-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .sendBlock {
+  display: flex;
+  gap: 10px;
   float: right;
-}
-.sendBlock button {
-  margin-left: 10px;
+  line-height: 27px;
 }
 pre {
   margin-top: 10px;
