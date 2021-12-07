@@ -3,7 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
-const PORT = process.env.PORT;
 require("dotenv").config();
 
 const corsOptions = {
@@ -34,7 +33,8 @@ app.use("/api/tags", tagsRoute);
 
 mongoose.connect(process.env.DATABASE, function (err) {
   if (err) return console.log(err);
-  app.listen(PORT, () => {
+  app.listen(process.env.PORT, () => {
     console.log("Сервер ожидает подключения...");
+    console.log(process.env.PORT);
   });
 });
