@@ -1,0 +1,87 @@
+{
+  "FilterComponent": {
+    "AllQuestions": "All Questions",
+    "AskQuestion": "Ask Question",
+    "QuestionsCount": "questions",
+    "Search": "Search...",
+    "Newest": "Newest",
+    "Views": "Views",
+    "Unanswered": "Unanswered",
+    "Filter": "Filter",
+    "SortedBy": "Sorted By",
+    "FilterBy": "Filter By",
+    "MoreViews": "More Views",
+    "LessViews": "Less Views",
+    "Tags": "Tags",
+    "Submit": "Submit"
+  },
+  "HeaderComponent": {
+    "Home": "Home",
+    "Questions": "Questions",
+    "Users": "Users"
+  },
+  "PostInfoComponent": {
+    "Views": "Views",
+    "Answers": "Answers"
+  },
+  "PostComponent": {
+    "Views": "Views",
+    "Date": "The question is asked",
+    "futureAnswers": "Here will be the answers"
+  },
+  "PostsBreadcrumb": {
+    "Breadcrumb1": "Ask Question",
+    "Breadcrumb2": "Very difficult question, help :)"
+  },
+  "Logout": {
+    "Profile": "Profile",
+    "Out": "Logout",
+    "ChangeLanguage": "Change language"
+  },
+  "UsersBreadcrumb": {
+    "Breadcrumb1": "Users"
+  },
+  "errors": {
+    "isRequired": "Please, fill in the current field!",
+    "tooShort": "Too short title!",
+    "tooManyTags": "Too many tags!"
+  },
+  "postCreator": {
+    "title": "Title",
+    "addQuestion": "Add Question",
+    "subTitle": "Be specific and pretend you are asking another person a question.",
+    "body": "Content:",
+    "tags": "Тags:",
+    "subTags": "Add up to 5 tags separated by a space to describe what your question is about.",
+    "draft": "Start writing here ..."
+  },
+  "post": {
+    "shareQuestion": "Know someone who can answer? Share a link to this",
+    "via": "via",
+    "or": "or",
+    "question": "question",
+    "email": "email",
+    "telegram": "Telegram",
+    "facebook": "Facebook",
+    "yourAnswer": "Your Answer",
+    "postAnswer": "Answer",
+    "edit": "edit",
+    "share": "share"
+  },
+  "answer": {
+    "reply": "reply to",
+    "answers": "Answers",
+    "edit": "edit",
+    "editAnswer": "Edit",
+    "delete": "delete",
+    "edited": "Edited"
+  },
+  "comment": {
+    "delete": "delete",
+    "comments": "Comments",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "addComment": "Add comment",
+    "recommendation": "You can make text as code by applying `to word`"
+  }
+}

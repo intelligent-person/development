@@ -1,0 +1,87 @@
+{
+  "FilterComponent": {
+    "AllQuestions": "Все вопросы",
+    "AskQuestion": "Задать вопрос",
+    "QuestionsCount": "вопросов",
+    "Search": "Искать...",
+    "Newest": "Новые",
+    "Views": "Просмотров",
+    "Unanswered": "Без ответов",
+    "Filter": "Фильтр",
+    "SortedBy": "Сортировка по",
+    "FilterBy": "Фільтрация за",
+    "MoreViews": "Больше просмотров",
+    "LessViews": "Меньше просмотров",
+    "Tags": "Теги",
+    "Submit": "Применить"
+  },
+  "HeaderComponent": {
+    "Home": "Главная",
+    "Questions": "Вопросы",
+    "Users": "Пользователи"
+  },
+  "PostInfoComponent": {
+    "Views": "Просмотров",
+    "Answers": "Ответов"
+  },
+  "PostComponent": {
+    "Views": "Просмотров",
+    "Date": "Вопрос задан",
+    "futureAnswers": "Здесь будут ответы"
+  },
+  "PostsBreadcrumb": {
+    "Breadcrumb1": "Задать вопрос",
+    "Breadcrumb2": "Очень сложный вопрос, помоги : )"
+  },
+  "Logout": {
+    "Profile": "Профиль",
+    "Out": "Выйти",
+    "ChangeLanguage": "Сменить язык"
+  },
+  "UsersBreadcrumb": {
+    "Breadcrumb1": "Пользователи"
+  },
+  "errors": {
+    "isRequired": "Заполните текущее поле!",
+    "tooShort": "Слишком короткий заголовок!",
+    "tooManyTags": "Слишком много тегов!"
+  },
+  "postCreator": {
+    "title": "Заголовок",
+    "addQuestion": "Задать вопрос",
+    "subTitle": "Будьте конкретны и представьте, что задаете вопрос другому человеку.",
+    "body": "Содержимое:",
+    "tags": "Тags:",
+    "subTags": "Добавьте до 5 тегов через пробел, чтобы описать, о чем ваш вопрос.",
+    "draft": "Начните писать здесь..."
+  },
+  "post": {
+    "shareQuestion": "Знаете ли вы кого-то, кто сможет ответить? Поделись этой ссылкой на",
+    "via": "через",
+    "or": "или",
+    "question": "вопрос",
+    "email": "email",
+    "telegram": "Telegram",
+    "facebook": "Facebook",
+    "yourAnswer": "Твой ответ",
+    "postAnswer": "Ответить",
+    "edit": "изменить",
+    "share": "поделится"
+  },
+  "answer": {
+    "reply": "ответить",
+    "answers": "Ответы",
+    "edit": "изменить",
+    "editAnswer": "Изменить",
+    "delete": "удалить",
+    "edited": "изменено"
+  },
+  "comment": {
+    "delete": "удалить",
+    "comments": "Комментарии",
+    "showMore": "Показать больше",
+    "showLess": "Скрыть",
+    "addComment": "Добавить комментарий",
+    "recommendation": "Вы можете сделать текст в виде кода применив `к слову`"
+  }
+}

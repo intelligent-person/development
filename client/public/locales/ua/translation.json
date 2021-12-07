@@ -1,0 +1,87 @@
+{
+  "FilterComponent": {
+    "AllQuestions": "Всі питання",
+    "AskQuestion": "Задати питання",
+    "QuestionsCount": "запитань",
+    "Search": "Шукати...",
+    "Newest": "Нові",
+    "Views": "Переляди",
+    "Unanswered": "Без відповідей",
+    "Filter": "Фільтр",
+    "SortedBy": "Сорторування по",
+    "FilterBy": "Фільтрувати за",
+    "MoreViews": "Більше переглядів",
+    "LessViews": "Менше переглядів",
+    "Tags": "Теги",
+    "Submit": "Застосувати"
+  },
+  "HeaderComponent": {
+    "Home": "Головна",
+    "Questions": "Питання",
+    "Users": "Користувачі"
+  },
+  "PostInfoComponent": {
+    "Views": "Переглядів",
+    "Answers": "Відповідей"
+  },
+  "PostComponent": {
+    "Views": "Переглядів",
+    "Date": "Питання задане",
+    "futureAnswers": "Тут будуть вiдповiдi"
+  },
+  "PostsBreadcrumb": {
+    "Breadcrumb1": "Задати питання",
+    "Breadcrumb2": "Дуже складне питання, допоможи : )"
+  },
+  "Logout": {
+    "Profile": "Профіль",
+    "Out": "Вийти",
+    "ChangeLanguage": "Змінити мову"
+  },
+  "UsersBreadcrumb": {
+    "Breadcrumb1": "Користувачi"
+  },
+  "errors": {
+    "isRequired": "Заповніть поле!",
+    "tooShort": "Занадто короткий заголовок!",
+    "tooManyTags": "Забагато тегів!"
+  },
+  "postCreator": {
+    "title": "Заголовок",
+    "addQuestion": "Задати питання",
+    "subTitle": "Будьте конкретні і уявіть, що запитуєте іншу людину.",
+    "body": "Вміст:",
+    "tags": "Тags:",
+    "subTags": "Додайте до 5 тегів через пробіл, щоб описати, про що ваше запитання.",
+    "draft": "Почніть писати тут..."
+  },
+  "post": {
+    "shareQuestion": "Чи знаєте ви когось, хто зможе відповісти? Поділитися посиланням на це",
+    "via": "через",
+    "or": "або",
+    "question": "питання",
+    "email": "email",
+    "telegram": "Telegram",
+    "facebook": "Facebook",
+    "yourAnswer": "Твоя вiдповiдь",
+    "postAnswer": "Вiдповiсти",
+    "edit": "змiнити",
+    "share": "подiлитися"
+  },
+  "answer": {
+    "reply": "вiдповiсти",
+    "answers": "Вiдповiдi",
+    "edit": "змiнити",
+    "editAnswer": "Змiнити",
+    "delete": "видалити",
+    "edited": "змiнено"
+  },
+  "comment": {
+    "delete": "видалити",
+    "comments": "Коментарi",
+    "showMore": "Показати бiльше",
+    "showLess": "Приховати",
+    "addComment": "Добавити коментар",
+    "recommendation": "Ви можете зробити текст у вигляді коду, застосувавши `до слова`"
+  }
+}
