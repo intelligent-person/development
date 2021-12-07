@@ -22,8 +22,8 @@ class AnswersController {
   }
   async update(req, res) {
     try {
-      const updateAmswer = await AnswersServices.update(req.body);
-      res.json(updateAmswer);
+      const updateAnswer = await AnswersServices.update(req.body);
+      res.json(updateAnswer);
     } catch (err) {
       res.json(err);
     }

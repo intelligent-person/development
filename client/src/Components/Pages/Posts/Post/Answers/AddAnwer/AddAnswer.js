@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Draft from "../../../../../Markdown/Draft";
 import { Button } from "antd";
 import { NavLink } from "react-router-dom";
@@ -45,9 +45,20 @@ const AddAnswer = ({ post }) => {
       reset({
         Draft: EditorState.createEmpty(),
       });
+
       await updateUser.mutateAsync({
         sub: mainUser.sub,
         reputation: mainUser.reputation + 5,
+        tags: [
+          ...post.tags.map((tag) => {
+            let returnedTag = { tag, tagCount: 0 };
+            for (let i = 0; i < mainUser.tags.length; i++) {
+              if (tag === mainUser.tags[i].tag)
+                return { tag, tagCount: mainUser.tags[i].tagCount + 1 };
+            }
+            return returnedTag;
+          }),
+        ],
       });
       await updateUser.mutateAsync({
         sub: data.sub,

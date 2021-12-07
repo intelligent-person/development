@@ -10,8 +10,8 @@ class CommentServices {
     const commentsCount = await Comment.find({ answerId }).count();
     const answerComments = await Comment.find({ answerId })
       .sort({ date: "desc" })
-      .skip((page - 1) * 5)
-      .limit(5);
+      .skip((page - 1) * 3)
+      .limit(3);
     return { commentsCount, answerComments };
   }
   async delete(commentId) {

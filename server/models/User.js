@@ -11,12 +11,17 @@ const topAnswerSchema = new Schema({
   title: String,
   date: String,
 });
+const topTagsSchema = new Schema({
+  tag: String,
+  tagCount: Number,
+});
 
 const userSchema = new Schema({
   name: {
     type: String,
     required: true,
   },
+  tags: [topTagsSchema],
   reputation: {
     type: Number,
     default: 0,
@@ -55,6 +60,6 @@ const userSchema = new Schema({
     default: 1,
   },
 });
-
+userSchema.index({ name: "text" });
 module.exports.User = mongoose.model("User", userSchema);
 module.exports.userSchema = userSchema;

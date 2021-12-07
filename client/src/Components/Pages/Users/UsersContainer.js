@@ -1,38 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Users from "./Users";
-import { Breadcrumb } from "antd";
-import { NavLink } from "react-router-dom";
 import { Content } from "antd/es/layout/layout";
-import { useTranslation } from "react-i18next";
+import UsersFilter from "./UsersFilter";
+import styles from "./styles/users.module.css";
+import { message, Pagination } from "antd";
+import * as hooks from "../../../hooks/users";
+import Loader from "../../Loader/Loader";
 
 const UsersContainer = () => {
-  const { t } = useTranslation();
-  const routes = [
-    {
-      path: "/users",
-      breadcrumbName: t("UsersBreadcrumb.Breadcrumb1"),
-    },
-  ];
-  function itemRender(route, params, routes, paths) {
-    const last = routes.indexOf(route) === routes.length - 1;
-    return last ? (
-      <span>{route.breadcrumbName}</span>
-    ) : (
-      <NavLink to={paths.join("/")}>{route.breadcrumbName}</NavLink>
-    );
-  }
-  return (
+  const params = new URL(window.location.href).searchParams;
+  const { status, data, error } = hooks.useFetchUsers(
+    params.get("page"),
+    params.get("search"),
+    params.get("sort")
+  );
+  useEffect(() => {
+    if (window.location.pathname === "/users") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [params.get("page")]);
+  return status === "loading" ? (
+    <Loader />
+  ) : status === "error" ? (
+    message.error(error.message)
+  ) : (
     <>
-      <Breadcrumb
-        itemRender={itemRender}
-        style={{ margin: "8px 0" }}
-        routes={routes}
-      />
-      <Content
-        className="site-layout-background"
-        style={{ padding: 24, margin: 0, minHeight: 280 }}
-      >
-        <Users />
+      <Content className={`site-layout-background ${styles.content}`}>
+        <UsersFilter />
+        <Users users={data.users} />
+        {data.usersCount > 20 && (
+          <Pagination
+            defaultCurrent={1}
+            total={data.usersCount}
+            current={params.get("page")}
+          />
+        )}
       </Content>
     </>
   );

@@ -4,8 +4,8 @@ const instance = axios.create({
   baseURL: `http://localhost:5000/api/`,
 });
 export const usersAPI = {
-  getUsers() {
-    return instance.get("/users");
+  getUsers(page, search, sort) {
+    return instance.get(`/users?page=${page}&search=${search}&sort=${sort}`);
   },
   getUser(id) {
     return instance.get("/users/" + id);
@@ -42,9 +42,6 @@ export const postsAPI = {
   setPostView(id) {
     return instance.put("/posts/setPostView/" + id);
   },
-  getTagCount(tag) {
-    return instance.get("/posts/tagCount/" + tag);
-  },
   deletePost(id) {
     return instance.delete(`/posts/` + id);
   },
@@ -72,5 +69,16 @@ export const commentsAPI = {
   },
   deleteComment(commentId) {
     return instance.delete(`/comments/${commentId}`);
+  },
+};
+export const tagsApi = {
+  addTags(tags, userId) {
+    return instance.post("/tags", { tags, userId });
+  },
+  getTagCount(tag) {
+    return instance.get("/tags/" + tag);
+  },
+  getUserTags(userId) {
+    return instance.get("/tags/userTags/" + userId);
   },
 };

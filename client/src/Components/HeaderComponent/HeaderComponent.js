@@ -40,7 +40,9 @@ const HeaderComponent = () => {
               key="/users"
               onClick={(item) => setSelectedKeys(item.key)}
             >
-              <NavLink to={"/users"}>{t("HeaderComponent.Users")}</NavLink>
+              <NavLink to={"/users?page=1"}>
+                {t("HeaderComponent.Users")}
+              </NavLink>
             </Menu.Item>
           </Menu>
         </Col>

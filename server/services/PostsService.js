@@ -7,12 +7,6 @@ class PostsService {
   }
 
   async getAll(page, pageSize, sort, unanswered, tags, searsValue) {
-    console.log(page);
-    console.log(pageSize);
-    console.log(sort);
-    console.log(unanswered);
-    console.log(tags);
-    console.log(searsValue);
     //SORT
     let sortable = { date: "desc" };
     if (sort === "lessViews") sortable = { views: "asc" };
@@ -31,7 +25,6 @@ class PostsService {
     //POSTS COUNT
     const postsCount = await Post.find(find).count();
     //POSTS
-    console.log(find, sortable);
     const posts = await Post.find(find)
       .select("-answers")
       .sort(sortable)

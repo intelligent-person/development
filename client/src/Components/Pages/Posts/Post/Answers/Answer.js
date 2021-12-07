@@ -225,4 +225,4 @@ const Answer = ({ answer, page }) => {
     </div>
   );
 };
-export default React.memo(Answer);
+export default Answer;

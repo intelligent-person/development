@@ -19,7 +19,10 @@ class UsersController {
 
   async getAll(req, res) {
     try {
-      const users = await UsersService.getAll();
+      const page = req.query.page;
+      const search = req.query.search;
+      const sort = req.query.sort;
+      const users = await UsersService.getAll(page, search, sort);
       res.json(users);
     } catch (err) {
       res.json(err);

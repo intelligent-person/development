@@ -14,6 +14,7 @@ import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
 import Draft from "../../../Markdown/Draft";
 import { Redirect } from "react-router-dom";
+import { useAddTags } from "../../../../hooks/tags/useAddTags";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -44,6 +45,7 @@ const defaultValues = { Draft: undefined };
 const PostCreator = () => {
   const mainUser = queryClient.getQueryData(["Main User"]);
   const addPost = hooks.useAddPost();
+  const addTag = useAddTags();
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -64,16 +66,18 @@ const PostCreator = () => {
       let contentState = data.Draft.getCurrentContent();
       const rawObject = convertToRaw(contentState);
       const markdownBody = draftToMarkdown(rawObject);
+      const tagsArray = data.tags.split(" ");
       const newPost = {
         title: data.title,
         body: markdownBody,
         codeLanguage: data.select,
         userId: mainUser.sub,
-        tags: data.tags.split(" "),
+        tags: tagsArray,
         views: 0,
         answersCount: 0,
       };
       await addPost.mutateAsync(newPost);
+      await addTag.mutateAsync({ tags: tagsArray, userId: mainUser.sub });
       reset({
         Draft: EditorState.createEmpty(),
         title: "",

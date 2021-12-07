@@ -22,7 +22,7 @@ const PostsFilter = ({ postsCount }) => {
   const onSearch = (value) => {
     const newQueries = {
       ...queryParams,
-      search: value,
+      search: value ? value.replaceAll("+", "%2B") : undefined,
     };
     history.push({
       search: qs.stringify(newQueries),
@@ -69,7 +69,9 @@ const PostsFilter = ({ postsCount }) => {
     const newQueries = {
       ...queryParams,
       unanswered: isUnanswered,
-      tags: isTags ? tags.split(" ").join(",") : undefined,
+      tags: isTags
+        ? tags.split(" ").join(",").replaceAll("+", "%2B")
+        : undefined,
       sort: radio,
     };
     history.push({

@@ -10,6 +10,9 @@ import Loader from "../../../Loader/Loader";
 const PostShortContent = ({ post }) => {
   const { t } = useTranslation();
   const { data, status, error } = userHooks.useUserById(post.userId);
+  const params = new URL(window.location.href).searchParams;
+  const searchWords = params.get("search") && params.get("search").split(" ");
+  const wordsSearchCount = params.get("search") && searchWords.length;
   const markdownChildren =
     post.body
       .split("")
@@ -24,6 +27,15 @@ const PostShortContent = ({ post }) => {
       .slice(0, 270)
       .join("")
       .split(" ")
+      .map((word) => {
+        if (params.get("search")) {
+          let returnedWord = word;
+          for (let i = 0; i < wordsSearchCount; i++) {
+            if (word === searchWords[i]) returnedWord = `**${word}**`;
+          }
+          return returnedWord;
+        } else return word;
+      })
       .join(" ") + "...";
 
   return status === "loading" ? (

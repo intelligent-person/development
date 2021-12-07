@@ -26,7 +26,7 @@ const CurrentComments = ({ setPage, page, data }) => {
           {t("comment.showMore")}
         </Button>
       )}
-      {data.answerComments.length > 6 && (
+      {data.answerComments.length > 3 && (
         <Button
           type={"text"}
           style={{ marginLeft: 50 }}

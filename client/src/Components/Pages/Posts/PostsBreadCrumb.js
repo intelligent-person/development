@@ -6,15 +6,20 @@ import { useTranslation } from "react-i18next";
 
 const PostsBreadCrumb = () => {
   const { t } = useTranslation();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   let bname = null;
   if (pathname.split("/")[2] === "ask") {
     bname = t("PostsBreadcrumb.Breadcrumb1");
   } else bname = t("PostsBreadcrumb.Breadcrumb2");
   const routes = [
     {
-      path: pathname.split("/")[1],
-      breadcrumbName: <HomeOutlined />,
+      path: pathname.split("/")[1] + "?page=1&pageSize=10",
+      breadcrumbName: (
+        <>
+          <HomeOutlined /> {""}
+          {t("HeaderComponent.Questions")}
+        </>
+      ),
     },
     {
       path: pathname.split("/")[2],

@@ -9,7 +9,6 @@ class UsersService {
       reputation: 1,
       answers: 1,
       questions: 0,
-      tags: ["react", "valid", "js"],
       status: "Новичёк",
       topAnswers: [
         {
@@ -29,17 +28,22 @@ class UsersService {
     return createdUser;
   }
 
-  async getAll() {
+  async getAll(page, search, sort) {
     const perPage = 20;
-    const page = Math.max(0, 1);
-    const users = await User.find({})
-      .select("name reputation picture status date sub")
-      .sort({
-        date: "desc",
-      })
+    let find = {};
+    let sortable = { date: "desc" };
+    if (sort === "reputation") sortable = { reputation: "desc" };
+    if (search !== "null") {
+      find = { $text: { $search: search } };
+    }
+    const usersCount = await User.find(find).count();
+
+    const users = await User.find(find)
+      .select("name reputation picture status date sub tags")
+      .sort(sortable)
       .skip((page - 1) * perPage)
       .limit(perPage);
-    return users;
+    return { users, usersCount };
   }
 
   async getOne(id) {
@@ -65,7 +69,7 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-    const deletedUser = await User.findByIdAndDelete(id);
+    const deletedUser = await User.findOneAndDelete({ sub: id });
     return deletedUser;
   }
 }
