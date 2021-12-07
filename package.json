@@ -8,6 +8,10 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build": "cd client && yarn run build",
+    "install-client": "cd client && yarn && cd.. && cd server && yarn",
+    "heroku-postbuild": "yarn run install-client && yarn run build",
+    "start": "cd server && yarn start"
   }
 }
