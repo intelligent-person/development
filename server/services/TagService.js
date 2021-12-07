@@ -4,40 +4,45 @@ class TagService {
   async create(params) {
     let returnedTag = [];
     for (let i = 0; i < params.tags.length; i++) {
-      const checkTag = await Tag.findOne({ tagName: params.tags[i] });
-      const checkUser = await Tag.findOne({
-        tagName: params.tags[i],
-        "users.userId": params.userId,
-      });
-      if (!checkTag) {
-        const createdTag = await Tag.create({
+      if (params.tags[i] !== "" && params.tags[i] !== " ") {
+        const checkTag = await Tag.findOne({ tagName: params.tags[i] });
+        const checkUser = await Tag.findOne({
           tagName: params.tags[i],
-          users: [{ userId: params.userId }],
+          "users.userId": params.userId,
         });
-        returnedTag = [...returnedTag, createdTag];
-      } else if (checkUser) {
-        const updatedTag = await Tag.findOneAndUpdate(
-          {
+        if (!checkTag) {
+          const createdTag = await Tag.create({
             tagName: params.tags[i],
-            "users.userId": params.userId,
-          },
-          { $inc: { tagCount: +1, "users.$.count": +1 } }
-        );
-        returnedTag = [...returnedTag, updatedTag];
-      } else if (checkUser === null) {
-        const updatedTag = await Tag.findOneAndUpdate(
-          {
-            tagName: params.tags[i],
-          },
-          {
-            $inc: {
-              tagCount: +1,
+            users: [{ userId: params.userId }],
+          });
+          returnedTag = [...returnedTag, createdTag];
+        } else if (checkUser) {
+          const updatedTag = await Tag.findOneAndUpdate(
+            {
+              tagName: params.tags[i],
+              "users.userId": params.userId,
             },
-            users: [...checkTag.users, { userId: params.userId, tagCount: 0 }],
-          }
-        );
-        console.log(updatedTag);
-        returnedTag = [...returnedTag, updatedTag];
+            { $inc: { tagCount: +1, "users.$.count": +1 } }
+          );
+          returnedTag = [...returnedTag, updatedTag];
+        } else if (checkUser === null) {
+          const updatedTag = await Tag.findOneAndUpdate(
+            {
+              tagName: params.tags[i],
+            },
+            {
+              $inc: {
+                tagCount: +1,
+              },
+              users: [
+                ...checkTag.users,
+                { userId: params.userId, tagCount: 0 },
+              ],
+            }
+          );
+          console.log(updatedTag);
+          returnedTag = [...returnedTag, updatedTag];
+        }
       }
     }
     return returnedTag;

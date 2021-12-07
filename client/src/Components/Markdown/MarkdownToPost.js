@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import styles from "./markdown.module.css";
 
 const MarkdownToPost = ({ body, codeLanguage }) => {
+  console.log(body);
   return (
     <ReactMarkdown
       children={body}

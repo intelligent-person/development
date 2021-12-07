@@ -13,6 +13,15 @@ p {
   margin-bottom: 20px;
 }
 
+blockquote {
+  color: #666;
+  margin: 0;
+  padding-left: 1em;
+  border-left: 0.2em #eee solid;
+  font-style: italic;
+  font-size: 20px;
+}
+
 .sendBlock {
   display: flex;
   gap: 10px;
@@ -29,4 +38,19 @@ code {
 
 .error {
   color: red;
+}
+
+.tags {
+  position: relative;
+  top: -29px;
+  left: 6px;
+  z-index: 1002;
+}
+
+.tag {
+  background-color: #1890ff;
+  font-size: 15px;
+  padding: 2px 2px;
+  border: 2px solid white;
+  color: white;
 }

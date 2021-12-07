@@ -23,7 +23,7 @@ const PostTag = ({ tag }) => {
   return status === "loading" ? (
     <></>
   ) : status === "error" ? (
-    error.message()
+    error.message
   ) : (
     <Popover
       /*content={'content'}*/ title={<Tag tag={tag} data={data} />}

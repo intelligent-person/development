@@ -18,9 +18,22 @@ class PostsService {
     else if (tags !== "null") find = { tags: { $in: tags.split(",") } };
     else if (unanswered === "true") find = { answersCount: 0 };
     if (searsValue !== "null") {
-      find = { $text: { $search: searsValue } };
-      if (unanswered === "true")
-        find = { $text: { $search: searsValue }, answersCount: 0 };
+      if (tags === "null") {
+        find = { $text: { $search: searsValue } };
+        if (unanswered === "true")
+          find = { $text: { $search: searsValue }, answersCount: 0 };
+      } else {
+        find = {
+          $text: { $search: searsValue },
+          tags: { $in: tags.split(",") },
+        };
+        if (unanswered === "true")
+          find = {
+            $text: { $search: searsValue },
+            answersCount: 0,
+            tags: { $in: tags.split(",") },
+          };
+      }
     }
     //POSTS COUNT
     const postsCount = await Post.find(find).count();

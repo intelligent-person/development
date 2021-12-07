@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Pagination } from "antd";
-import { Content } from "antd/es/layout/layout";
-import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import Loader from "../../Loader/Loader";
 import PostsFilter from "./PostsFilter/PostsFilter";
-import PostsBreadCrumb from "./PostsBreadCrumb";
 import Posts from "./Posts";
 import * as hooks from "../../../hooks/posts";
 import qs from "query-string";
@@ -22,7 +20,7 @@ const PostsContainer = () => {
     params.get("unanswered"),
     params.get("tags")
   );
-  useEffect(() => {
+  const postCall = useCallback(() => {
     if (location.pathname === "/questions") {
       refetch();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -35,6 +33,9 @@ const PostsContainer = () => {
     params.get("unanswered"),
     params.get("tags"),
   ]);
+  useEffect(() => {
+    postCall();
+  }, [postCall]);
 
   const setSize = (page, pageSize) => {
     const newQueries = {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../../../Markdown/markdown.module.css";
 import { Button, Input, Select } from "antd";
 import ModalWindow from "./ModalWindow";
@@ -13,8 +13,8 @@ import { queryClient } from "../../../../hooks/queryClient";
 import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
 import Draft from "../../../Markdown/Draft";
-import { Redirect } from "react-router-dom";
 import { useAddTags } from "../../../../hooks/tags/useAddTags";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -43,6 +43,7 @@ const CreatorSchema = (t) =>
 const defaultValues = { Draft: undefined };
 
 const PostCreator = () => {
+  const { isAuthenticated } = useAuth0();
   const mainUser = queryClient.getQueryData(["Main User"]);
   const addPost = hooks.useAddPost();
   const addTag = useAddTags();
@@ -60,13 +61,19 @@ const PostCreator = () => {
     control,
     name: "select", // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
   });
-
+  useEffect(() => {});
   const createPost = async (data) => {
     if (mainUser) {
       let contentState = data.Draft.getCurrentContent();
       const rawObject = convertToRaw(contentState);
       const markdownBody = draftToMarkdown(rawObject);
-      const tagsArray = data.tags.split(" ");
+      const tagsArray = data.tags
+        .toLowerCase()
+        .split("")
+        .filter((item) => item !== "#" && item !== "$" && item !== "&")
+        .join("")
+        .split(" ")
+        .slice(0, 5);
       const newPost = {
         title: data.title,
         body: markdownBody,
@@ -85,8 +92,8 @@ const PostCreator = () => {
       });
     }
   };
-  return !mainUser ? (
-    <Redirect to={"/login"} />
+  return !isAuthenticated ? (
+    <></>
   ) : (
     <form onSubmit={handleSubmit(createPost)}>
       <div className={styles.sendBlock}>
@@ -149,12 +156,30 @@ const PostCreator = () => {
           control={control}
           name={"tags"}
           render={({ field }) => (
-            <Input
-              value={field.value}
-              onChange={field.onChange}
-              inputRef={field.ref}
-              placeholder={"например, javascript cpp..."}
-            />
+            <>
+              <Input
+                style={{ fontSize: "medium" }}
+                value={
+                  field.value &&
+                  field.value.toString().split(" ").slice(0, 5).join(" ")
+                }
+                onChange={field.onChange}
+                inputRef={field.ref}
+                placeholder={"например, javascript cpp..."}
+              />
+              <div className={styles.tags}>
+                {field.value &&
+                  String(field.value)
+                    .split(" ")
+                    .map(
+                      (tag, index) =>
+                        index !==
+                          field.value.toString().split(" ").length - 1 && (
+                          <span className={styles.tag}>{tag}</span>
+                        )
+                    )}
+              </div>
+            </>
           )}
         />
       </div>
