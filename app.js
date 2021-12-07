@@ -30,6 +30,7 @@ app.use("/api/posts", postsRoute);
 app.use("/api/answers", answersRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/tags", tagsRoute);
+app.use(express.static("client/build"));
 
 mongoose.connect(process.env.DATABASE, function (err) {
   if (err) return console.log(err);
