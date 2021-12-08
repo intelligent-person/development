@@ -32,12 +32,10 @@ app.use("/api/answers", answersRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/tags", tagsRoute);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-  app.get("*", (req, res) => {
-    res.sendfile(path.resolve(__dirname, "build"));
-  });
-}
+app.use(express.static("client/build"));
+app.get("*", (req, res) => {
+  res.sendfile(path.resolve(__dirname, "build"));
+});
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello server is running").end();
