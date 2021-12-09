@@ -32,11 +32,6 @@ app.use("/api/answers", answersRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/tags", tagsRoute);
 
-app.use(express.static("client/build"));
-app.get("*", (req, res) => {
-  res.sendfile(path.resolve(__dirname, "build"));
-});
-
 app.get("/", (req, res) => {
   res.status(200).send("Hello server is running").end();
 });
@@ -45,6 +40,5 @@ mongoose.connect(process.env.DATABASE, function (err) {
   if (err) return console.log(err);
   app.listen(process.env.PORT || 5000, () => {
     console.log("Сервер ожидает подключения...");
-    console.log(process.env.PORT);
   });
 });

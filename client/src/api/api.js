@@ -1,8 +1,8 @@
 import * as axios from "axios";
 const baseUrl = process.env.BASE_URL;
 const instance = axios.create({
-  // baseURL: `http://localhost:5000/api/`,
-  baseURL: `https://intelligentforum.herokuapp.com/`,
+  baseURL: `http://localhost:5000/api/`,
+  // baseURL: `https://intelligentforum.herokuapp.com/`,
 });
 export const usersAPI = {
   getUsers(page, search, sort) {
