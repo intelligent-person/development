@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: "https://intelligent-forum.herokuapp.com/",
+  origin: "https://intelligent-forum.herokuapp.com",
   optionsSuccessStatus: 200,
 };
 const app = express();
