@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 
 mongoose.connect(process.env.DATABASE, function (err) {
   if (err) return console.log(err);
-  app.listen(process.env.PORT, () => {
+  app.listen(process.env.PORT || 5000, () => {
     console.log("Сервер ожидает подключения...");
   });
 });
