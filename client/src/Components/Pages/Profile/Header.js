@@ -6,6 +6,7 @@ import ImgCrop from "antd-img-crop";
 import {
   EditOutlined,
   FacebookOutlined,
+  FieldTimeOutlined,
   GithubOutlined,
   InstagramOutlined,
   LinkedinOutlined,
@@ -169,14 +170,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
             <DateComponent postDate={date} />
           </div>
           <div className={styles.time}>
-            <img
-              width="17"
-              height="17"
-              src="https://cdn-icons.flaticon.com/png/512/3818/premium/3818205.png?token=exp=1640126428~hmac=0115cd46b45ebffc3f35d57ee7f918a7"
-              alt="online"
-              title="online"
-              style={{ marginBottom: 5, marginLeft: 10 }}
-            />{" "}
+            <FieldTimeOutlined style={{ fontSize: 15 }} />{" "}
             <DateComponent postDate={isOnline} />
           </div>
         </div>
@@ -224,14 +218,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
           <div className={styles.linkWrapper}>
             {telegramValue && (
               <a href={telegramValue} style={{ alignItems: "center" }}>
-                <img
-                  width="17"
-                  height="17"
-                  src="https://cdn-icons.flaticon.com/png/512/4401/premium/4401433.png?token=exp=1640179047~hmac=18e924199017ce2d1f59ccbb8b96bf06"
-                  alt="Телеграмма бесплатно иконка"
-                  title="Телеграмма бесплатно иконка"
-                  className="loaded"
-                />
+                <img src="https://img.icons8.com/color/17/000000/telegram-app--v1.png" />
               </a>
             )}
             {instagramValue && (

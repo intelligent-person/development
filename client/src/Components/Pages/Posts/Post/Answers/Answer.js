@@ -161,14 +161,20 @@ const Answer = ({ answer, page }) => {
         )}
       </span>
     </Tooltip>,
-    <span
-      key="comment-basic-reply-to"
-      onClick={() =>
-        isAddComment ? setIsAddComment(false) : setIsAddComment(true)
-      }
+    <Tooltip
+      key="comment-basic-dislike"
+      title={!mainUser && "Вы не вошли в свой аккаунт"}
     >
-      {t("answer.reply")}
-    </span>,
+      <span
+        key="comment-basic-reply-to"
+        onClick={() =>
+          mainUser &&
+          (isAddComment ? setIsAddComment(false) : setIsAddComment(true))
+        }
+      >
+        {t("answer.reply")}
+      </span>
+    </Tooltip>,
     status !== "loading" && mainUser?.sub === data?.sub && (
       <>
         <span

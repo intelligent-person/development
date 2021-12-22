@@ -54,10 +54,11 @@ class UsersService {
   async uploadPhoto(file, userId) {
     try {
       const fileName = userId.replace("|", "-") + ".jpg";
+      console.log(path);
       const filePath = path.resolve("static", fileName);
       await file.mv(filePath);
 
-      return `http://localhost:5000/${fileName}`;
+      return `https://intelligentforum.herokuapp.com/${fileName}`;
     } catch (err) {
       console.log(err);
     }
