@@ -19,7 +19,7 @@ class UsersService {
     let sortable = { date: "desc" };
     if (sort === "reputation") sortable = { reputation: "desc" };
     if (search !== "null") {
-      find = { name: { $regex: search } };
+      find = { name: { $regex: search, $options: "$i" } };
     }
     const usersCount = await User.find(find).count();
 
