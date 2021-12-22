@@ -164,7 +164,8 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               alt="register"
               title="register"
               className="loaded"
-            />{" "}
+            />
+            {" присоединился "}
             <DateComponent postDate={date} />
           </div>
           <div className={styles.time}>
