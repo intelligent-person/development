@@ -37,7 +37,16 @@ class PostsController {
       const post = await PostsService.getOne(req.params.id);
       res.json(post);
     } catch (err) {
+      res.json(err, 404);
+    }
+  }
+  async getLastUserPosts(req, res) {
+    try {
+      const posts = await PostsService.getLastUserPosts(req.params.userId);
+      res.json(posts);
+    } catch (err) {
       res.json(err);
+      res.status(404);
     }
   }
   async getTagCount(req, res) {
@@ -52,7 +61,7 @@ class PostsController {
   async update(req, res) {
     try {
       const updatedPost = await PostsService.update(req.body);
-      return res.json(updatedPost);
+      res.json(updatedPost);
     } catch (err) {
       res.json(err);
     }
@@ -60,7 +69,7 @@ class PostsController {
   async setPostView(req, res) {
     try {
       const updatedPost = await PostsService.setPostView(req.params.id);
-      return res.json(updatedPost);
+      res.json(updatedPost);
     } catch (err) {
       res.json(err);
     }

@@ -1,28 +1,13 @@
 const { User } = require("../models/User");
+const path = require("path");
 
 class UsersService {
-  async create(user /*, picture*/) {
-    // const fileName = FileService.saveFile(picture)
+  async create(user) {
     let newUser = {
       ...user,
-      about: "",
       reputation: 1,
-      answers: 1,
+      answers: 0,
       questions: 0,
-      status: "Новичёк",
-      topAnswers: [
-        {
-          answerId: "617911adf60d4f3aee4d67f5",
-          voteCount: 5,
-          title: "Ребят, есть проблемка",
-          date: "2021-10-27T08:45:33.153+00:00",
-        },
-      ],
-      links: [
-        {
-          telegram: "https://t.me/intelligent_person",
-        },
-      ],
     };
     const createdUser = await User.create(newUser);
     return createdUser;
@@ -50,9 +35,10 @@ class UsersService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-
     const user = await User.findOne({ sub: id });
-    return user;
+    const usersTop = await User.find({}).sort({ reputation: -1 });
+    const rang = usersTop.findIndex((user) => user.sub === id) + 1;
+    return { ...user._doc, rang };
   }
 
   async update(user) {
@@ -63,6 +49,18 @@ class UsersService {
       new: true,
     });
     return updatedUser;
+  }
+
+  async uploadPhoto(file, userId) {
+    try {
+      const fileName = userId.replace("|", "-") + ".jpg";
+      const filePath = path.resolve("static", fileName);
+      await file.mv(filePath);
+
+      return `http://localhost:5000/${fileName}`;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async delete(id) {

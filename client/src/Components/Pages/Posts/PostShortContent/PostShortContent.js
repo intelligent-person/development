@@ -86,8 +86,9 @@ const PostShortContent = ({ post }) => {
               </NavLink>
             </h4>
             <div style={{ display: "inline-flex" }}>
-              <div style={{ marginRight: 5 }}>{data.status}</div>
-              <div>{data.reputation}</div>
+              <strong>
+                <div>{data.reputation}</div>
+              </strong>
             </div>
             <div style={{ fontSize: 12 }}>
               <DateComponent postDate={post.date} />

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Col, Menu, Row } from "antd";
-import LogoutButton from "../LoginLogout/LogoutButton";
+import ProfileIcon from "./ProfileIcon";
 import { Header } from "antd/es/layout/layout";
 import { NavLink } from "react-router-dom";
-import LoginButton from "../LoginLogout/LoginButton";
+import LoginButton from "./LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
+import Settings from "./Settings";
 
 const HeaderComponent = () => {
   const { isAuthenticated } = useAuth0();
@@ -46,7 +47,12 @@ const HeaderComponent = () => {
             </Menu.Item>
           </Menu>
         </Col>
-        <Col>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</Col>
+        <Col>
+          <div style={{ display: "flex" }}>
+            {isAuthenticated ? <ProfileIcon /> : <LoginButton />}
+            <Settings />
+          </div>
+        </Col>
       </Row>
     </Header>
   );

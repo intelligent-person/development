@@ -1,21 +1,17 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
+import { SettingOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
-import Avatar from "antd/es/avatar/avatar";
 import { NavLink } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
-import { ZhihuOutlined } from "@ant-design/icons";
+import Avatar from "antd/es/avatar/avatar";
 
-const LogoutButton = () => {
-  const { logout, user } = useAuth0();
+const Settings = () => {
+  const { logout } = useAuth0();
   const { t, i18n } = useTranslation();
   const { SubMenu } = Menu;
-
   const menu = (
     <Menu>
-      <Menu.Item key={"1"}>
-        <NavLink to={"/profile"}>{t("Logout.Profile")}</NavLink>
-      </Menu.Item>
       <SubMenu
         key="2"
         icon={<>{i18n.language.toUpperCase()} </>}
@@ -37,16 +33,20 @@ const LogoutButton = () => {
     </Menu>
   );
   return (
-    <Dropdown overlay={menu}>
-      <a
-        className="ant-dropdown-link"
-        onClick={(e) => e.preventDefault()}
-        href={"#"}
-      >
-        <Avatar src={user.picture} />
-      </a>
-    </Dropdown>
+    <div style={{ marginTop: 3, marginLeft: 15 }}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <a
+          className="ant-dropdown-link"
+          onClick={(e) => e.preventDefault()}
+          href={"#"}
+        >
+          <SettingOutlined
+            style={{ color: "white", fontSize: 20, marginTop: 8 }}
+          />
+        </a>
+      </Dropdown>
+    </div>
   );
 };
 
-export default LogoutButton;
+export default Settings;

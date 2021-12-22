@@ -7,8 +7,15 @@ import { UserOutlined } from "@ant-design/icons";
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
   return (
-    <Button type={"link"} onClick={() => loginWithRedirect()}>
-      <Avatar style={{ backgroundColor: "#87d068" }} icon={<UserOutlined />} />
+    <Button
+      style={{ padding: 0, marginTop: 3 }}
+      type={"link"}
+      onClick={() => loginWithRedirect()}
+    >
+      <Avatar
+        style={{ backgroundColor: "#87d068", marginTop: 15 }}
+        icon={<UserOutlined />}
+      />
     </Button>
   );
 };

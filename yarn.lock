@@ -3070,7 +3070,7 @@ saslprep@^1.0.3:
   dependencies:
     sparse-bitfield "^3.0.3"
 
-"saslprep@github:mongodb-js/saslprep#v1.0.4":
+saslprep@mongodb-js/saslprep#v1.0.4:
   version "1.0.4"
   resolved "https://codeload.github.com/mongodb-js/saslprep/tar.gz/9813a626d0685f54e4f2fac6160470d6e01d8c96"
   dependencies:

@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.get("/", PostsController.getAll);
 router.get("/:id", PostsController.getOne);
+router.get("/userPosts/:userId", PostsController.getLastUserPosts);
 router.get("/tagCount/:tag", PostsController.getTagCount);
 // получение отправленных данных
 router.post("/", PostsController.create);

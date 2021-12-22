@@ -66,7 +66,13 @@
     "yourAnswer": "Your Answer",
     "postAnswer": "Answer",
     "edit": "edit",
-    "share": "share"
+    "delete": "delete",
+    "deleteTitle": "Are you sure you want to delete your question?",
+    "deleteDescription": "We strongly discourage doing this, as it may be useful to someone.",
+    "cancel": "cancel",
+    "share": "share",
+    "copy": "Copy text",
+    "isCopied": "Text is copied"
   },
   "answer": {
     "reply": "reply to",

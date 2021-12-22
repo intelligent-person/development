@@ -5,11 +5,8 @@ class UsersController {
   async create(req, res) {
     try {
       const oldUser = await User.find({ sub: req.body.sub });
-      // const admin = await User.find({status: "Админ"})
       if (oldUser[0] === undefined) {
-        const savedUser = await UsersService.create(
-          req.body /*, req.files.picture*/
-        );
+        const savedUser = await UsersService.create(req.body);
         res.json(savedUser);
       }
     } catch (err) {
@@ -41,6 +38,23 @@ class UsersController {
   async update(req, res) {
     try {
       const updatedUser = await UsersService.update(req.body);
+      res.json(updatedUser);
+    } catch (err) {
+      res.json(err);
+    }
+  }
+
+  async uploadPhoto(req, res) {
+    try {
+      console.log(req.files);
+      const file = await UsersService.uploadPhoto(
+        req.files.avatar,
+        req.params.id
+      );
+      const updatedUser = await UsersService.update({
+        sub: req.params.id,
+        picture: file,
+      });
       res.json(updatedUser);
     } catch (err) {
       res.json(err);

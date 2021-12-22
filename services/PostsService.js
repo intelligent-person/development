@@ -1,8 +1,13 @@
 const Post = require("../models/Post");
+const { User } = require("../models/User");
 
 class PostsService {
   async create(post) {
     const createdPost = await Post.create(post);
+    await User.findOneAndUpdate(
+      { sub: post.userId },
+      { $inc: { questions: +1 } }
+    );
     return createdPost;
   }
 
@@ -52,6 +57,14 @@ class PostsService {
     }
     const post = await Post.findById(id);
     return post;
+  }
+
+  async getLastUserPosts(userId) {
+    if (!userId) {
+      throw new Error("Не указан ID");
+    }
+    const posts = await Post.find({ userId }).sort({ date: "desc" }).limit(5);
+    return posts;
   }
   async getTagCount(tag) {
     if (!tag) {

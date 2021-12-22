@@ -5,6 +5,7 @@ import Loader from "../Loader/Loader";
 import PostCreator from "../Pages/Posts/PostCreator/PostCreator";
 import { Content } from "antd/es/layout/layout";
 import PostsBreadCrumb from "../Pages/Posts/PostsBreadCrumb";
+import NotAuthorized from "../Results/NotAuthorized";
 
 const HomeContainer = React.lazy(() => import("../Pages/Home/HomeContainer"));
 const PostsContainer = React.lazy(() =>
@@ -30,6 +31,11 @@ const ContentContainer = () => {
       <React.Suspense fallback={<Loader />}>
         <Switch>
           <Route path={"/"} exact={true} component={HomeContainer} />
+          <Route
+            path={"/login"}
+            exact={true}
+            render={() => <NotAuthorized />}
+          />
           <Route
             path={"/questions"}
             render={() => (

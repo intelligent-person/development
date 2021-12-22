@@ -33,6 +33,9 @@ export const postsAPI = {
   getPost(id) {
     return instance.get("/posts/" + id);
   },
+  getLastUserPosts(userId) {
+    return instance.get("/posts/userPosts/" + userId);
+  },
   addPost(newPost) {
     return instance.post("/posts", newPost);
   },
@@ -53,6 +56,12 @@ export const answersAPI = {
   getAnswers(postId, page) {
     return instance.get(`/answers/${postId}?page=${page}`);
   },
+  getUserTopAnswers(userId, page) {
+    return instance.get(`/answers/userTopAnswers/${userId}?page=${page}`);
+  },
+  getAnswer(postId, userId) {
+    return instance.get(`/answers/${postId}/${userId}`);
+  },
   updateAnswer(answer) {
     return instance.put("/answers", answer);
   },
@@ -72,13 +81,21 @@ export const commentsAPI = {
   },
 };
 export const tagsApi = {
-  addTags(tags, userId) {
-    return instance.post("/tags", { tags, userId });
+  addTags(tags) {
+    return instance.post("/tags", { tags });
   },
   getTagCount(tag) {
     return instance.get("/tags/" + tag);
   },
+};
+export const userTagsApi = {
+  addUserTags(tags, userId) {
+    return instance.post("/userTags", { tags, userId });
+  },
+  getTagCount(tag) {
+    return instance.get("/userTags/" + tag);
+  },
   getUserTags(userId) {
-    return instance.get("/tags/userTags/" + userId);
+    return instance.get("/userTags/" + userId);
   },
 };

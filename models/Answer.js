@@ -7,6 +7,11 @@ const answerSchema = new Schema({
     type: String,
     required: true,
   },
+  title: String,
+  confirmed: {
+    type: Boolean,
+    default: false,
+  },
   body: {
     type: String,
     required: true,

@@ -35,10 +35,17 @@
 }
 
 .user {
+  display: flex;
+  grid-gap: 10px;
   width: 270px;
   margin-bottom: 40px;
 }
 .user img {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+}
+
+.user button {
+  padding: 0 2px;
+  margin-top: -5px;
 }

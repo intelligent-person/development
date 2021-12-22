@@ -13,8 +13,9 @@ import { queryClient } from "../../../../hooks/queryClient";
 import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
 import Draft from "../../../Markdown/Draft";
-import { useAddTags } from "../../../../hooks/tags/useAddTags";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useAddUserTags } from "../../../../hooks/userTags/useAddUserTags";
+import { useAddTags } from "../../../../hooks/tags";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -26,7 +27,9 @@ const CreatorSchema = (t) =>
     tags: yup
       .string()
       .required(t("errors.isRequired"))
-      .max(40, t("errors.tooManyTags")),
+      .test("tags", t("errors.tooManyTags"), (value) => {
+        return value?.split(" ").length < 7;
+      }),
     Draft: yup
       .mixed()
       .test("Draft", t("errors.isRequired"), (value) => {
@@ -35,7 +38,7 @@ const CreatorSchema = (t) =>
       .test("Draft", t("errors.tooShort"), (value) => {
         if (value) {
           return (
-            convertToRaw(value?.getCurrentContent()).blocks[0].text.length > 30
+            convertToRaw(value?.getCurrentContent()).blocks[0].text.length > 10
           );
         }
       }),
@@ -47,6 +50,7 @@ const PostCreator = () => {
   const mainUser = queryClient.getQueryData(["Main User"]);
   const addPost = hooks.useAddPost();
   const addTag = useAddTags();
+  const addUserTags = useAddUserTags();
   const { t } = useTranslation();
   const {
     handleSubmit,
@@ -73,6 +77,7 @@ const PostCreator = () => {
         .filter((item) => item !== "#" && item !== "$" && item !== "&")
         .join("")
         .split(" ")
+        .filter((tag) => tag !== "")
         .slice(0, 5);
       const newPost = {
         title: data.title,
@@ -84,7 +89,8 @@ const PostCreator = () => {
         answersCount: 0,
       };
       await addPost.mutateAsync(newPost);
-      await addTag.mutateAsync({ tags: tagsArray, userId: mainUser.sub });
+      await addTag.mutateAsync(tagsArray);
+      await addUserTags.mutateAsync({ tags: tagsArray, userId: mainUser.sub });
       reset({
         Draft: EditorState.createEmpty(),
         title: "",

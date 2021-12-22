@@ -7,6 +7,7 @@ router.get("/", UsersController.getAll);
 router.get("/:id", UsersController.getOne);
 // получение отправленных данных
 router.post("/", UsersController.create);
+router.post("/uploadPhoto/:id", UsersController.uploadPhoto);
 // удаление пользователя по id
 router.delete("/:id", UsersController.delete);
 // изменение пользователя

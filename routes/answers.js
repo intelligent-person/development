@@ -3,6 +3,8 @@ const AnswersController = require("../controllers/AnswersController");
 const router = express.Router();
 
 router.get("/:postId", AnswersController.getAll);
+router.get("/userTopAnswers/:userId", AnswersController.getUserTopAnswers);
+router.get("/:postId/:userId", AnswersController.getOne);
 // получение отправленных данных
 router.post("/", AnswersController.create);
 router.put("/", AnswersController.update);

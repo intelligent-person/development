@@ -13,6 +13,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { EditCreatorSchema } from "../EditCreatorSchema";
 import styles from "../../../../../Markdown/markdown.module.css";
 import * as userHooks from "../../../../../../hooks/users";
+import { useAddUserTags } from "../../../../../../hooks/userTags";
 
 const AddAnswer = ({ post }) => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ const AddAnswer = ({ post }) => {
   const currentUrl = window.location.href;
   const { isAuthenticated } = useAuth0();
   const addAnswer = hooks.useAddAnswer();
+  const addUserTags = useAddUserTags();
   const updateUser = userHooks.useUpdateUser();
   const mainUser = queryClient.getQueryData(["Main User"]);
 
@@ -35,20 +37,8 @@ const AddAnswer = ({ post }) => {
     const rawObject = convertToRaw(contentState);
     const markdownBody = draftToMarkdown(rawObject);
     if (isAuthenticated) {
-      const newAnswer = {
-        body: markdownBody,
-        codeLanguage: post.codeLanguage,
-        userId: mainUser.sub,
-        postId: post._id,
-      };
-      await addAnswer.mutateAsync(newAnswer);
-      reset({
-        Draft: EditorState.createEmpty(),
-      });
-
       await updateUser.mutateAsync({
         sub: mainUser.sub,
-        reputation: mainUser.reputation + 5,
         tags: [
           ...post.tags.map((tag) => {
             let returnedTag = { tag, tagCount: 0 };
@@ -61,9 +51,21 @@ const AddAnswer = ({ post }) => {
         ],
       });
       await updateUser.mutateAsync({
-        sub: data.sub,
+        sub: post.userId,
         reputation: data.reputation + 5,
       });
+      const newAnswer = {
+        title: post.title,
+        body: markdownBody,
+        codeLanguage: post.codeLanguage,
+        userId: mainUser.sub,
+        postId: post._id,
+      };
+      await addAnswer.mutateAsync(newAnswer);
+      reset({
+        Draft: EditorState.createEmpty(),
+      });
+      await addUserTags.mutateAsync({ tags: post.tags, userId: mainUser.sub });
     }
   };
   return (

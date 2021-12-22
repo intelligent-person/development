@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "../../../Loader/Loader";
 import * as hooks from "../../../../hooks/posts";
@@ -6,22 +6,24 @@ import PostInfo from "./PostInfo/PostInfo";
 import AddAnswer from "./Answers/AddAnwer/AddAnswer";
 import Answers from "./Answers/Answers";
 import { queryClient } from "../../../../hooks/queryClient";
-import { useTranslation } from "react-i18next";
+import NotFound from "../../../Results/NotFound";
 
 const Post = () => {
   const { postId } = useParams();
-  const { t } = useTranslation();
+  const { status, data, error } = hooks.useFetchPostById(postId);
   const mainUser = queryClient.getQueryData(["Main User"]);
-  const { status, error, data } = hooks.useFetchPostById(postId);
+
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
     error.message
+  ) : data === null ? (
+    <NotFound />
   ) : (
     <>
       <PostInfo post={data} />
       <Answers />
-      {data.userId !== mainUser?.sub && <AddAnswer post={data} />}
+      {mainUser && data.userId !== mainUser?.sub && <AddAnswer post={data} />}
     </>
   );
 };

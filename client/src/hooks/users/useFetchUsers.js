@@ -7,6 +7,9 @@ export const useFetchUsers = (page, search, sort) => {
     async () => {
       const { data } = await usersAPI.getUsers(page, search, sort);
       return data;
+    },
+    {
+      keepPreviousData: true,
     }
   );
 };

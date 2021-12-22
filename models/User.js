@@ -4,6 +4,9 @@ const Schema = mongoose.Schema;
 const linkSchema = new Schema({
   telegram: String,
   github: String,
+  instagram: String,
+  facebook: String,
+  linkedIn: String,
 });
 const topAnswerSchema = new Schema({
   answerId: String,
@@ -37,7 +40,7 @@ const userSchema = new Schema({
   isOnline: {
     type: String,
   },
-  links: [linkSchema],
+  links: linkSchema,
   topAnswers: [topAnswerSchema],
   picture: {
     type: String,

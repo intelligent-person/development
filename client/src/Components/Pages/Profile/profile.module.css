@@ -1,0 +1,155 @@
+.notData {
+  background-color: #f0f2f5;
+  text-align: center;
+  padding: 30px;
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.statWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 10px 0;
+}
+.statBlock {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 50px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 10fr 20px;
+  grid-gap: 10px;
+  margin-bottom: 20px;
+}
+
+.name {
+  max-width: 500px;
+  margin: 0;
+}
+
+.status {
+  margin: 0 0 30px;
+}
+
+.timeWrapper {
+  display: flex;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.time {
+  margin-right: 5px;
+}
+
+.stat h1,
+h4 {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+.stat {
+  max-width: 350px;
+  background-color: #f0f2f5;
+  padding: 5px 0 5px 20px;
+  line-height: 30px;
+  border: 1px dashed rgba(24, 144, 255, 0.7);
+  border-radius: 10px;
+}
+
+.topTags {
+  border: 1px solid rgba(24, 144, 255, 0.3);
+  margin-bottom: 50px;
+  border-radius: 10px;
+}
+
+.profileContent {
+  padding: 30px 50px 50px;
+  margin: 0 200px;
+  min-height: 670px;
+  background-color: white;
+}
+
+.tagField {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 10px 8px 10px;
+  border-bottom: 1px solid rgba(24, 144, 255, 0.2);
+  line-height: 30px;
+}
+
+.answerField {
+  display: grid;
+  grid-template-columns: 50px 5fr 70px;
+  grid-gap: 10px;
+  padding: 10px 10px 8px 10px;
+  border-bottom: 1px solid rgba(24, 144, 255, 0.2);
+  line-height: 30px;
+  color: rgba(0, 0, 0, 0.3);
+}
+
+.answerField:hover {
+  background-color: #f0f2f5;
+}
+
+.tag {
+  background-color: #f0f2f5;
+  padding: 0 5px;
+}
+
+.tagStat {
+  width: 130px;
+  display: flex;
+  justify-content: space-between;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+
+.aboutWrapper {
+  display: flex;
+  align-items: center;
+}
+.aboutWrapper h3,
+h2 {
+  margin: 0;
+}
+
+.editButton {
+  padding: 0;
+  color: #1890ff;
+}
+
+.editIcon {
+  font-size: 20px;
+  margin-left: 5px;
+  margin-bottom: 4px;
+}
+
+.input {
+  max-width: 150px;
+  margin: 0 5px;
+}
+
+.linkWrapper {
+  margin-top: 8px;
+  display: flex;
+  grid-gap: 7px;
+  align-items: center;
+}
+
+.error {
+  color: red;
+}
+
+.answersCount {
+  padding: 0 10px;
+  color: white;
+  background-color: rgba(24, 144, 255, 0.7);
+  font-size: 15px;
+}

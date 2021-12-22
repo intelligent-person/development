@@ -7,7 +7,7 @@ import "../../../utils/i18n";
 import qs from "query-string";
 import styles from "./styles/users.module.css";
 
-const UsersFilter = () => {
+const UsersFilter = ({ setSearchUser }) => {
   const { t } = useTranslation();
   const history = useHistory();
   const queryParams = qs.parse(window.location.search);
@@ -51,6 +51,7 @@ const UsersFilter = () => {
             className={styles.searchUsers}
             placeholder={t("FilterComponent.Search")}
             onSearch={onSearch}
+            onChange={(e) => setSearchUser(e.target.value)}
             enterButton
           />
         </div>
@@ -66,7 +67,6 @@ const UsersFilter = () => {
           <Button
             type={"default"}
             className={styles.sortButton}
-            autoFocus
             onClick={onReputation}
           >
             Reputation

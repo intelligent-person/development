@@ -9,6 +9,11 @@
 
 .userWrapper {
   display: flex;
-  margin: 0 50px 10px 0;
+  min-width: 130px;
+  margin: 0 50px 1px 30px;
   grid-gap: 10px;
+}
+
+.deleteModal {
+  max-width: 600px;
 }

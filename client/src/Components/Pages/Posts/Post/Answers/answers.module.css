@@ -1,0 +1,12 @@
+.passiveAnswer {
+  color: gray;
+  font-size: 36px;
+  margin-left: 10px;
+}
+.passiveAnswer:hover {
+  color: green;
+  cursor: pointer;
+}
+.passiveAnswer:active {
+  color: green;
+}

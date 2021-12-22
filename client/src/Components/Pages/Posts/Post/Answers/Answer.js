@@ -6,6 +6,7 @@ import {
   DislikeFilled,
   LikeFilled,
   EditOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 
 import * as hooks from "../../../../../hooks/answers";
@@ -18,11 +19,14 @@ import { useTranslation } from "react-i18next";
 import MarkdownToPost from "../../../../Markdown/MarkdownToPost";
 import EditAnswer from "./EditAnswer/EditAnswer";
 import Loader from "../../../../Loader/Loader";
+import styles from "./answers.module.css";
 
 const Answer = ({ answer, page }) => {
   const { t } = useTranslation();
   const updateUser = userHooks.useUpdateUser();
   const { data, status, error } = userHooks.useUserById(answer.userId);
+  const { postId } = useParams();
+  const post = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const updateAnswer = hooks.useUpdateAnswer();
   const deleteAnswer = hooks.useDeleteAnswer();
   const mainUser = queryClient.getQueryData(["Main User"]);
@@ -84,10 +88,10 @@ const Answer = ({ answer, page }) => {
         newVotesCount = answer.votesCount - 1;
         newAction = null;
         newReputation = data.reputation - 1;
-      } else if (answer.votesCount !== 0 || userAction?.action === "disliked") {
+      } else if (answer.votesCount !== 0 && userAction?.action === "disliked") {
         newVotesCount = answer.votesCount + 1;
         newAction = null;
-        newReputation = data.reputation - 1;
+        newReputation = data.reputation + 1;
       } else stop = true;
       if (!stop) {
         await updateAnswer.mutateAsync({
@@ -114,9 +118,20 @@ const Answer = ({ answer, page }) => {
       await deleteAnswer.mutateAsync(params);
       await updateUser.mutateAsync({
         sub: data.sub,
-        reputation: data.reputation - answer.votesCount - 5,
+        reputation: data.reputation - answer.votesCount - 10,
       });
     }
+  };
+
+  const confirmAnswer = async () => {
+    await updateAnswer.mutateAsync({
+      answer: { ...answer, confirmed: true },
+      page,
+    });
+    await updateUser.mutateAsync({
+      sub: data.sub,
+      reputation: data.reputation + 10,
+    });
   };
 
   const actions = [
@@ -191,14 +206,16 @@ const Answer = ({ answer, page }) => {
               </NavLink>
             </div>
             <div>
-              {data.status} <strong>{data.reputation}</strong>
+              <strong>{data.reputation}</strong>
             </div>
           </>
         }
         avatar={
-          <NavLink to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}>
-            <Avatar src={data.picture} alt={data.name} />
-          </NavLink>
+          <>
+            <NavLink to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}>
+              <Avatar src={data.picture} alt={data.name} />
+            </NavLink>
+          </>
         }
         content={
           <div style={{ paddingTop: 15 }}>
@@ -208,7 +225,25 @@ const Answer = ({ answer, page }) => {
             />
           </div>
         }
-        datetime={<span>{new Date().toLocaleDateString()}</span>}
+        datetime={
+          <>
+            <span>{new Date(answer.date).toLocaleDateString()}</span>
+            {answer.confirmed ? (
+              <CheckOutlined
+                style={{ color: "green", fontSize: 36, marginLeft: 10 }}
+                title={"подтвержденный"}
+              />
+            ) : (
+              mainUser?.sub === post.userId && (
+                <CheckOutlined
+                  onClick={confirmAnswer}
+                  className={styles.passiveAnswer}
+                  title={"подтвердить"}
+                />
+              )
+            )}
+          </>
+        }
       >
         {isEditMode && (
           <EditAnswer

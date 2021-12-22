@@ -11,9 +11,31 @@ class AnswersController {
   }
   async getAll(req, res) {
     try {
-      const answer = await AnswersServices.getAll(
+      const answers = await AnswersServices.getAll(
         req.params.postId,
         req.query.page
+      );
+      res.json(answers);
+    } catch (err) {
+      res.json(err);
+    }
+  }
+  async getUserTopAnswers(req, res) {
+    try {
+      const userTopAnswers = await AnswersServices.getUserTopAnswers(
+        req.params.userId,
+        req.query.page
+      );
+      res.json(userTopAnswers);
+    } catch (err) {
+      res.json(err);
+    }
+  }
+  async getOne(req, res) {
+    try {
+      const answer = await AnswersServices.getOne(
+        req.params.postId,
+        req.params.userId
       );
       res.json(answer);
     } catch (err) {

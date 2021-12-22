@@ -3,12 +3,6 @@ const Schema = mongoose.Schema;
 
 const tagSchema = new Schema({
   tagName: String,
-  users: [
-    {
-      userId: String,
-      count: { type: Number, default: 1 },
-    },
-  ],
   tagCount: {
     type: Number,
     default: 1,

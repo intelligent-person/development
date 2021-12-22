@@ -13,7 +13,7 @@ export const useUpdateAnswer = () => {
         console.log("🎬 delete todo mutation fired");
       },
       onSuccess(...params) {
-        console.log("2. onSuccess");
+        console.log("2. onSuccess", params);
         console.log("✅ todo was deleted");
       },
       onError(...params) {

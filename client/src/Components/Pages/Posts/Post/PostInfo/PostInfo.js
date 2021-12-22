@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Button, Row } from "antd";
+import { Alert, Button, Row, Space } from "antd";
 import { NavLink } from "react-router-dom";
 import DateComponent from "../../../../DateComponent/DateComponent";
 import { useTranslation } from "react-i18next";
 import styles from "./postInfo.module.css";
 import "../post.css";
 import * as userHooks from "../../../../../hooks/users";
+import * as postHooks from "../../../../../hooks/posts";
 import MarkdownToPost from "../../../../Markdown/MarkdownToPost";
 import Loader from "../../../../Loader/Loader";
 import EditPost from "../EditPost";
@@ -18,7 +19,10 @@ const PostInfo = ({ post }) => {
   const mainUser = queryClient.getQueryData(["Main User"]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isShareMode, setIsShareMode] = useState(false);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const deletePost = postHooks.useDeletePost();
   const { data, status, error } = userHooks.useUserById(post.userId);
+
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
@@ -43,9 +47,11 @@ const PostInfo = ({ post }) => {
           </div>
         </div>
       </div>
-      <MarkdownToPost body={post.body} codeLanguage={post.codeLanguage} />
+      <div>
+        <MarkdownToPost body={post.body} codeLanguage={post.codeLanguage} />
+      </div>
       <div className={styles.user}>
-        <div style={{ opacity: 0.6 }}>
+        <div>
           <Button
             type={"text"}
             onClick={() =>
@@ -55,24 +61,34 @@ const PostInfo = ({ post }) => {
           >
             {t("post.share")}
           </Button>
-          {post.userId === mainUser.sub && (
-            <Button
-              type={"text"}
-              onClick={() =>
-                isEditMode ? setIsEditMode(false) : setIsEditMode(true)
-              }
-              style={{ padding: 8 }}
-            >
-              {t("post.edit")}
-            </Button>
-          )}
-          {post.isEdited === true && (
-            <EditOutlined title={t("answer.edited")} />
+          {post.userId === mainUser?.sub && (
+            <>
+              <Button
+                type={"text"}
+                onClick={() =>
+                  isEditMode ? setIsEditMode(false) : setIsEditMode(true)
+                }
+                style={{ padding: 8 }}
+              >
+                {t("post.edit")}
+              </Button>
+              <Button
+                type={"text"}
+                onClick={() =>
+                  isDeleteMode ? setIsDeleteMode(false) : setIsDeleteMode(true)
+                }
+                style={{ padding: 8 }}
+              >
+                {t("post.delete")}
+              </Button>
+            </>
           )}
         </div>
         <div className={styles.userWrapper}>
           <div>
-            <img src={data.picture} alt={data.name} />
+            <NavLink to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}>
+              <img src={data.picture} alt={data.name} />
+            </NavLink>
           </div>
           <div>
             <div>
@@ -83,13 +99,48 @@ const PostInfo = ({ post }) => {
               </NavLink>
             </div>
             <div>
-              {data.status} <strong>{data.reputation}</strong>
+              <strong>{data.reputation}</strong>
             </div>
           </div>
         </div>
       </div>
+
+      {post.isEdited === true && <EditOutlined title={t("answer.edited")} />}
       {isEditMode && <EditPost post={post} setIsEditMode={setIsEditMode} />}
       {isShareMode && <SharePost />}
+      {isDeleteMode && (
+        <Alert
+          className={styles.deleteModal}
+          message={
+            <>
+              <strong>{t("post.deleteTitle")}</strong> <br />
+              {t("post.deleteDescription")}
+            </>
+          }
+          type="info"
+          action={
+            <Space direction="horizontal">
+              <Button
+                onClick={() => setIsDeleteMode(false)}
+                size="small"
+                type="primary"
+              >
+                {t("post.cancel")}
+              </Button>
+              <NavLink to={"/questions"}>
+                <Button
+                  onClick={async () => await deletePost.mutateAsync(post._id)}
+                  size="small"
+                  danger
+                  type="ghost"
+                >
+                  {t("post.delete")}
+                </Button>
+              </NavLink>
+            </Space>
+          }
+        />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Users from "./Users";
 import { Content } from "antd/es/layout/layout";
 import UsersFilter from "./UsersFilter";
@@ -9,9 +9,10 @@ import Loader from "../../Loader/Loader";
 
 const UsersContainer = () => {
   const params = new URL(window.location.href).searchParams;
+  const [searchUser, setSearchUser] = useState("");
   const { status, data, error } = hooks.useFetchUsers(
     params.get("page"),
-    params.get("search"),
+    searchUser.length >= 3 ? searchUser : params.get("search"),
     params.get("sort")
   );
   useEffect(() => {
@@ -26,7 +27,7 @@ const UsersContainer = () => {
   ) : (
     <>
       <Content className={`site-layout-background ${styles.content}`}>
-        <UsersFilter />
+        <UsersFilter setSearchUser={setSearchUser} />
         <Users users={data.users} />
         {data.usersCount > 20 && (
           <Pagination

@@ -3,25 +3,30 @@ const TagServices = require("../services/TagService");
 class TagController {
   async create(req, res) {
     try {
-      const tags = await TagServices.create(req.body);
-      res.json(tags);
+      const tags = req.body.tags;
+      console.log(tags);
+      let newTags = [];
+      for (let i = 0; i < tags.length; i++) {
+        if (tags[i].split("").length > 1 && tags[i] !== " ") {
+          const checkTag = await TagServices.getTag(tags[i]);
+          if (checkTag === null) {
+            const newTag = await TagServices.create(tags[i]);
+            newTags = [...newTags, newTag];
+          } else {
+            const updatedTag = await TagServices.update(tags[i]);
+            newTags = [...newTags, updatedTag];
+          }
+        }
+      }
+      res.json(newTags);
     } catch (err) {
       res.json(err);
     }
   }
   async getTagCount(req, res) {
     try {
-      const tagCount = await TagServices.getTagCount(req.params.tag);
-      res.json(tagCount);
-    } catch (err) {
-      res.json(err);
-    }
-  }
-
-  async getUserTags(req, res) {
-    try {
-      const userTags = await TagServices.getUserTags(req.params.userId);
-      res.json(userTags);
+      const tag = await TagServices.getTagCount(req.params.tag);
+      res.json(tag);
     } catch (err) {
       res.json(err);
     }

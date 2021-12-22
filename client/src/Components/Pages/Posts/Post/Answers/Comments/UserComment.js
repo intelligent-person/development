@@ -41,9 +41,7 @@ const UserComment = ({ comment }) => {
       author={
         <>
           <NavLink to={`/user/${data.name}/${data.sub}`}>{data.name}</NavLink>{" "}
-          <strong>
-            {data.status} {data.reputation}
-          </strong>
+          <strong>{data.reputation}</strong>
         </>
       }
       avatar={
