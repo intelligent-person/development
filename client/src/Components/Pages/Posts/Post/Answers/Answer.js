@@ -24,7 +24,7 @@ import styles from "./answers.module.css";
 const Answer = ({ answer, page }) => {
   const { t } = useTranslation();
   const updateUser = userHooks.useUpdateUser();
-  const { data, status, error } = userHooks.useUserById(answer.userId);
+  const { data, status, error, refetch } = userHooks.useUserById(answer.userId);
   const { postId } = useParams();
   const post = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const updateAnswer = hooks.useUpdateAnswer();
@@ -132,6 +132,7 @@ const Answer = ({ answer, page }) => {
       sub: data.sub,
       reputation: data.reputation + 10,
     });
+    refetch();
   };
 
   const actions = [

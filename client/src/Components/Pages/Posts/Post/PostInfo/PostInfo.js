@@ -32,7 +32,7 @@ const PostInfo = ({ post }) => {
       <div className={"postHeader"}>
         <Row justify={"space-between"}>
           <h1 style={{ maxWidth: "80%" }}>{post.title}</h1>
-          <NavLink to={"/questions/ask"}>
+          <NavLink to={mainUser ? "/questions/ask" : "/login"}>
             <Button type={"primary"}>{t("FilterComponent.AskQuestion")}</Button>
           </NavLink>
         </Row>

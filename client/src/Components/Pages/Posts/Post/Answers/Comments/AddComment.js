@@ -14,7 +14,7 @@ const CreatorSchema = (t) =>
     comment: yup
       .string()
       .required(t("errors.isRequired"))
-      .min(20, t("errors.tooShort")),
+      .min(3, t("errors.tooShort")),
   });
 const AddComment = ({ answerId, setIsAddComment, page }) => {
   const { t } = useTranslation();
