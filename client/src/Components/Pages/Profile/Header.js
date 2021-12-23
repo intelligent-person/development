@@ -119,7 +119,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               listType="picture-card"
               className="avatar-uploader"
               showUploadList={false}
-              action={`https://intelligentforum.herokuapp.com/api/users/uploadPhoto/${mainUser.sub}`}
+              action={`https://forumintelligent.herokuapp.com/api/users/uploadPhoto/${mainUser.sub}`}
               beforeUpload={beforeUpload}
               onChange={handleUploadPhoto}
             >
