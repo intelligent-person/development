@@ -16,7 +16,14 @@ const CreatorSchema = (t) =>
       .required(t("errors.isRequired"))
       .min(3, t("errors.tooShort")),
   });
-const AddComment = ({ answerId, setIsAddComment, page }) => {
+const AddComment = ({
+  answerId,
+  setIsAddComment,
+  answerUserId,
+  postTitle,
+  postUserId,
+  postId,
+}) => {
   const { t } = useTranslation();
   const { isAuthenticated } = useAuth0();
   const {
@@ -35,6 +42,10 @@ const AddComment = ({ answerId, setIsAddComment, page }) => {
         userId: mainUser.sub,
         answerId,
         body: data.comment,
+        answerUserId,
+        postUserId,
+        postTitle,
+        postId,
       };
       await addComment.mutateAsync(newAnswer);
       reset({

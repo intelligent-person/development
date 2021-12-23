@@ -8,6 +8,7 @@ require("dotenv").config();
 
 const corsOptions = {
   origin: "https://intelligent-forum.herokuapp.com",
+  // origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
 const app = express();
@@ -24,6 +25,7 @@ const answersRoute = require("./routes/answers");
 const commentsRoute = require("./routes/comments");
 const tagsRoute = require("./routes/tags");
 const userTagsRoute = require("./routes/userTags");
+const MessagesRoute = require("./routes/messages");
 
 app.use("/api/users", usersRoute);
 app.use("/api/posts", postsRoute);
@@ -31,6 +33,7 @@ app.use("/api/answers", answersRoute);
 app.use("/api/comments", commentsRoute);
 app.use("/api/tags", tagsRoute);
 app.use("/api/userTags", userTagsRoute);
+app.use("/api/messages", MessagesRoute);
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello server is running").end();

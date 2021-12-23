@@ -33,10 +33,7 @@ class AnswersController {
   }
   async getOne(req, res) {
     try {
-      const answer = await AnswersServices.getOne(
-        req.params.postId,
-        req.params.userId
-      );
+      const answer = await AnswersServices.getOne(req.params.answerId);
       res.json(answer);
     } catch (err) {
       res.json(err);

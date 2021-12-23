@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const answerSchema = new Schema({
   userId: String,
+  postUserId: String,
   postId: {
     type: String,
     required: true,

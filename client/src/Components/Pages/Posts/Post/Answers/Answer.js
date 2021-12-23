@@ -1,4 +1,4 @@
-import React, { createElement, useState } from "react";
+import React, { createElement, useEffect, useRef, useState } from "react";
 import { Avatar, Comment, Tooltip } from "antd";
 import {
   DislikeOutlined,
@@ -20,6 +20,7 @@ import MarkdownToPost from "../../../../Markdown/MarkdownToPost";
 import EditAnswer from "./EditAnswer/EditAnswer";
 import Loader from "../../../../Loader/Loader";
 import styles from "./answers.module.css";
+import qs from "query-string";
 
 const Answer = ({ answer, page }) => {
   const { t } = useTranslation();
@@ -35,6 +36,19 @@ const Answer = ({ answer, page }) => {
   );
   const [isAddComment, setIsAddComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const myRef = useRef(null);
+  const queryParams = qs.parse(window.location.search);
+
+  useEffect(() => {
+    if (myRef.current !== null) {
+      if (
+        queryParams.type === "answer" &&
+        queryParams.scrollTo === answer._id
+      ) {
+        myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [queryParams]);
 
   const like = async () => {
     if (answer.votesCount >= 0) {
@@ -130,7 +144,7 @@ const Answer = ({ answer, page }) => {
     });
     await updateUser.mutateAsync({
       sub: data.sub,
-      reputation: data.reputation + 10,
+      reputation: data.reputation + 5,
     });
     refetch();
   };
@@ -195,12 +209,13 @@ const Answer = ({ answer, page }) => {
       </>
     ),
   ];
+
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
     error.message
   ) : (
-    <div style={{ borderBottom: "1px solid #dddddd" }}>
+    <div ref={myRef}>
       <Comment
         actions={actions}
         author={
@@ -260,7 +275,14 @@ const Answer = ({ answer, page }) => {
           />
         )}
         {isAddComment && (
-          <AddComment answerId={answer._id} setIsAddComment={setIsAddComment} />
+          <AddComment
+            answerId={answer._id}
+            setIsAddComment={setIsAddComment}
+            answerUserId={answer.userId}
+            postTitle={answer.title}
+            postUserId={answer.postUserId}
+            postId={answer.postId}
+          />
         )}
         <Comments answerId={answer._id} />
       </Comment>

@@ -1,6 +1,7 @@
 const { Answer } = require("../models/Answer");
 const Post = require("../models/Post");
 const { User } = require("../models/User");
+const MessageService = require("../services/MessageService");
 
 class AnswersServices {
   async create(answer) {
@@ -10,6 +11,8 @@ class AnswersServices {
       { sub: answer.userId },
       { $inc: { answers: +1 } }
     );
+    const { userId, postUserId, _id } = newAnswer;
+    await MessageService.create("answer", userId, null, postUserId, _id);
     return newAnswer;
   }
   async getAll(postId, page) {
@@ -29,8 +32,8 @@ class AnswersServices {
       .limit(5);
     return userTopAnswers;
   }
-  async getOne(postId, userId) {
-    const postAnswer = await Answer.find({ postId, userId });
+  async getOne(answerId) {
+    const postAnswer = await Answer.findById(answerId);
     return postAnswer;
   }
   async update(answer) {
@@ -47,6 +50,7 @@ class AnswersServices {
     await Post.findByIdAndUpdate(postId, {
       $inc: { answersCount: -1 },
     });
+    await MessageService.delete(answerId);
     return { postId: postId, deletedAnswer };
   }
 }

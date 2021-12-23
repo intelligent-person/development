@@ -1,9 +1,17 @@
 const { Comment } = require("../models/Comment");
-const Post = require("../models/Post");
+const MessageService = require("../services/MessageService");
 
 class CommentServices {
   async create(comment) {
     const newComment = await Comment.create(comment);
+    const { userId, answerUserId, _id, postUserId } = newComment;
+    await MessageService.create(
+      "comment",
+      userId,
+      answerUserId,
+      postUserId,
+      _id
+    );
     return newComment;
   }
   async getAll(answerId, page) {
@@ -14,11 +22,17 @@ class CommentServices {
       .limit(3);
     return { commentsCount, answerComments };
   }
+  async getOne(commentId) {
+    const comment = await Comment.findById(commentId);
+    return comment;
+  }
+
   async delete(commentId) {
     if (!commentId) {
       throw new Error("Не указан ID");
     }
     const deletedComment = await Comment.findByIdAndDelete(commentId);
+    await MessageService.delete(commentId);
     return deletedComment;
   }
 }

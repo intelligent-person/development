@@ -52,7 +52,7 @@ const AddAnswer = ({ post }) => {
       });
       await updateUser.mutateAsync({
         sub: post.userId,
-        reputation: data.reputation + 5,
+        reputation: data.reputation + 3,
       });
       const newAnswer = {
         title: post.title,
@@ -60,6 +60,7 @@ const AddAnswer = ({ post }) => {
         codeLanguage: post.codeLanguage,
         userId: mainUser.sub,
         postId: post._id,
+        postUserId: post.userId,
       };
       await addAnswer.mutateAsync(newAnswer);
       reset({

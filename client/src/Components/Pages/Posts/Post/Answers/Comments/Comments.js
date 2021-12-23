@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as hooks from "../../../../../../hooks/comments";
 import UserComment from "./UserComment";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { queryClient } from "../../../../../../hooks/queryClient";
 import { useTranslation } from "react-i18next";
 
@@ -64,7 +64,7 @@ const Comments = ({ answerId }) => {
       <></>
     )
   ) : status === "error" ? (
-    error.message
+    message.error(error.message)
   ) : data.answerComments[0] ? (
     <CurrentComments data={data} page={page} setPage={setPage} />
   ) : (

@@ -59,8 +59,8 @@ export const answersAPI = {
   getUserTopAnswers(userId, page) {
     return instance.get(`/answers/userTopAnswers/${userId}?page=${page}`);
   },
-  getAnswer(postId, userId) {
-    return instance.get(`/answers/${postId}/${userId}`);
+  getAnswer(answerId) {
+    return instance.get(`/answers/id/${answerId}`);
   },
   updateAnswer(answer) {
     return instance.put("/answers", answer);
@@ -75,6 +75,9 @@ export const commentsAPI = {
   },
   getComments(answerId, page) {
     return instance.get(`/comments/${answerId}?page=${page}`);
+  },
+  getComment(commentId) {
+    return instance.get(`/comments/id/${commentId}`);
   },
   deleteComment(commentId) {
     return instance.delete(`/comments/${commentId}`);
@@ -97,5 +100,16 @@ export const userTagsApi = {
   },
   getUserTags(userId) {
     return instance.get("/userTags/" + userId);
+  },
+};
+export const messagesApi = {
+  addMessage(type, mainUser, userId, messageId) {
+    return instance.post("/messages", { type, mainUser, userId, messageId });
+  },
+  getMessages(userId) {
+    return instance.get("/messages/" + userId);
+  },
+  updateMessage(message) {
+    return instance.put("/messages", message);
   },
 };

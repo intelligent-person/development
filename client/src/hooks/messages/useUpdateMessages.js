@@ -1,10 +1,10 @@
 import { useMutation } from "react-query";
-import { usersAPI } from "../../api/api";
+import { messagesApi } from "../../api/api";
 
-export const useUpdateUser = () => {
+export const useUpdateMessages = () => {
   return useMutation(
-    async (user) => {
-      await usersAPI.updateUser(user);
+    async (message) => {
+      await messagesApi.updateMessage(message);
     },
     {
       onMutate(...params) {

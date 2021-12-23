@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get("/:postId", AnswersController.getAll);
 router.get("/userTopAnswers/:userId", AnswersController.getUserTopAnswers);
-router.get("/:postId/:userId", AnswersController.getOne);
+router.get("/id/:answerId", AnswersController.getOne);
 // получение отправленных данных
 router.post("/", AnswersController.create);
 router.put("/", AnswersController.update);

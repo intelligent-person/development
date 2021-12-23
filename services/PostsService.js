@@ -29,7 +29,7 @@ class PostsService {
           find = { $text: { $search: searsValue }, answersCount: 0 };
       } else {
         find = {
-          $text: { $search: searsValue },
+          $text: { $regex: searsValue, $options: "$i" },
           tags: { $in: tags.split(",") },
         };
         if (unanswered === "true")

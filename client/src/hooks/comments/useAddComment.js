@@ -16,7 +16,7 @@ export const useAddComments = () => {
       console.log("2. onError");
       console.log("⤬ todo was not deleted");
     },
-    onSettled(...params) {
+    async onSettled(...params) {
       console.log(params);
       const prevAnswers = queryClient.getQueryData([
         "posts",

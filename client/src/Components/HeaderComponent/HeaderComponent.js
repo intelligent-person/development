@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Menu, Row } from "antd";
 import ProfileIcon from "./ProfileIcon";
 import { Header } from "antd/es/layout/layout";
@@ -7,11 +7,14 @@ import LoginButton from "./LoginButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
 import Settings from "./Settings";
+import Messages from "./Messages/Messages";
+import { queryClient } from "../../hooks/queryClient";
 
 const HeaderComponent = () => {
-  const { isAuthenticated } = useAuth0();
-  const [selectedKeys, setSelectedKeys] = useState(window.location.pathname);
   const { t } = useTranslation();
+  const { isAuthenticated, user } = useAuth0();
+  const [selectedKeys, setSelectedKeys] = useState(window.location.pathname);
+
   return (
     <Header
       className="header"
@@ -49,6 +52,7 @@ const HeaderComponent = () => {
         </Col>
         <Col>
           <div style={{ display: "flex" }}>
+            {isAuthenticated && <Messages />}
             {isAuthenticated ? <ProfileIcon /> : <LoginButton />}
             <Settings />
           </div>

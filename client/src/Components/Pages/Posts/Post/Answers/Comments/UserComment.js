@@ -1,5 +1,5 @@
-import React from "react";
-import { Avatar, Button, Comment } from "antd";
+import React, { useEffect, useRef } from "react";
+import { Avatar, Button, Comment, message } from "antd";
 import { NavLink, useParams } from "react-router-dom";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import MarkdownToPost from "../../../../../Markdown/MarkdownToPost";
 import * as userHooks from "../../../../../../hooks/users";
 import Loader from "../../../../../Loader/Loader";
-import { EditOutlined } from "@ant-design/icons";
+import qs from "query-string";
 
 const UserComment = ({ comment }) => {
   const { t } = useTranslation();
@@ -17,6 +17,21 @@ const UserComment = ({ comment }) => {
   const { data, status, error } = userHooks.useUserById(comment.userId);
   const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const mainUser = queryClient.getQueryData(["Main User"]);
+
+  const myRef = useRef(null);
+  const queryParams = qs.parse(window.location.search);
+
+  useEffect(() => {
+    if (myRef.current !== null) {
+      if (
+        queryParams.type === "comment" &&
+        queryParams.scrollTo === comment._id
+      ) {
+        console.log(myRef.current);
+        myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [queryParams]);
   const deleteCurrentComment = async () => {
     if (mainUser) {
       const params = {
@@ -29,50 +44,52 @@ const UserComment = ({ comment }) => {
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
-    error.message
+    message.error(error.message)
   ) : (
-    <Comment
-      datetime={comment.date
-        .slice(0, comment.date.indexOf("T"))
-        .split("-")
-        .reverse()
-        .join(".")}
-      className={"comment"}
-      author={
-        <>
-          <NavLink to={`/user/${data.name}/${data.sub}`}>{data.name}</NavLink>{" "}
-          <strong>{data.reputation}</strong>
-        </>
-      }
-      avatar={
-        <NavLink to={`/user/${data.name}/${data.sub}`}>
-          <Avatar src={data.picture} alt={data.name} />
-        </NavLink>
-      }
-      content={
-        <div style={{ display: "flex" }}>
-          <MarkdownToPost
-            body={comment.body
-              .split("")
-              .filter((item) => item !== "#")
-              .join("")}
-            codeLanguage={"none"}
-          />
-          {(mainUser?.sub === data.sub ||
-            mainUser?.sub === postData?.userId) && (
-            <>
-              <Button
-                type={"text"}
-                style={{ color: "grey", marginTop: -4 }}
-                onClick={deleteCurrentComment}
-              >
-                {t("comment.delete")}
-              </Button>
-            </>
-          )}
-        </div>
-      }
-    />
+    <div ref={myRef}>
+      <Comment
+        datetime={comment.date
+          .slice(0, comment.date.indexOf("T"))
+          .split("-")
+          .reverse()
+          .join(".")}
+        className={"comment"}
+        author={
+          <>
+            <NavLink to={`/user/${data.name}/${data.sub}`}>{data.name}</NavLink>{" "}
+            <strong>{data.reputation}</strong>
+          </>
+        }
+        avatar={
+          <NavLink to={`/user/${data.name}/${data.sub}`}>
+            <Avatar src={data.picture} alt={data.name} />
+          </NavLink>
+        }
+        content={
+          <div style={{ display: "flex" }}>
+            <MarkdownToPost
+              body={comment.body
+                .split("")
+                .filter((item) => item !== "#")
+                .join("")}
+              codeLanguage={"none"}
+            />
+            {(mainUser?.sub === data.sub ||
+              mainUser?.sub === postData?.userId) && (
+              <>
+                <Button
+                  type={"text"}
+                  style={{ color: "grey", marginTop: -4 }}
+                  onClick={deleteCurrentComment}
+                >
+                  {t("comment.delete")}
+                </Button>
+              </>
+            )}
+          </div>
+        }
+      />
+    </div>
   );
 };
 

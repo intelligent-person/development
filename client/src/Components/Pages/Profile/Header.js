@@ -170,7 +170,8 @@ const Header = ({ picture, name, date, isOnline, links }) => {
             <DateComponent postDate={date} />
           </div>
           <div className={styles.time}>
-            <FieldTimeOutlined style={{ fontSize: 15 }} />{" "}
+            <FieldTimeOutlined style={{ fontSize: 15 }} />
+            {" online "}
             <DateComponent postDate={isOnline} />
           </div>
         </div>

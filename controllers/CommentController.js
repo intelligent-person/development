@@ -20,6 +20,14 @@ class CommentController {
       res.json(err);
     }
   }
+  async getOne(req, res) {
+    try {
+      const comment = await CommentServices.getOne(req.params.commentId);
+      res.json(comment);
+    } catch (err) {
+      res.json(err);
+    }
+  }
 
   async delete(req, res) {
     try {

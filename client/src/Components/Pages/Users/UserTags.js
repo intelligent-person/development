@@ -6,7 +6,6 @@ import Loader from "../../Loader/Loader";
 
 const UserTags = ({ id }) => {
   const { data, status, error } = hooks.useFetchUserTags(id);
-  console.log(data);
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (

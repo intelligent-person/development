@@ -12,7 +12,7 @@ const PostsContainer = () => {
   const params = new URL(location.href).searchParams;
   const history = useHistory();
   const queryParams = qs.parse(window.location.search);
-  const { status, error, data, refetch, isFetching } = hooks.useFetchPosts(
+  const { status, error, data, refetch } = hooks.useFetchPosts(
     params.get("page"),
     params.get("pageSize"),
     params.get("sort"),
