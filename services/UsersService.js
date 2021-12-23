@@ -55,7 +55,6 @@ class UsersService {
     try {
       const fileName = userId.replace("|", "-") + ".jpg";
       const filePath = path.resolve("static", fileName);
-      // const filePath = `https://intelligentforum.herokuapp.com/static/${fileName})`;
       console.log(filePath);
       await file.mv(filePath);
 
