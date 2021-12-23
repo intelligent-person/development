@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 require("dotenv").config();
