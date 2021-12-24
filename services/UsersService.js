@@ -54,7 +54,7 @@ class UsersService {
   async uploadPhoto(file, userId) {
     try {
       const fileName = userId.replace("|", "-") + ".jpg";
-      const filePath = path.resolve("static", fileName);
+      const filePath = __dirname.resolve("static", fileName);
       console.log(filePath);
       await file.mv(filePath);
 
