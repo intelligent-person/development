@@ -58,7 +58,7 @@ class UsersService {
       console.log(filePath);
       await file.mv(filePath);
 
-      return `https://intelligentforum.herokuapp.com/${fileName}`;
+      return `https://forumintelligent.herokuapp.com/${fileName}`;
     } catch (err) {
       console.log(err);
     }

@@ -8,8 +8,10 @@ import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { queryClient } from "./hooks/queryClient";
 
-const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+const domain =
+  process.env.REACT_APP_AUTH0_DOMAIN || "dev-zy7rfdl8.us.auth0.com";
+const clientId =
+  process.env.REACT_APP_AUTH0_CLIENT_ID || "pN8JkNhSWWDlfaaL1TfMAYRX3yR29uem";
 
 const App = React.lazy(() => import("./Components/App"));
 
