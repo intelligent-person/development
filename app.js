@@ -13,7 +13,7 @@ const corsOptions = {
 const app = express();
 //Middleware
 app.use(bodyParser.json());
-app.use(express.static("static"));
+app.use(express.static(__dirname + "/static"));
 app.use(cors(corsOptions));
 app.use(fileUpload({}));
 
