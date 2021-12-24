@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import Settings from "./Settings";
 import Messages from "./Messages/Messages";
 import { queryClient } from "../../hooks/queryClient";
+import FetchMessages from "./Messages/FetchMessages";
 
 const HeaderComponent = () => {
   const { t } = useTranslation();
@@ -52,7 +53,7 @@ const HeaderComponent = () => {
         </Col>
         <Col>
           <div style={{ display: "flex" }}>
-            {isAuthenticated && <Messages />}
+            {isAuthenticated && <FetchMessages />}
             {isAuthenticated ? <ProfileIcon /> : <LoginButton />}
             <Settings />
           </div>

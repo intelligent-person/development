@@ -43,7 +43,9 @@ const PostInfo = ({ post }) => {
           </div>
           <div>
             {t("PostComponent.Views")}{" "}
-            <span style={{ fontWeight: 600 }}>{post.views}</span>
+            <span style={{ fontWeight: 600 }}>
+              {post.views > 1000 ? post.views / 1000 + "k" : post.views}
+            </span>
           </div>
         </div>
       </div>

@@ -1,38 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { MessageOutlined } from "@ant-design/icons";
-import { Button, Drawer, message } from "antd";
-import * as hooks from "../../../hooks/messages/useFetchMessages";
-import { useAuth0 } from "@auth0/auth0-react";
+import { MessageOutlined, SmileOutlined } from "@ant-design/icons";
+import { Button, Drawer, notification } from "antd";
 import Message from "./Message";
 import styles from "./message.module.css";
 
-const Messages = () => {
-  const { user } = useAuth0();
-  const { data, status, error, refetch } = hooks.useFetchMessages(user.sub);
+const Messages = ({ data }) => {
   const [visible, setVisible] = useState(false);
   const [isMessage, setIsMessage] = useState(false);
+  const openNotification = () => {
+    notification.open({
+      message: `You have new messages!`,
+      placement: "topLeft",
+      icon: <SmileOutlined style={{ color: "#108ee9" }} />,
+      duration: 3,
+      onClick: () => {
+        setVisible(true);
+      },
+    });
+  };
+  console.log(data);
   useEffect(() => {
     setIsMessage(false);
     data?.forEach((message) => {
-      if (message.read === false) setIsMessage(true);
+      if (message.read === false) {
+        setIsMessage(true);
+        openNotification();
+      }
     });
   }, [data]);
-  useEffect(() => {
-    setInterval(() => {
-      refetch();
-    }, 3000);
-  }, []);
+
   const showDrawer = () => {
     setVisible(true);
   };
+
   const onClose = () => {
     setVisible(false);
   };
-  return status === "loading" ? (
-    <></>
-  ) : status === "error" ? (
-    message.error(error.message)
-  ) : (
+
+  return (
     <>
       <Button type={"text"} onClick={showDrawer}>
         <div style={{ marginTop: 16 }} className={styles.headerMessageIcon}>
@@ -61,4 +66,4 @@ const Messages = () => {
   );
 };
 
-export default Messages;
+export default React.memo(Messages);

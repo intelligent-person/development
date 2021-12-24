@@ -11,7 +11,7 @@ import {
 
 import * as hooks from "../../../../../hooks/answers";
 import * as userHooks from "../../../../../hooks/users";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useHistory, useParams } from "react-router-dom";
 import { queryClient } from "../../../../../hooks/queryClient";
 import Comments from "./Comments/Comments";
 import AddComment from "./Comments/AddComment";
@@ -38,6 +38,7 @@ const Answer = ({ answer, page }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const myRef = useRef(null);
   const queryParams = qs.parse(window.location.search);
+  const history = useHistory();
 
   useEffect(() => {
     if (myRef.current !== null) {
@@ -46,6 +47,11 @@ const Answer = ({ answer, page }) => {
         queryParams.scrollTo === answer._id
       ) {
         myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => {
+          history.push({
+            search: qs.stringify({}),
+          });
+        }, 3000);
       }
     }
   }, [queryParams]);

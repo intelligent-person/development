@@ -17,10 +17,11 @@ class MessageServices {
     }
     const currentUserTag = await Message.find({
       $or: [{ answerUserId: userId }, { postUserId: userId }],
+      mainUser: { $ne: userId },
     })
+
       .sort({ date: "desc" })
       .limit(10);
-
     return currentUserTag;
   }
 

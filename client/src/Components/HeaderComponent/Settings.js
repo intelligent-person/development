@@ -1,13 +1,11 @@
 import React from "react";
 import { SettingOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
-import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
-import Avatar from "antd/es/avatar/avatar";
 
 const Settings = () => {
-  const { logout } = useAuth0();
+  const { logout, isAuthenticated } = useAuth0();
   const { t, i18n } = useTranslation();
   const { SubMenu } = Menu;
   const menu = (
@@ -27,9 +25,11 @@ const Settings = () => {
           EN
         </Menu.Item>
       </SubMenu>
-      <Menu.Item key={"3"} onClick={() => logout()} danger>
-        {t("Logout.Out")}
-      </Menu.Item>
+      {isAuthenticated && (
+        <Menu.Item key={"3"} onClick={() => logout()} danger>
+          {t("Logout.Out")}
+        </Menu.Item>
+      )}
     </Menu>
   );
   return (

@@ -13,6 +13,12 @@ h4 {
 
 .message:hover {
   background-color: #f6f6f6;
+  cursor: pointer;
+}
+
+.user {
+  text-align: right;
+  font-size: 12px;
 }
 
 .title {

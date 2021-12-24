@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Avatar, Button, Comment, message } from "antd";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useHistory, useParams } from "react-router-dom";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
 import "../../post.css";
@@ -17,6 +17,7 @@ const UserComment = ({ comment }) => {
   const { data, status, error } = userHooks.useUserById(comment.userId);
   const postData = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const mainUser = queryClient.getQueryData(["Main User"]);
+  const history = useHistory();
 
   const myRef = useRef(null);
   const queryParams = qs.parse(window.location.search);
@@ -27,8 +28,14 @@ const UserComment = ({ comment }) => {
         queryParams.type === "comment" &&
         queryParams.scrollTo === comment._id
       ) {
-        console.log(myRef.current);
-        myRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        myRef.current.scrollIntoView({
+          behavior: "smooth",
+        });
+        setTimeout(() => {
+          history.push({
+            search: qs.stringify({}),
+          });
+        }, 3000);
       }
     }
   }, [queryParams]);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
@@ -6,14 +7,15 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const corsOptions = {
-  origin: "https://intelligentforum.herokuapp.com",
-  // origin: "http://localhost:3000",
+  // origin: "https://intelligentforum.herokuapp.com",
+  origin: process.env.ORIGIN,
   optionsSuccessStatus: 200,
 };
 const app = express();
 //Middleware
 app.use(bodyParser.json());
-app.use(express.static(__dirname + "/static"));
+app.use(express.static(__dirname));
+app.use(express.static(path.resolve(__dirname, "static")));
 app.use(cors(corsOptions));
 app.use(fileUpload({}));
 

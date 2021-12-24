@@ -46,7 +46,9 @@ const PostShortContent = ({ post }) => {
     <div key={post._id} className={"post"}>
       <div className={"postInfo"}>
         <div className={"views"}>
-          <div className={"count"}>{post.views}</div>
+          <div className={"count"}>
+            {post.views > 1000 ? post.views / 1000 + "k" : post.views}
+          </div>
           <div>{t("PostInfoComponent.Views")}</div>
         </div>
         <div className={"answers"}>

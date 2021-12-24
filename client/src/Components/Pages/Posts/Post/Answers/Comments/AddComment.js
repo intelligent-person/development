@@ -47,6 +47,7 @@ const AddComment = ({
         postTitle,
         postId,
       };
+      console.log(newAnswer);
       await addComment.mutateAsync(newAnswer);
       reset({
         comment: "",

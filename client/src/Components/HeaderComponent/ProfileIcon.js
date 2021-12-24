@@ -7,12 +7,12 @@ import { UserOutlined } from "@ant-design/icons";
 
 const ProfileIcon = () => {
   const { user } = useAuth0();
-  const { status, data } = hooks.useUserById(user.sub);
+  const { status, data } = hooks.useUserById(user?.sub);
 
   return (
     status !== "loading" && (
       <div>
-        <NavLink to={`/user/${data.name?.replaceAll(" ", "-")}/${user.sub}`}>
+        <NavLink to={`/user/${data?.name?.replaceAll(" ", "-")}/${user.sub}`}>
           {data.picture ? (
             <Avatar src={data.picture} />
           ) : (
