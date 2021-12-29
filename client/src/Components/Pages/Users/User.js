@@ -4,7 +4,6 @@ import { NavLink } from "react-router-dom";
 import UserTags from "./UserTags";
 
 const User = ({ user }) => {
-  console.log(user.picture);
   return (
     <div key={user._id} className={styles.user}>
       <NavLink to={`user/${user.name.split(" ").join("-")}/${user.sub}`}>
