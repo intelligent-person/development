@@ -22,6 +22,7 @@ const PostInfo = ({ post }) => {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const deletePost = postHooks.useDeletePost();
   const { data, status, error } = userHooks.useUserById(post.userId);
+  const mobile = window.innerWidth < 450 && true;
 
   return status === "loading" ? (
     <Loader />
@@ -30,15 +31,23 @@ const PostInfo = ({ post }) => {
   ) : (
     <div className={"postHeader"}>
       <div className={"postHeader"}>
-        <Row justify={"space-between"}>
-          <h1 style={{ maxWidth: "80%" }}>{post.title}</h1>
-          <NavLink to={mainUser ? "/questions/ask" : "/login"}>
-            <Button type={"primary"}>{t("FilterComponent.AskQuestion")}</Button>
-          </NavLink>
-        </Row>
-        <div style={{ display: "flex" }}>
+        {mobile ? (
+          <>
+            <h2>{post.title}</h2>
+          </>
+        ) : (
+          <Row justify={"space-between"}>
+            <h1 style={{ maxWidth: "80%" }}>{post.title}</h1>
+            <NavLink to={mainUser ? "/questions/ask" : "/login"}>
+              <Button type={"primary"}>
+                {t("FilterComponent.AskQuestion")}
+              </Button>
+            </NavLink>
+          </Row>
+        )}
+        <div className={styles.postInfo}>
           <div>{t("PostComponent.Date")}</div>
-          <div style={{ margin: "0 30px 0 7px", fontWeight: 600 }}>
+          <div className={styles.postDate}>
             <DateComponent postDate={post.date} />
           </div>
           <div>

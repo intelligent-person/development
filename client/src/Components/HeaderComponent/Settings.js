@@ -33,16 +33,14 @@ const Settings = () => {
     </Menu>
   );
   return (
-    <div style={{ marginTop: 3, marginLeft: 15 }}>
+    <div style={{ marginTop: 6, marginLeft: 15 }}>
       <Dropdown overlay={menu} trigger={["click"]}>
         <a
           className="ant-dropdown-link"
           onClick={(e) => e.preventDefault()}
           href={"#"}
         >
-          <SettingOutlined
-            style={{ color: "white", fontSize: 20, marginTop: 8 }}
-          />
+          <SettingOutlined style={{ color: "white", fontSize: 25 }} />
         </a>
       </Dropdown>
     </div>

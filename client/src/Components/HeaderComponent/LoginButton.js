@@ -13,7 +13,7 @@ const LoginButton = () => {
       onClick={() => loginWithRedirect()}
     >
       <Avatar
-        style={{ backgroundColor: "#87d068", marginTop: 15 }}
+        style={{ backgroundColor: "#87d068", marginTop: 18 }}
         icon={<UserOutlined />}
       />
     </Button>

@@ -1,0 +1,102 @@
+@media screen and (min-width: 320px) {
+  .post {
+    border-top: 1px solid #dddddd;
+    padding: 10px 3px;
+  }
+
+  .post:hover {
+    background-color: #f6f6f6;
+  }
+
+  h1,
+  h2,
+  h4 {
+    margin-bottom: 0;
+  }
+
+  .user img {
+    width: 50px;
+    margin-top: 5px;
+    border-radius: 50%;
+  }
+
+  .postInfo {
+    text-align: center;
+  }
+
+  .postWrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .postBody {
+    display: grid;
+  }
+
+  .bodyText {
+    margin-bottom: 5px;
+  }
+
+  .count {
+    font-size: 17px;
+  }
+
+  .answers {
+    padding: 2px;
+    background-color: #1890ff;
+    color: white;
+    font-size: 12px;
+  }
+
+  .views {
+    padding: 2px;
+    font-size: 12px;
+  }
+
+  .user {
+    padding: 20px 0 0;
+    color: #666666;
+    font-weight: 400;
+  }
+
+  .userWrapper {
+    display: flex;
+  }
+
+  .tag {
+    margin-right: 10px;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .post {
+    display: grid;
+    grid-template-columns: 100px 3fr 1fr;
+  }
+
+  .postBody {
+    margin-left: 20px;
+  }
+
+  .user img {
+    width: 60px;
+  }
+
+  .count {
+    font-size: 20px;
+  }
+
+  .answers {
+    padding: 5px;
+    font-size: 15px;
+  }
+
+  .views {
+    padding: 5px;
+    font-size: 15px;
+  }
+
+  .user {
+    padding: 20px 0 0 30px;
+  }
+}

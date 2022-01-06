@@ -9,6 +9,7 @@ import styles from "./styles/users.module.css";
 
 const UsersFilter = ({ setSearchUser }) => {
   const { t } = useTranslation();
+  const mobile = window.innerWidth < 450 && true;
   const history = useHistory();
   const queryParams = qs.parse(window.location.search);
 
@@ -44,7 +45,7 @@ const UsersFilter = ({ setSearchUser }) => {
     <div>
       <div className={styles.filterWrapper}>
         <div className={styles.usersTitle}>
-          <h1>Users</h1>
+          <h1>Пользователи</h1>
         </div>
         <div>
           <Search

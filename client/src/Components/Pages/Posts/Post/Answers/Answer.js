@@ -158,6 +158,7 @@ const Answer = ({ answer, page }) => {
   const actions = [
     <Tooltip
       key="comment-basic-like"
+      className={styles.actions}
       title={!mainUser && "Вы не вошли в свой аккаунт"}
     >
       <span onClick={mainUser && like}>
@@ -221,12 +222,12 @@ const Answer = ({ answer, page }) => {
   ) : status === "error" ? (
     error.message
   ) : (
-    <div ref={myRef}>
+    <div className={styles.answer} ref={myRef}>
       <Comment
         actions={actions}
         author={
           <>
-            <div>
+            <div className={styles.name}>
               <NavLink
                 to={`/user/${data.name.split(" ").join("-")}/${data.sub}`}
               >
@@ -246,7 +247,7 @@ const Answer = ({ answer, page }) => {
           </>
         }
         content={
-          <div style={{ paddingTop: 15 }}>
+          <div className={styles.answerContent}>
             <MarkdownToPost
               codeLanguage={answer.codeLanguage}
               body={answer.body}

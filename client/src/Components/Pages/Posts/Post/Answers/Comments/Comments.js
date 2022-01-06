@@ -4,11 +4,12 @@ import UserComment from "./UserComment";
 import { Button, message } from "antd";
 import { queryClient } from "../../../../../../hooks/queryClient";
 import { useTranslation } from "react-i18next";
+import styles from "./comments.module.css";
 
 const CurrentComments = ({ setPage, page, data }) => {
   const { t } = useTranslation();
   return (
-    <>
+    <div className={styles.comments}>
       <h3 style={{ margin: "0" }}>{t("comment.comments")}</h3>
       <div style={{ marginLeft: 20 }}>
         {data.answerComments.map((comment) => {
@@ -37,7 +38,7 @@ const CurrentComments = ({ setPage, page, data }) => {
           {t("comment.showLess")}
         </Button>
       )}
-    </>
+    </div>
   );
 };
 

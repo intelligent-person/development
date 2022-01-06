@@ -54,3 +54,12 @@ code {
   border: 2px solid white;
   color: white;
 }
+
+@media (max-width: 450px) {
+  .sendBlock {
+    display: flex;
+    width: 100%;
+    margin-bottom: 5px;
+    justify-content: space-between;
+  }
+}

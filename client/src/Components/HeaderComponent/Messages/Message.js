@@ -9,6 +9,7 @@ import * as commentHooks from "../../../hooks/comments";
 import * as answerHooks from "../../../hooks/answers";
 import Loader from "../../Loader/Loader";
 import { message } from "antd";
+import DateComponent from "../../DateComponent/DateComponent";
 
 export const themes = {
   notRead: {
@@ -42,6 +43,7 @@ const Message = ({ messageData, setVisible }) => {
     onMouseOver ? themes.hover : read ? themes.read : themes.notRead
   );
   const theme = useContext(ThemeContext);
+  const mobile = window.innerWidth < 450 && true;
 
   const updateNotReadMessage = async () => {
     if (read === false) {
@@ -80,6 +82,9 @@ const Message = ({ messageData, setVisible }) => {
                 style={{
                   color: theme.color,
                   fontWeight: theme.fontWeight,
+                  display: "flex",
+                  alignItems: "center",
+                  paddingRight: 10,
                 }}
               >
                 <MessageOutlined className={styles.messageIcon} />
@@ -88,29 +93,34 @@ const Message = ({ messageData, setVisible }) => {
                 ) : (
                   <span>Answer</span>
                 )}
+                <div className={styles.date}>
+                  <DateComponent postDate={date} />
+                </div>
               </h4>
-              <h3
+              <h4
                 className={styles.title}
                 style={{
                   fontWeight: theme.fontWeight,
                 }}
               >
                 {type === "comment"
-                  ? data.postTitle.length > 50
-                    ? data.postTitle.slice(0, 45) + "..."
+                  ? data.postTitle.length > 100
+                    ? data.postTitle.slice(0, 100) + "..."
                     : data.postTitle
-                  : data.title.length > 50
-                  ? data.title.slice(0, 45) + "..."
+                  : data.title.length > 100
+                  ? data.title.slice(0, 100) + "..."
                   : data.title}
-              </h3>
-              <div
-                style={{
-                  color: theme.color,
-                  fontWeight: theme.fontWeight,
-                }}
-              >
-                {data.body.slice(0, 100)}
-              </div>
+              </h4>
+              {!mobile && (
+                <div
+                  style={{
+                    color: theme.color,
+                    fontWeight: theme.fontWeight,
+                  }}
+                >
+                  {data.body.slice(0, 100)}
+                </div>
+              )}
             </div>
             <MessageUser userId={mainUser} date={date} />
           </div>

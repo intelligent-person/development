@@ -32,7 +32,7 @@ const CreatorSchema = (t) =>
 
 const Header = ({ picture, name, date, isOnline, links }) => {
   const { sub } = useParams();
-  const [nameValue, setNameValue] = useState(name);
+  const [nameValue, setNameValue] = useState(name.split("@")[0]);
   const [telegramValue, setTelegramValue] = useState(links?.telegram);
   const [instagramValue, setInstagramValue] = useState(links?.instagram);
   const [facebookValue, setFaceBookValue] = useState(links?.facebook);
@@ -43,6 +43,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
   const updateUser = userHooks.useUpdateUser();
   const mainUser = queryClient.getQueryData(["Main User"]);
   const { t } = useTranslation();
+  const mobile = window.innerWidth < 450 && true;
   const defaultValues = { name };
   const {
     handleSubmit,
@@ -88,8 +89,10 @@ const Header = ({ picture, name, date, isOnline, links }) => {
   };
   const { loading, imageUrl } = uploadPhotoState;
   const uploadButton = (
-    <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+    <div className={styles.upload}>
+      <div className={styles.uploadIcon}>
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      </div>
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
@@ -116,7 +119,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
           <ImgCrop rotate>
             <Upload
               name="avatar"
-              listType="picture-card"
+              listType={!mobile && "picture-card"}
               className="avatar-uploader"
               showUploadList={false}
               action={`${
@@ -149,6 +152,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
             render={({ field }) => (
               <Input
                 className={styles.name}
+                style={{ marginBottom: 10 }}
                 value={field.value}
                 onChange={field.onChange}
               />
@@ -169,7 +173,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               title="register"
               className="loaded"
             />
-            {" присоединился "}
+            {mobile ? " " : " присоединился "}
             <DateComponent postDate={date} />
           </div>
           <div className={styles.time}>
@@ -180,43 +184,53 @@ const Header = ({ picture, name, date, isOnline, links }) => {
         </div>
         {isEditMode ? (
           <div className={styles.linkWrapper}>
-            <img
-              width="15"
-              height="15"
-              src="https://cdn-icons-png.flaticon.com/512/253/253802.png"
-              alt="Телеграмма бесплатно иконка"
-              title="Телеграмма бесплатно иконка"
-              className="loaded"
-            />
-            <Input
-              className={styles.input}
-              value={telegramValue}
-              onChange={(e) => setTelegramValue(e.target.value)}
-            />
-            <InstagramOutlined />
-            <Input
-              className={styles.input}
-              value={instagramValue}
-              onChange={(e) => setInstagramValue(e.target.value)}
-            />
-            <FacebookOutlined />
-            <Input
-              className={styles.input}
-              value={facebookValue}
-              onChange={(e) => setFaceBookValue(e.target.value)}
-            />
-            <GithubOutlined />
-            <Input
-              className={styles.input}
-              value={githubValue}
-              onChange={(e) => setGithubValue(e.target.value)}
-            />
-            <LinkedinOutlined />
-            <Input
-              className={styles.input}
-              value={linkedInValue}
-              onChange={(e) => setLinkedInValue(e.target.value)}
-            />
+            <div className={styles.link}>
+              <img
+                width="15"
+                height="15"
+                src="https://cdn-icons-png.flaticon.com/512/253/253802.png"
+                alt="Телеграмма бесплатно иконка"
+                title="Телеграмма бесплатно иконка"
+                className="loaded"
+              />
+              <Input
+                className={styles.input}
+                value={telegramValue}
+                onChange={(e) => setTelegramValue(e.target.value)}
+              />
+            </div>
+            <div className={styles.link}>
+              <InstagramOutlined />
+              <Input
+                className={styles.input}
+                value={instagramValue}
+                onChange={(e) => setInstagramValue(e.target.value)}
+              />
+            </div>
+            <div className={styles.link}>
+              <FacebookOutlined />
+              <Input
+                className={styles.input}
+                value={facebookValue}
+                onChange={(e) => setFaceBookValue(e.target.value)}
+              />
+            </div>
+            <div className={styles.link}>
+              <GithubOutlined />
+              <Input
+                className={styles.input}
+                value={githubValue}
+                onChange={(e) => setGithubValue(e.target.value)}
+              />
+            </div>
+            <div className={styles.link}>
+              <LinkedinOutlined />
+              <Input
+                className={styles.input}
+                value={linkedInValue}
+                onChange={(e) => setLinkedInValue(e.target.value)}
+              />
+            </div>
           </div>
         ) : (
           <div className={styles.linkWrapper}>

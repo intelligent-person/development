@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAuth0 } from "@auth0/auth0-react";
 import * as hooks from "../../../../../../hooks/comments";
 import { queryClient } from "../../../../../../hooks/queryClient";
+import styles from "./comments.module.css";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
@@ -56,7 +57,7 @@ const AddComment = ({
     }
   };
   return (
-    <form onSubmit={handleSubmit(createcomment)}>
+    <form className={styles.comments} onSubmit={handleSubmit(createcomment)}>
       {errors.comment && <p className={"error"}>{errors.comment.message}</p>}
       <Controller
         control={control}

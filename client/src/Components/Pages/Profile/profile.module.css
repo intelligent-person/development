@@ -132,7 +132,7 @@ h2 {
 }
 
 .input {
-  max-width: 150px;
+  max-width: 250px;
   margin: 0 5px;
 }
 
@@ -152,4 +152,77 @@ h2 {
   color: white;
   background-color: rgba(24, 144, 255, 0.7);
   font-size: 15px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 450px) {
+  .profileContent {
+    padding: 10px;
+    margin: 10px 0;
+  }
+
+  .img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .name {
+    max-width: 180px;
+    font-size: 15px;
+  }
+
+  .upload {
+    border: 1px dashed #dddddd;
+    padding: 5px 8px;
+  }
+
+  .uploadIcon {
+    text-align: center;
+  }
+
+  .timeWrapper {
+    display: block;
+    font-size: 13px;
+  }
+
+  .linkWrapper {
+    margin-top: 8px;
+    display: block;
+  }
+
+  .link {
+    margin-top: 7px;
+  }
+
+  .header {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 10fr 30px;
+    margin-bottom: 20px;
+  }
+
+  .statBlock {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .stat {
+    margin-bottom: 10px;
+  }
+
+  .topTags {
+    margin-bottom: 20px;
+  }
+
+  .answerField {
+    font-size: 12px;
+  }
+
+  .notData {
+    font-size: 16px;
+  }
 }

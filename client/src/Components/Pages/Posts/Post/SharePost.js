@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { Button, Input, message } from "antd";
 import { useTranslation } from "react-i18next";
+import styles from "./PostInfo/postInfo.module.css";
 
 const SharePost = () => {
   const { t } = useTranslation();
@@ -12,13 +13,13 @@ const SharePost = () => {
     message.info(t("post.isCopied"));
   };
   return (
-    <div>
+    <div className={styles.copy}>
       <Input
         ref={inputRef}
         style={{ maxWidth: 400 }}
         value={window.location.href}
       />
-      <Button style={{ marginLeft: 10 }} type={"primary"} onClick={copyText}>
+      <Button className={styles.copyButton} type={"primary"} onClick={copyText}>
         {t("post.copy")}
       </Button>
     </div>

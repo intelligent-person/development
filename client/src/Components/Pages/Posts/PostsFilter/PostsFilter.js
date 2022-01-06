@@ -7,12 +7,14 @@ import { useTranslation } from "react-i18next";
 import "../../../../utils/i18n";
 import { useAuth0 } from "@auth0/auth0-react";
 import qs from "query-string";
+import styles from "./postFilter.module.css";
 
 const PostsFilter = ({ postsCount }) => {
   const { isAuthenticated } = useAuth0();
   const { t } = useTranslation();
   const history = useHistory();
   const queryParams = qs.parse(window.location.search);
+  const mobile = window.innerWidth < 426 && true;
 
   const [radio, setRadio] = React.useState("newest");
   const [isFilter, setIsFilter] = useState(false);
@@ -81,74 +83,111 @@ const PostsFilter = ({ postsCount }) => {
 
   return (
     <div>
-      <Row style={{ marginBottom: 10 }} justify={"space-between"}>
-        <Col>
-          <h1>{t("FilterComponent.AllQuestions")}</h1>
-        </Col>
-        <Col flex={"auto"} style={{ padding: "10px 20px 0" }}>
-          <Search
-            placeholder={t("FilterComponent.Search")}
-            onSearch={onSearch}
-            enterButton
-          />
-        </Col>
-        <Col style={{ marginTop: 10 }}>
-          {isAuthenticated ? (
-            <NavLink to={"/questions/ask"}>
-              <Button type={"primary"}>
-                {t("FilterComponent.AskQuestion")}
-              </Button>
-            </NavLink>
-          ) : (
-            <NavLink to={"/login"}>
-              <Button type={"primary"}>
-                {t("FilterComponent.AskQuestion")}
-              </Button>
-            </NavLink>
-          )}
-        </Col>
-      </Row>
-      <Row style={{ marginBottom: 20 }} justify={"space-between"}>
-        <Col>
-          <h2>
-            {postsCount} {t("FilterComponent.QuestionsCount")}
-          </h2>
-        </Col>
-        <Col>
+      {!mobile ? (
+        <Row className={styles.filterContent} justify={"space-between"}>
+          <Col>
+            <h1>{t("FilterComponent.AllQuestions")}</h1>
+          </Col>
+          <Col flex={"auto"} className={styles.search}>
+            <Search
+              placeholder={t("FilterComponent.Search")}
+              onSearch={onSearch}
+              enterButton
+            />
+          </Col>
+
+          <Col className={styles.askQuestion}>
+            {isAuthenticated ? (
+              <NavLink to={"/questions/ask"}>
+                <Button type={"primary"}>
+                  {t("FilterComponent.AskQuestion")}
+                </Button>
+              </NavLink>
+            ) : (
+              <NavLink to={"/login"}>
+                <Button type={"primary"}>
+                  {t("FilterComponent.AskQuestion")}
+                </Button>
+              </NavLink>
+            )}
+          </Col>
+        </Row>
+      ) : (
+        <>
+          <Row className={styles.filterContent} justify={"space-between"}>
+            <Col>
+              <h2 className={styles.title}>
+                {t("FilterComponent.AllQuestions")}
+              </h2>
+            </Col>
+
+            <Col className={styles.askQuestion}>
+              {isAuthenticated ? (
+                <NavLink to={"/questions/ask"}>
+                  <Button type={"primary"}>
+                    {t("FilterComponent.AskQuestion")}
+                  </Button>
+                </NavLink>
+              ) : (
+                <NavLink to={"/login"}>
+                  <Button type={"primary"}>
+                    {t("FilterComponent.AskQuestion")}
+                  </Button>
+                </NavLink>
+              )}
+            </Col>
+          </Row>
+          <Col flex={"auto"} className={styles.search}>
+            <Search
+              placeholder={t("FilterComponent.Search")}
+              onSearch={onSearch}
+              enterButton
+            />
+          </Col>
+        </>
+      )}
+      <div className={styles.sort}>
+        {!mobile && (
+          <Col>
+            <h2 className={styles.title}>
+              {postsCount} {t("FilterComponent.QuestionsCount")}
+            </h2>
+          </Col>
+        )}
+        <Col className={styles.buttons}>
           <Button
             type={"default"}
-            style={{ borderRadius: 0 }}
+            className={styles.button}
             autoFocus
             onClick={onNewest}
           >
             {t("FilterComponent.Newest")}
           </Button>
-          <Button
-            type={"default"}
-            style={{ borderRadius: 0 }}
-            onClick={onViews}
-          >
+          <Button type={"default"} className={styles.button} onClick={onViews}>
             {t("FilterComponent.Views")}
           </Button>
           <Button
             type={"default"}
-            style={{ borderRadius: 0 }}
+            className={styles.button}
             onClick={onUnanswered}
           >
             {t("FilterComponent.Unanswered")}
           </Button>
-          <Button
-            type={"primary"}
-            style={{ borderRadius: 0 }}
-            onClick={onFilter}
-          >
+          <Button type={"primary"} className={styles.button} onClick={onFilter}>
             <MenuUnfoldOutlined /> {t("FilterComponent.Filter")}
           </Button>
         </Col>
-      </Row>
+        {mobile && (
+          <Col>
+            <h2 className={styles.title}>
+              {postsCount} {t("FilterComponent.QuestionsCount")}
+            </h2>
+          </Col>
+        )}
+      </div>
 
       {isFilter && (
-        <div className={"filter"}>
+        <div className={styles.filter}>
           <div>
             <h3>{t("FilterComponent.SortedBy")}</h3>
             <Radio.Group onChange={onChange} value={radio}>

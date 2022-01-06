@@ -18,7 +18,7 @@ const User = ({ user }) => {
       </NavLink>{" "}
       <div>
         <NavLink to={`user/${user.name.split(" ").join("-")}/${user.sub}`}>
-          <b>{user.name}</b>
+          <b>{user.name.split("@")[0]}</b>
         </NavLink>{" "}
         <br />
         <b>{user.reputation}</b> <br />

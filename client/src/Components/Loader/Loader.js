@@ -3,8 +3,10 @@ import "./Loader.css";
 
 const Loader = () => {
   return (
-    <div className="lds-heart">
-      <div></div>
+    <div className={"loaderWrapper"}>
+      <div className="lds-heart">
+        <div></div>
+      </div>
     </div>
   );
 };

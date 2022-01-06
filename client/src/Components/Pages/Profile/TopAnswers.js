@@ -6,6 +6,7 @@ import styles from "./profile.module.css";
 import { HeartOutlined } from "@ant-design/icons";
 const TopAnswers = ({ userId }) => {
   const { data, status, error } = hooks.useFetchUserTopAnswers(userId, 1);
+  const mobile = window.innerWidth < 450 && true;
   return status === "loading" ? (
     <Loader />
   ) : status === "error" ? (
@@ -21,7 +22,13 @@ const TopAnswers = ({ userId }) => {
                 {answer.votesCount} <HeartOutlined style={{ fontSize: 14 }} />
               </div>{" "}
               <NavLink to={`/questions/id/${answer.postId}?userId=${userId}`}>
-                {answer.title.slice(0, 80)}{" "}
+                {answer.title.slice(
+                  0,
+                  mobile ? (window.innerWidth < 375 ? 18 : 27) : 80
+                )}
+                {mobile
+                  ? answer.title.length > 30 && "..."
+                  : answer.title.length > 80 && "..."}
               </NavLink>
               <strong>{new Date(answer.date).toLocaleDateString()}</strong>
             </div>

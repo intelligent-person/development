@@ -17,3 +17,40 @@
 .deleteModal {
   max-width: 600px;
 }
+
+.copyButton {
+  margin-left: 10px;
+}
+
+.postInfo {
+  display: flex;
+}
+
+.postDate {
+  margin: 0 30px 0 7px;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 450px) {
+  .user {
+    display: block;
+  }
+  .userWrapper {
+    margin: 10px 0 0;
+  }
+
+  .copyButton {
+    margin: 10px 0 0 0;
+  }
+  .copy {
+    margin-top: 10px;
+  }
+  .postInfo {
+    font-size: 12px;
+  }
+
+  .postDate {
+    margin: 0 10px 0 7px;
+    font-weight: 600;
+  }
+}

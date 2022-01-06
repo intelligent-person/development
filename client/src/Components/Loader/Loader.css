@@ -1,18 +1,20 @@
+.loaderWrapper {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 50%;
+  left: 0;
+}
+
 .lds-heart {
   display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 46%;
-  width: 80px;
-  height: 80px;
+  position: relative;
+  width: 100px;
   transform: rotate(45deg) translate(0, -50%);
   transform-origin: 40px 40px;
   z-index: 1000;
 }
 .lds-heart div {
-  position: absolute;
-  top: 32px;
-  left: 32px;
   width: 32px;
   height: 32px;
   background: #fcf;

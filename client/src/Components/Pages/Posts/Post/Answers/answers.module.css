@@ -10,3 +10,33 @@
 .passiveAnswer:active {
   color: green;
 }
+
+.answerContent {
+  margin-top: 15px;
+}
+
+.answer {
+  border-bottom: 1px solid #dddddd;
+}
+
+.answersTitle {
+  margin-top: 50px;
+}
+
+@media screen and (max-width: 450px) {
+  .answerContent {
+    margin-left: -40px;
+  }
+
+  .actions {
+    margin-left: -40px;
+  }
+
+  .name {
+    font-size: 15px;
+  }
+
+  .answersTitle {
+    margin-top: 10px;
+  }
+}

@@ -1,5 +1,4 @@
 import React from "react";
-import "./posts.css";
 import PostShortContent from "./PostShortContent/PostShortContent";
 
 const Posts = ({ posts }) => {

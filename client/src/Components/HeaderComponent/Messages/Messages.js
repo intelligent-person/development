@@ -7,12 +7,13 @@ import styles from "./message.module.css";
 const Messages = ({ data }) => {
   const [visible, setVisible] = useState(false);
   const [isMessage, setIsMessage] = useState(false);
+  const mobile = window.innerWidth < 450 && true;
   const openNotification = () => {
     notification.open({
       message: `You have new messages!`,
       placement: "topLeft",
       icon: <SmileOutlined style={{ color: "#108ee9" }} />,
-      duration: 3,
+      duration: 2,
       onClick: () => {
         setVisible(true);
       },
@@ -54,7 +55,7 @@ const Messages = ({ data }) => {
         }
         placement="right"
         onClose={onClose}
-        width={500}
+        width={mobile ? window.innerWidth : 500}
         visible={visible}
         bodyStyle={{ padding: 0 }}
       >

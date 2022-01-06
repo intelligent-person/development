@@ -6,6 +6,7 @@ import PostCreator from "../Pages/Posts/PostCreator/PostCreator";
 import { Content } from "antd/es/layout/layout";
 import PostsBreadCrumb from "../Pages/Posts/PostsBreadCrumb";
 import NotAuthorized from "../Results/NotAuthorized";
+import styles from "./content.module.css";
 
 const HomeContainer = React.lazy(() => import("../Pages/Home/HomeContainer"));
 const PostsContainer = React.lazy(() =>
@@ -21,13 +22,9 @@ const ProfileContainer = React.lazy(() =>
 const PostInfoContainer = React.lazy(() => import("../Pages/Posts/Post/Post"));
 
 const ContentContainer = () => {
+  const mobile = window.innerWidth && true;
   return (
-    <Layout
-      style={{
-        padding: "0 50px 24px",
-        marginTop: 0,
-      }}
-    >
+    <Layout className={styles.layout}>
       <React.Suspense fallback={<Loader />}>
         <Switch>
           <Route path={"/"} exact={true} component={HomeContainer} />
@@ -40,14 +37,9 @@ const ContentContainer = () => {
             path={"/questions"}
             render={() => (
               <>
-                <PostsBreadCrumb />
+                {!mobile && <PostsBreadCrumb />}
                 <Content
-                  className="site-layout-background"
-                  style={{
-                    padding: "30px 100px 50px",
-                    margin: 0,
-                    minHeight: 670,
-                  }}
+                  className={`site-layout-background ${styles.postsContent}`}
                 >
                   <Route
                     path={"/questions"}

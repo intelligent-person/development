@@ -15,9 +15,6 @@ const MessageUser = ({ userId, date }) => {
   ) : (
     <div className={styles.user}>
       <Avatar src={data.picture} className={styles.ava} />
-      <div>
-        <DateComponent postDate={date} />
-      </div>
     </div>
   );
 };

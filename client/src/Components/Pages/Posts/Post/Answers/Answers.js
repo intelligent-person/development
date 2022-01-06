@@ -6,6 +6,7 @@ import Loader from "../../../../Loader/Loader";
 import { Pagination } from "antd";
 import { queryClient } from "../../../../../hooks/queryClient";
 import { useTranslation } from "react-i18next";
+import styles from "./answers.module.css";
 
 const Answers = () => {
   const [page, setPage] = useState(1);
@@ -24,7 +25,7 @@ const Answers = () => {
     <h1 style={{ textAlign: "center" }}>{t("PostComponent.futureAnswers")}</h1>
   ) : (
     <>
-      <h2 style={{ marginTop: 50 }}>
+      <h2 className={styles.answersTitle}>
         {currentData.answersCount} {t("answer.answers")}
       </h2>
       {data.map((answer) => {

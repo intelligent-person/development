@@ -1,0 +1,72 @@
+@media screen and (min-width: 320px) {
+  .filterContent {
+    margin: 10px 0;
+  }
+
+  .filter {
+    padding: 10px 20px;
+    text-align: center;
+    border: 1px solid #dddddd;
+    max-width: 600px;
+    margin: 0 auto 20px;
+  }
+
+  .sort {
+    margin-bottom: 10px;
+  }
+
+  .search {
+    margin-bottom: 10px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: right;
+  }
+  .button {
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 0;
+  }
+  @media screen and (min-width: 360px) {
+    .button {
+      font-size: 12px;
+      padding: 0 10px;
+      border-radius: 0;
+    }
+  }
+
+  .title {
+    margin-top: 5px;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .filterContent {
+    margin-bottom: 10px;
+  }
+
+  .filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sort {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .button {
+    font-size: 14px;
+    padding: 0 15px;
+    border-radius: 0;
+  }
+
+  .search {
+    padding: 10px 20px 0;
+  }
+
+  .askQuestion {
+    margin-top: 10px;
+  }
+}

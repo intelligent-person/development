@@ -4,6 +4,7 @@ import { Button, Popover } from "antd";
 import qs from "query-string";
 import { useHistory } from "react-router-dom";
 import * as hooks from "../../../../hooks/tags";
+import styles from "../posts.module.css";
 
 const PostTag = ({ tag }) => {
   const history = useHistory();
@@ -30,7 +31,7 @@ const PostTag = ({ tag }) => {
       trigger="hover"
       mouseEnterDelay={0.4}
     >
-      <Button onClick={onTag} size={"small"} className={"tag"}>
+      <Button onClick={onTag} size={"small"} className={styles.tag}>
         {tag}
       </Button>
     </Popover>
