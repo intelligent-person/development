@@ -4,11 +4,11 @@ const express = require("express");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
-require("dotenv").config();
 
 const corsOptions = {
-  // origin: "https://intelligentforum.herokuapp.com",
-  origin: process.env.ORIGIN,
+  origin: "https://intelligentforum.herokuapp.com",
+  // origin: process.env.ORIGIN,
+  // origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
 const app = express();

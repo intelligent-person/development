@@ -1,5 +1,10 @@
 const { User } = require("../models/User");
 const path = require("path");
+const { uploadFile, getFileStream } = require("../s3");
+
+const fs = require("fs");
+const util = require("util");
+const unlinkFile = util.promisify(fs.unlink);
 
 class UsersService {
   async create(user) {
@@ -51,14 +56,23 @@ class UsersService {
     return updatedUser;
   }
 
+  async getPhoto(fileName) {
+    try {
+      const readStream = getFileStream(fileName);
+      return readStream;
+    } catch (err) {
+      console.log(err);
+    }
+  }
   async uploadPhoto(file, userId) {
     try {
+      console.log(userId);
       const fileName = userId.replace("|", "-") + ".jpg";
       const filePath = path.resolve("static", fileName);
-      console.log(filePath);
-      await file.mv(filePath);
+      const result = await uploadFile(file, fileName, filePath);
+      await unlinkFile(filePath);
 
-      return `${process.env.filePath}/${fileName}`;
+      return `${process.env.filePath}/api/users/uploadPhoto/${result.Key}`;
     } catch (err) {
       console.log(err);
     }
