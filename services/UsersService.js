@@ -66,9 +66,8 @@ class UsersService {
   }
   async uploadPhoto(file, userId) {
     try {
-      console.log(userId);
       const fileName = userId.replace("|", "-") + ".jpg";
-      const filePath = path.resolve("static", fileName);
+      const filePath = process.env.filePath.resolve("static", fileName);
       const result = await uploadFile(file, fileName, filePath);
       await unlinkFile(filePath);
 

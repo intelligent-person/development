@@ -56,7 +56,6 @@ class UsersController {
   }
   async uploadPhoto(req, res) {
     try {
-      console.log(req.files);
       const file = await UsersService.uploadPhoto(
         req.files.avatar,
         req.params.id
