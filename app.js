@@ -6,9 +6,9 @@ const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 
 const corsOptions = {
-  // origin: "https://intelligent-forum.herokuapp.com",
+  origin: "https://intelligent-forum.herokuapp.com",
   // origin: process.env.ORIGIN,
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
   optionsSuccessStatus: 200,
 };
 const app = express();
