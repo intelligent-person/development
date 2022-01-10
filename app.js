@@ -15,7 +15,7 @@ const app = express();
 //Middleware
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
-app.use(express.static(path.resolve(__dirname, "static")));
+// app.use(express.static(path.resolve(__dirname, "static")));
 app.use(cors(corsOptions));
 app.use(fileUpload({}));
 

@@ -67,7 +67,7 @@ class UsersService {
   async uploadPhoto(file, userId) {
     try {
       const fileName = userId.replace("|", "-") + ".jpg";
-      const filePath = `https://forumintelligent.herokuapp.com/static/${fileName}`;
+      const filePath = `${__dirname}/${fileName}`;
       const result = await uploadFile(file, fileName, filePath);
       await unlinkFile(filePath);
 
