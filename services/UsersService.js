@@ -73,7 +73,7 @@ class UsersService {
 
       return `https://forumintelligent.herokuapp.com/api/users/uploadPhoto/${result.Key}`;
     } catch (err) {
-      console.log(err);
+      return String(err);
     }
   }
 
