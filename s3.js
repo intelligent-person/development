@@ -16,7 +16,8 @@ const s3 = new S3({
 });
 
 // uploads a file to s3
-async function uploadFile(file, fileName, filePath) {
+async function uploadFile(file, fileName) {
+  const filePath = `${__dirname}/${fileName}`;
   await file.mv(filePath);
   const fileStream = fs.createReadStream(filePath);
 

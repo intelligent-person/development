@@ -67,9 +67,8 @@ class UsersService {
   async uploadPhoto(file, userId) {
     try {
       const fileName = userId.replace("|", "-") + ".jpg";
-      const filePath = `${__dirname}/${fileName}`;
-      const result = await uploadFile(file, fileName, filePath);
-      await unlinkFile(filePath);
+      const result = await uploadFile(file, fileName);
+      // await unlinkFile(filePath);
 
       return `https://forumintelligent.herokuapp.com/api/users/uploadPhoto/${result.Key}`;
     } catch (err) {
