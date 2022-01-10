@@ -47,7 +47,6 @@ class UsersController {
   async getPhoto(req, res) {
     try {
       const id = req.params.id;
-      console.log(id);
       const file = await UsersService.getPhoto(id);
       file.pipe(res);
     } catch (err) {

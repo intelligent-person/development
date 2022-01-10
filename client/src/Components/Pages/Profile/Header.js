@@ -123,8 +123,7 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               className="avatar-uploader"
               showUploadList={false}
               action={`${
-                process.env.BASEURL ||
-                "https://forumintelligent.herokuapp.com/api"
+                process.env.BASEURL || "http://localhost:5000/api"
               }/users/uploadPhoto/${mainUser.sub}`}
               beforeUpload={beforeUpload}
               onChange={handleUploadPhoto}
