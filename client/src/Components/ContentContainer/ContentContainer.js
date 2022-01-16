@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { Layout } from "antd";
 import Loader from "../Loader/Loader";
 import PostCreator from "../Pages/Posts/PostCreator/PostCreator";
@@ -8,7 +8,6 @@ import PostsBreadCrumb from "../Pages/Posts/PostsBreadCrumb";
 import NotAuthorized from "../Results/NotAuthorized";
 import styles from "./content.module.css";
 
-const HomeContainer = React.lazy(() => import("../Pages/Home/HomeContainer"));
 const PostsContainer = React.lazy(() =>
   import("../Pages/Posts/PostsContainer")
 );
@@ -27,7 +26,11 @@ const ContentContainer = () => {
     <Layout className={styles.layout}>
       <React.Suspense fallback={<Loader />}>
         <Switch>
-          <Route path={"/"} exact={true} component={HomeContainer} />
+          <Route
+            path={"/"}
+            exact={true}
+            render={() => <Redirect to={"questions?page=1&pageSize=10"} />}
+          />
           <Route
             path={"/login"}
             exact={true}

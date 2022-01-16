@@ -6,10 +6,10 @@ import { useTranslation } from "react-i18next";
 import "../../../utils/i18n";
 import qs from "query-string";
 import styles from "./styles/users.module.css";
+import _ from "lodash";
 
 const UsersFilter = ({ setSearchUser }) => {
   const { t } = useTranslation();
-  const mobile = window.innerWidth < 450 && true;
   const history = useHistory();
   const queryParams = qs.parse(window.location.search);
 
@@ -45,14 +45,14 @@ const UsersFilter = ({ setSearchUser }) => {
     <div>
       <div className={styles.filterWrapper}>
         <div className={styles.usersTitle}>
-          <h1>Пользователи</h1>
+          <h1>{t("users.users")}</h1>
         </div>
         <div>
           <Search
             className={styles.searchUsers}
-            placeholder={t("FilterComponent.Search")}
+            placeholder={t("users.search")}
             onSearch={onSearch}
-            onChange={(e) => setSearchUser(e.target.value)}
+            onChange={_.debounce((e) => setSearchUser(e.target.value), 500)}
             enterButton
           />
         </div>
@@ -63,14 +63,14 @@ const UsersFilter = ({ setSearchUser }) => {
             autoFocus
             onClick={onNewest}
           >
-            {t("FilterComponent.Newest")}
+            {t("users.newest")}
           </Button>
           <Button
             type={"default"}
             className={styles.sortButton}
             onClick={onReputation}
           >
-            Reputation
+            {t("users.reputation")}
           </Button>
         </div>
       </div>

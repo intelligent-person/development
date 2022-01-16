@@ -43,7 +43,7 @@ const About = ({ status }) => {
   return (
     <form onSubmit={handleSubmit(onChangeStatus)}>
       <div className={styles.aboutWrapper}>
-        <h2>About</h2>
+        <h2>{t("profile.about")}</h2>
         {mainUser?.sub === sub && (
           <div className={styles.editIcon}>
             {isEditStatus ? (

@@ -4,8 +4,10 @@ import Loader from "../../Loader/Loader";
 import { NavLink } from "react-router-dom";
 import styles from "./profile.module.css";
 import { MessageOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const LastPosts = ({ userId }) => {
+  const { t } = useTranslation();
   const { data, status, error } = hooks.useFetchLastUserPosts(userId);
   const mobile = window.innerWidth < 450 && true;
   return status === "loading" ? (
@@ -14,7 +16,7 @@ const LastPosts = ({ userId }) => {
     error.message
   ) : (
     <div>
-      <h2>Last questions</h2>
+      <h2>{t("profile.lastPosts")}</h2>
       <div className={styles.topTags}>
         {data.length > 0 ? (
           data.map((post) => (
@@ -35,7 +37,7 @@ const LastPosts = ({ userId }) => {
             </div>
           ))
         ) : (
-          <h2 className={styles.notData}>This user has no questions yet</h2>
+          <h2 className={styles.notData}>{t("profile.notDataPosts")}</h2>
         )}
       </div>
     </div>

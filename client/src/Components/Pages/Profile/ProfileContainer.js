@@ -10,8 +10,10 @@ import styles from "./profile.module.css";
 import { Content } from "antd/es/layout/layout";
 import About from "./About";
 import Header from "./Header";
+import { useTranslation } from "react-i18next";
 
 const ProfileContainer = () => {
+  const { t } = useTranslation();
   const { sub } = useParams();
   const { status, data, error } = hooks.useUserById(sub);
 
@@ -35,26 +37,26 @@ const ProfileContainer = () => {
           <div>
             <div className={styles.statBlock}>
               <div>
-                <h2>Stats</h2>
+                <h2>{t("profile.stats")}</h2>
                 <div className={styles.stat}>
                   <div className={styles.statWrapper}>
                     <div>
                       <h1>{data.reputation}</h1>
-                      <h4>reputation</h4>
+                      <h4>{t("profile.reputation")}</h4>
                     </div>
                     <div>
                       <h1>{data.answers}</h1>
-                      <h4>answers</h4>
+                      <h4>{t("profile.answers")}</h4>
                     </div>
                   </div>
                   <div className={styles.statWrapper}>
                     <div>
                       <h1>{data.questions}</h1>
-                      <h4>questions</h4>
+                      <h4>{t("profile.questions")}</h4>
                     </div>
                     <div>
                       <h1>{data.rang}</h1>
-                      <h4>top</h4>
+                      <h4>{t("profile.top")}</h4>
                     </div>
                   </div>
                 </div>

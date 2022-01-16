@@ -101,9 +101,12 @@ class PostsService {
     if (!id) {
       throw new Error("Не указан ID");
     }
-    await Post.findByIdAndDelete(id);
-    const posts = await Post.find();
-    return posts;
+    const deletedPost = await Post.findByIdAndDelete(id);
+    await User.findOneAndUpdate(
+      { sub: deletedPost.userId },
+      { $inc: { questions: -1 } }
+    );
+    return deletedPost;
   }
 }
 

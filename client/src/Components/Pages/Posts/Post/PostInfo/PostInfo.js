@@ -94,6 +94,9 @@ const PostInfo = ({ post }) => {
               </Button>
             </>
           )}
+          {post.isEdited === true && (
+            <EditOutlined title={t("answer.edited")} />
+          )}
         </div>
         <div className={styles.userWrapper}>
           <div>
@@ -116,7 +119,6 @@ const PostInfo = ({ post }) => {
         </div>
       </div>
 
-      {post.isEdited === true && <EditOutlined title={t("answer.edited")} />}
       {isEditMode && <EditPost post={post} setIsEditMode={setIsEditMode} />}
       {isShareMode && <SharePost />}
       {isDeleteMode && (

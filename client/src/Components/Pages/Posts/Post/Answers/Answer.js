@@ -207,12 +207,12 @@ const Answer = ({ answer, page }) => {
         >
           {t("answer.edit")}
         </span>
-        {answer.isEdited === true && (
-          <EditOutlined title={t("answer.edited")} />
-        )}
         <span key="comment-basic-reply-to" onClick={deleteCurrentAnswer}>
           {t("comment.delete")}
         </span>
+        {answer.isEdited === true && (
+          <EditOutlined title={t("answer.edited")} />
+        )}
       </>
     ),
   ];

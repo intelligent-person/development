@@ -4,7 +4,9 @@ import Loader from "../../Loader/Loader";
 import { NavLink } from "react-router-dom";
 import styles from "./profile.module.css";
 import { HeartOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 const TopAnswers = ({ userId }) => {
+  const { t } = useTranslation();
   const { data, status, error } = hooks.useFetchUserTopAnswers(userId, 1);
   const mobile = window.innerWidth < 450 && true;
   return status === "loading" ? (
@@ -13,7 +15,7 @@ const TopAnswers = ({ userId }) => {
     error.message
   ) : (
     <div>
-      <h2>Top answers</h2>
+      <h2>{t("profile.topAnswers")}</h2>
       <div className={styles.topTags}>
         {data.length > 0 ? (
           data.map((answer) => (
@@ -21,7 +23,9 @@ const TopAnswers = ({ userId }) => {
               <div className={styles.answersCount}>
                 {answer.votesCount} <HeartOutlined style={{ fontSize: 14 }} />
               </div>{" "}
-              <NavLink to={`/questions/id/${answer.postId}?userId=${userId}`}>
+              <NavLink
+                to={`/questions/id/${answer.postId}?scrollTo=${answer._id}&type=answer`}
+              >
                 {answer.title.slice(
                   0,
                   mobile ? (window.innerWidth < 375 ? 18 : 27) : 80
@@ -34,7 +38,7 @@ const TopAnswers = ({ userId }) => {
             </div>
           ))
         ) : (
-          <h2 className={styles.notData}>This user has no answers yet</h2>
+          <h2 className={styles.notData}>{t("profile.notDataAnswers")}</h2>
         )}
       </div>
     </div>

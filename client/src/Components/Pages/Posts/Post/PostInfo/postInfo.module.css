@@ -1,6 +1,7 @@
 .user {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .user img {
   width: 40px;

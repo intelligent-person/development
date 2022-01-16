@@ -14,15 +14,15 @@ import * as hooks from "../../../../hooks/posts";
 import Loader from "../../../Loader/Loader";
 import Draft from "../../../Markdown/Draft";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useAddUserTags } from "../../../../hooks/userTags/useAddUserTags";
 import { useAddTags } from "../../../../hooks/tags";
+import { useAddUserTags } from "../../../../hooks/userTags";
 
 const CreatorSchema = (t) =>
   yup.object().shape({
     title: yup
       .string()
       .required(t("errors.isRequired"))
-      .min(20, t("errors.tooShort")),
+      .min(10, t("errors.tooShort")),
     select: yup.string().required(t("errors.isRequired")),
     tags: yup
       .string()
@@ -30,18 +30,9 @@ const CreatorSchema = (t) =>
       .test("tags", t("errors.tooManyTags"), (value) => {
         return value?.split(" ").length < 7;
       }),
-    Draft: yup
-      .mixed()
-      .test("Draft", t("errors.isRequired"), (value) => {
-        return value?.getCurrentContent().hasText() === true;
-      })
-      .test("Draft", t("errors.tooShort"), (value) => {
-        if (value) {
-          return (
-            convertToRaw(value?.getCurrentContent()).blocks[0].text.length > 10
-          );
-        }
-      }),
+    Draft: yup.mixed().test("Draft", t("errors.isRequired"), (value) => {
+      return value?.getCurrentContent().hasText() === true;
+    }),
   });
 const defaultValues = { Draft: undefined };
 

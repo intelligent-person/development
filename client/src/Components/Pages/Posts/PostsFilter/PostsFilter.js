@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Col, Input, Radio, Row } from "antd";
 import Search from "antd/es/input/Search";
 import { NavLink, useHistory } from "react-router-dom";
-import { MenuUnfoldOutlined } from "@ant-design/icons";
+import { MenuUnfoldOutlined, RedoOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "../../../../utils/i18n";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -21,6 +21,15 @@ const PostsFilter = ({ postsCount }) => {
   const [isUnanswered, setIsUnanswered] = useState(false);
   const [isTags, setIsTags] = useState(false);
   const [tags, setTags] = useState("");
+  useEffect(() => {
+    if (queryParams.tags) {
+      setIsTags(true);
+      setTags(queryParams.tags);
+    } else {
+      setIsTags(false);
+      setTags("");
+    }
+  }, [queryParams.tags]);
   const onSearch = (value) => {
     const newQueries = {
       ...queryParams,
@@ -30,14 +39,11 @@ const PostsFilter = ({ postsCount }) => {
       search: qs.stringify(newQueries),
     });
   };
-  const onChange = (e) => {
-    setRadio(e.target.value);
-  };
   const onNewest = () => {
     const newQueries = {
       ...queryParams,
       sort: "newest",
-      unanswered: false,
+      unanswered: isUnanswered,
     };
     history.push({
       search: qs.stringify(newQueries),
@@ -46,21 +52,24 @@ const PostsFilter = ({ postsCount }) => {
   const onViews = () => {
     const newQueries = {
       ...queryParams,
-      sort: "moreViews",
-      unanswered: false,
+      sort: radio === "moreViews" ? "newest" : "moreViews",
+      unanswered: isUnanswered,
     };
     history.push({
       search: qs.stringify(newQueries),
     });
+    setRadio(radio === "moreViews" ? "newest" : "moreViews");
   };
   const onUnanswered = () => {
     const newQueries = {
       ...queryParams,
-      unanswered: true,
+      unanswered: !isUnanswered,
     };
     history.push({
       search: qs.stringify(newQueries),
     });
+    setIsUnanswered(!isUnanswered);
+    setRadio(isUnanswered ? "newest" : "unanswered");
   };
 
   const onFilter = () => {
@@ -79,6 +88,7 @@ const PostsFilter = ({ postsCount }) => {
     history.push({
       search: qs.stringify(newQueries),
     });
+    setIsFilter(false);
   };
 
   return (
@@ -151,31 +161,48 @@ const PostsFilter = ({ postsCount }) => {
           <Col>
             <h2 className={styles.title}>
               {postsCount} {t("FilterComponent.QuestionsCount")}
+              <Button type={"primary"} className={styles.reset}>
+                <NavLink to={"/questions?page=1&pageSize=10"}>
+                  <RedoOutlined />
+                </NavLink>
+              </Button>
             </h2>
           </Col>
         )}
         <Col className={styles.buttons}>
-          <Button
-            type={"default"}
-            className={styles.button}
-            autoFocus
-            onClick={onNewest}
-          >
-            {t("FilterComponent.Newest")}
-          </Button>
-          <Button type={"default"} className={styles.button} onClick={onViews}>
-            {t("FilterComponent.Views")}
-          </Button>
-          <Button
-            type={"default"}
-            className={styles.button}
-            onClick={onUnanswered}
-          >
-            {t("FilterComponent.Unanswered")}
-          </Button>
-          <Button type={"primary"} className={styles.button} onClick={onFilter}>
-            <MenuUnfoldOutlined /> {t("FilterComponent.Filter")}
-          </Button>
+          <Radio.Group value={radio} onChange={(e) => setRadio(e.target.value)}>
+            <Radio.Button
+              type={"default"}
+              className={styles.button}
+              value={"newest"}
+              onClick={onNewest}
+            >
+              {t("FilterComponent.Newest")}
+            </Radio.Button>
+            <Radio.Button
+              type={"default"}
+              value={"moreViews"}
+              className={styles.button}
+              onClick={onViews}
+            >
+              {t("FilterComponent.Views")}
+            </Radio.Button>
+            <Radio.Button
+              type={"default"}
+              value={"unanswered"}
+              className={styles.button}
+              onClick={onUnanswered}
+            >
+              {t("FilterComponent.Unanswered")}
+            </Radio.Button>
+            <Button
+              type={"primary"}
+              className={styles.button}
+              onClick={onFilter}
+            >
+              <MenuUnfoldOutlined /> {t("FilterComponent.Filter")}
+            </Button>
+          </Radio.Group>
         </Col>
         {mobile && (
           <Col>
@@ -190,7 +217,10 @@ const PostsFilter = ({ postsCount }) => {
         <div className={styles.filter}>
           <div>
             <h3>{t("FilterComponent.SortedBy")}</h3>
-            <Radio.Group onChange={onChange} value={radio}>
+            <Radio.Group
+              onChange={(e) => setRadio(e.target.value)}
+              value={radio}
+            >
               <Radio
                 value={"newest"}
                 style={{ width: "100%", marginBottom: 10 }}
@@ -231,6 +261,7 @@ const PostsFilter = ({ postsCount }) => {
               <Input
                 onChange={(e) => setTags(e.target.value)}
                 placeholder={"например, c++ javascript..."}
+                value={tags && `${tags}`}
               />
             )}
             <div style={{ marginTop: 10, textAlign: "right" }}>

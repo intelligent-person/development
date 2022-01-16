@@ -4,8 +4,10 @@ import Loader from "../../Loader/Loader";
 import { NavLink } from "react-router-dom";
 import { Button } from "antd";
 import styles from "./profile.module.css";
+import { useTranslation } from "react-i18next";
 
 const TopTags = ({ userId }) => {
+  const { t } = useTranslation();
   const { data, status, error } = hooks.useFetchUserTags(userId);
   return status === "loading" ? (
     <Loader />
@@ -13,7 +15,7 @@ const TopTags = ({ userId }) => {
     error.message
   ) : (
     <div>
-      <h2>Top tags</h2>
+      <h2>{t("profile.topTags")}</h2>
       <div className={styles.topTags}>
         {data.tags ? (
           data.tags.map((tag) => (
@@ -30,19 +32,19 @@ const TopTags = ({ userId }) => {
               </NavLink>
               <div className={styles.tagStat}>
                 <div>
-                  <strong>{tag.tagCount}</strong> posts
+                  <strong>{tag.tagCount}</strong> {t("profile.posts")}
                 </div>
                 <div>
                   <strong>
                     {Math.round((tag.tagCount / data.userTagsCount) * 100)}
                   </strong>{" "}
-                  posts %
+                  {t("profile.posts")} %
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <h2 className={styles.notData}>This user has no tags yet</h2>
+          <h2 className={styles.notData}>{t("profile.notDataTags")}</h2>
         )}
       </div>
     </div>

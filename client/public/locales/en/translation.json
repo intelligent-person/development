@@ -89,5 +89,30 @@
     "showLess": "Show less",
     "addComment": "Add comment",
     "recommendation": "You can make text as code by applying `to word`"
+  },
+  "users": {
+    "users": "Users",
+    "usersNotFound": "Users not found",
+    "reputation": "Reputation",
+    "newest": "Newest",
+    "search": "Search..."
+  },
+  "profile": {
+    "upload": "Upload",
+    "register": " registered ",
+    "online": " online ",
+    "about": "About",
+    "stats": "Stats",
+    "reputation": "reputation",
+    "answers": "answers",
+    "questions": "questions",
+    "top": "top",
+    "topTags": "Top tags",
+    "posts": "posts",
+    "topAnswers": "Top answers",
+    "lastPosts": "Last posts",
+    "notDataTags": "This user has no tags yet",
+    "notDataAnswers": "This user has no answers yet",
+    "notDataPosts": "This user has no questions yet"
   }
 }

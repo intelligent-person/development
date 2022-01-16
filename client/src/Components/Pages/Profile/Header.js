@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./profile.module.css";
 import DateComponent from "../../DateComponent/DateComponent";
 import { Button, Input, Upload, message } from "antd";
+import imageCompression from "browser-image-compression";
 import ImgCrop from "antd-img-crop";
 import {
   EditOutlined,
@@ -87,13 +88,29 @@ const Header = ({ picture, name, date, isOnline, links }) => {
       );
     }
   };
+  const transform = async (info) => {
+    const imageFile = info;
+
+    const options = {
+      maxSizeMB: 0.01,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(imageFile, options);
+      return compressedFile;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const { loading, imageUrl } = uploadPhotoState;
   const uploadButton = (
     <div className={styles.upload}>
       <div className={styles.uploadIcon}>
         {loading ? <LoadingOutlined /> : <PlusOutlined />}
       </div>
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>{t("profile.upload")}</div>
     </div>
   );
 
@@ -123,10 +140,12 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               className="avatar-uploader"
               showUploadList={false}
               action={`${
-                process.env.BASEURL || "http://localhost:5000/api"
+                process.env.BASEURL ||
+                "https://forumintelligent.herokuapp.com/api"
               }/users/uploadPhoto/${mainUser.sub}`}
               beforeUpload={beforeUpload}
               onChange={handleUploadPhoto}
+              transformFile={transform}
             >
               {imageUrl ? (
                 <img src={imageUrl} alt="avatar" style={{ width: "100%" }} />
@@ -172,12 +191,12 @@ const Header = ({ picture, name, date, isOnline, links }) => {
               title="register"
               className="loaded"
             />
-            {mobile ? " " : " присоединился "}
+            {mobile ? " " : t("profile.register")}
             <DateComponent postDate={date} />
           </div>
           <div className={styles.time}>
             <FieldTimeOutlined style={{ fontSize: 15 }} />
-            {" online "}
+            {t("profile.online")}
             <DateComponent postDate={isOnline} />
           </div>
         </div>

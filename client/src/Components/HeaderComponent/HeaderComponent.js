@@ -34,25 +34,6 @@ const HeaderComponent = () => {
             style={{ lineHeight: "64px" }}
           >
             <Menu.Item
-              key="/"
-              onClick={(item) => setSelectedKeys(item.key)}
-              style={mobile && { padding: "0 15px" }}
-            >
-              <NavLink to={"/"}>
-                {mobile ? (
-                  <HomeOutlined
-                    style={{
-                      color: "white",
-                      fontSize: 25,
-                      height: 10,
-                    }}
-                  />
-                ) : (
-                  t("HeaderComponent.Home")
-                )}
-              </NavLink>
-            </Menu.Item>
-            <Menu.Item
               key="/questions"
               onClick={(item) => setSelectedKeys(item.key)}
               style={mobile && { padding: "0 15px" }}

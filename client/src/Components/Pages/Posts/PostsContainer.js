@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Pagination } from "antd";
-import { Redirect, useHistory } from "react-router-dom";
+import { Button, Pagination, Result } from "antd";
+import { NavLink, Redirect, useHistory } from "react-router-dom";
 import Loader from "../../Loader/Loader";
 import PostsFilter from "./PostsFilter/PostsFilter";
 import Posts from "./Posts";
@@ -57,15 +57,28 @@ const PostsContainer = () => {
   ) : (
     <>
       <PostsFilter postsCount={data.postsCount} />
-      <Posts posts={data.posts} />
-      <div style={{ textAlign: "center", marginTop: 50 }}>
-        <Pagination
-          defaultCurrent={1}
-          total={data.postsCount}
-          onChange={setSize}
-          current={params.get("page")}
+      {data.postsCount === 0 ? (
+        <Result
+          title="Вопросов не найдено"
+          extra={
+            <Button type="primary" key="console">
+              <NavLink to={"/questions?page=1&pageSize=10"}>Вернутся</NavLink>
+            </Button>
+          }
         />
-      </div>
+      ) : (
+        <Posts posts={data.posts} />
+      )}
+      {data.postsCount > 20 && (
+        <div style={{ textAlign: "center", marginTop: 50 }}>
+          <Pagination
+            defaultCurrent={1}
+            total={data.postsCount}
+            onChange={setSize}
+            current={params.get("page")}
+          />
+        </div>
+      )}
     </>
   );
 };

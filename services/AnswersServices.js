@@ -50,6 +50,10 @@ class AnswersServices {
     await Post.findByIdAndUpdate(postId, {
       $inc: { answersCount: -1 },
     });
+    await User.findOneAndUpdate(
+      { sub: deletedAnswer.userId },
+      { $inc: { answers: -1 } }
+    );
     await MessageService.delete(answerId);
     return { postId: postId, deletedAnswer };
   }
