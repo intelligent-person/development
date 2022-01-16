@@ -7,6 +7,7 @@ router.get("/userTopAnswers/:userId", AnswersController.getUserTopAnswers);
 router.get("/id/:answerId", AnswersController.getOne);
 // получение отправленных данных
 router.post("/", AnswersController.create);
+router.put("/votes/", AnswersController.votes);
 router.put("/", AnswersController.update);
 router.delete("/:answerId/:postId", AnswersController.delete);
 

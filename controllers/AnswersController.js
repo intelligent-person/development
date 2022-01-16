@@ -47,6 +47,14 @@ class AnswersController {
       res.json(err);
     }
   }
+  async votes(req, res) {
+    try {
+      const updateAnswer = await AnswersServices.votes(req.body);
+      res.json(updateAnswer);
+    } catch (err) {
+      res.json(err);
+    }
+  }
 
   async delete(req, res) {
     try {

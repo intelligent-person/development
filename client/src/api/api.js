@@ -1,7 +1,7 @@
 import * as axios from "axios";
 const instance = axios.create({
-  baseURL: process.env.BASEURL || "https://forumintelligent.herokuapp.com/api",
-  // baseURL: process.env.BASEURL || "http://localhost:5000/api",
+  // baseURL: process.env.BASEURL || "https://forumintelligent.herokuapp.com/api",
+  baseURL: process.env.BASEURL || "http://localhost:5000/api",
 });
 export const usersAPI = {
   getUsers(page, search, sort) {
@@ -67,6 +67,9 @@ export const answersAPI = {
   },
   deleteAnswer(params) {
     return instance.delete(`/answers/${params.id}/${params.postId}`);
+  },
+  votesAnswer(params) {
+    return instance.put(`/answers/votes`, params);
   },
 };
 export const commentsAPI = {

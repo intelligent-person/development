@@ -29,6 +29,7 @@ const Answer = ({ answer, page }) => {
   const { postId } = useParams();
   const post = queryClient.getQueryData(["posts", `PostId: ${postId}`]);
   const updateAnswer = hooks.useUpdateAnswer();
+  const votesAnswer = hooks.useVotesAnswer();
   const deleteAnswer = hooks.useDeleteAnswer();
   const mainUser = queryClient.getQueryData(["Main User"]);
   const userAction = answer.votes.find(
@@ -36,6 +37,8 @@ const Answer = ({ answer, page }) => {
   );
   const [isAddComment, setIsAddComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [voteAction, setVoteAction] = useState(null);
+  const [votesCount, setVotesCount] = useState(Number(answer.votesCount));
   const myRef = useRef(null);
   const queryParams = qs.parse(window.location.search);
   const history = useHistory();
@@ -56,82 +59,33 @@ const Answer = ({ answer, page }) => {
     }
   }, [queryParams]);
 
+  useEffect(() => {
+    setVoteAction(userAction?.action);
+  }, [userAction]);
+  const votes = async (action) => {
+    await votesAnswer.mutateAsync({
+      userId: mainUser.sub,
+      answerId: answer._id,
+      answerUserId: data.sub,
+      action,
+    });
+  };
+
   const like = async () => {
-    if (answer.votesCount >= 0) {
-      let newVotesCount;
-      let newAction;
-      let newReputation;
-      if (!userAction || userAction?.action === null) {
-        newVotesCount = answer.votesCount + 1;
-        newAction = "liked";
-        newReputation = data.reputation + 1;
-      } else if (userAction.action === "disliked") {
-        newVotesCount = answer.votesCount + 1;
-        newAction = null;
-        newReputation = data.reputation + 1;
-      } else {
-        newVotesCount = answer.votesCount - 1;
-        newAction = null;
-        newReputation = data.reputation - 1;
-      }
-      await updateAnswer.mutateAsync({
-        answer: {
-          ...answer,
-          votesCount: newVotesCount,
-          votes: [
-            ...answer.votes.filter((vote) => vote.userId !== mainUser.sub),
-            { userId: mainUser.sub, action: newAction },
-          ],
-        },
-        page,
-      });
-      await updateUser.mutateAsync({
-        sub: data.sub,
-        reputation: newReputation,
-      });
-    }
+    setVotesCount((prevState) =>
+      voteAction === null ? prevState + 1 : prevState - 1
+    );
+    setVoteAction(voteAction === null ? "liked" : null);
+    await votes("liked");
   };
   const dislike = async () => {
-    if (answer.votesCount >= 0) {
-      let newVotesCount = null;
-      let newAction = null;
-      let newReputation = null;
-      let stop = false;
-      if (
-        (!userAction || userAction?.action === null) &&
-        answer.votesCount > 0
-      ) {
-        newVotesCount = answer.votesCount - 1;
-        newAction = "disliked";
-        newReputation = data.reputation - 1;
-      } else if (userAction?.action === "liked" && answer.votesCount > 0) {
-        newVotesCount = answer.votesCount - 1;
-        newAction = null;
-        newReputation = data.reputation - 1;
-      } else if (answer.votesCount !== 0 && userAction?.action === "disliked") {
-        newVotesCount = answer.votesCount + 1;
-        newAction = null;
-        newReputation = data.reputation + 1;
-      } else stop = true;
-      if (!stop) {
-        await updateAnswer.mutateAsync({
-          answer: {
-            ...answer,
-            votesCount: newVotesCount,
-            votes: [
-              ...answer.votes.filter((vote) => vote.userId !== mainUser.sub),
-              { userId: mainUser.sub, action: newAction },
-            ],
-          },
-          page,
-        });
-        await updateUser.mutateAsync({
-          sub: data.sub,
-          reputation: newReputation,
-        });
-      }
-    }
+    setVotesCount((prevState) =>
+      voteAction === null ? prevState - 1 : prevState + 1
+    );
+    setVoteAction(voteAction === null ? "disliked" : null);
+    await votes("disliked");
   };
+
   const deleteCurrentAnswer = async () => {
     if (mainUser) {
       const params = { id: answer._id, postId: answer.postId, page };
@@ -162,14 +116,12 @@ const Answer = ({ answer, page }) => {
       title={!mainUser && "Вы не вошли в свой аккаунт"}
     >
       <span onClick={mainUser && like}>
-        {createElement(
-          userAction?.action === "liked" ? LikeFilled : LikeOutlined
-        )}
+        {createElement(voteAction === "liked" ? LikeFilled : LikeOutlined)}
         <span
           className="comment-action"
           style={{ marginLeft: 10, fontSize: 20 }}
         >
-          {answer.votesCount}
+          {votesCount}
         </span>
       </span>
     </Tooltip>,
@@ -179,7 +131,7 @@ const Answer = ({ answer, page }) => {
     >
       <span onClick={mainUser && dislike}>
         {React.createElement(
-          userAction?.action === "disliked" ? DislikeFilled : DislikeOutlined
+          voteAction === "disliked" ? DislikeFilled : DislikeOutlined
         )}
       </span>
     </Tooltip>,

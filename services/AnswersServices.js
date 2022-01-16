@@ -42,17 +42,92 @@ class AnswersServices {
     });
     return updateAnswer;
   }
+  async votes(answerParams) {
+    let updateAnswer;
+    const { userId, answerId, answerUserId, action } = answerParams;
+    const answer = await Answer.findById(answerId);
+    const userAction = answer.votes.find(
+      (item) => item && item.userId === userId
+    );
+    if (answer.votesCount >= 0) {
+      let newVotesCount;
+      let newAction;
+      let stop = false;
+      if (action === "liked") {
+        if (!userAction || userAction?.action === null) {
+          newVotesCount = true;
+          newAction = "liked";
+        } else if (userAction.action === "disliked") {
+          newVotesCount = true;
+          newAction = null;
+        } else {
+          newVotesCount = false;
+          newAction = null;
+        }
+      } else if (action === "disliked") {
+        if (
+          (!userAction || userAction?.action === null) &&
+          answer.votesCount > 0
+        ) {
+          newVotesCount = false;
+          newAction = "disliked";
+        } else if (userAction?.action === "liked" && answer.votesCount > 0) {
+          newVotesCount = false;
+          newAction = null;
+        } else if (
+          answer.votesCount !== 0 &&
+          userAction?.action === "disliked"
+        ) {
+          newVotesCount = true;
+          newAction = null;
+        } else stop = true;
+      }
+      if (!stop) {
+        updateAnswer = await Answer.findByIdAndUpdate(
+          answerId,
+          {
+            $inc: { votesCount: newVotesCount ? +1 : -1 },
+            votes: [
+              ...answer.votes.filter((vote) => vote.userId !== userId),
+              { userId, action: newAction },
+            ],
+          },
+          {
+            new: true,
+          }
+        );
+        await User.findOneAndUpdate(
+          { sub: answerUserId },
+          { $inc: { reputation: newVotesCount ? +1 : -1 } },
+          {
+            new: true,
+          }
+        );
+      }
+    }
+
+    return updateAnswer;
+  }
   async delete(answerId, postId) {
     if (!answerId) {
       throw new Error("Не указан ID");
     }
     const deletedAnswer = await Answer.findByIdAndDelete(answerId);
-    await Post.findByIdAndUpdate(postId, {
-      $inc: { answersCount: -1 },
-    });
+    await Post.findByIdAndUpdate(
+      postId,
+      {
+        $inc: { answersCount: -1 },
+      },
+      {
+        new: true,
+      }
+    );
     await User.findOneAndUpdate(
       { sub: deletedAnswer.userId },
-      { $inc: { answers: -1 } }
+      { $inc: { answers: -1 } },
+      {
+        new: true,
+      }
     );
     await MessageService.delete(answerId);
     return { postId: postId, deletedAnswer };
